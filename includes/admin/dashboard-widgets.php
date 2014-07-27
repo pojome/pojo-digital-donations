@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function pdd_register_dashboard_widgets() {
 	if ( current_user_can( apply_filters( 'pdd_dashboard_stats_cap', 'view_shop_reports' ) ) ) {
-		wp_add_dashboard_widget( 'pdd_dashboard_sales', __('Easy Digital Downloads Sales Summary', 'pdd'), 'pdd_dashboard_sales_widget' );
+		wp_add_dashboard_widget( 'pdd_dashboard_sales', __('Pojo Digital Donations Sales Summary', 'pdd'), 'pdd_dashboard_sales_widget' );
 	}
 }
 add_action('wp_dashboard_setup', 'pdd_register_dashboard_widgets', 10 );

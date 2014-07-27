@@ -1,10 +1,10 @@
 ********************************************************
 
-  Easy Digital Downloads I18n
+  Pojo Digital Donations I18n
   ============================
   
   Do not put custom translations here. They will be deleted
-  on Easy Digital Downloads updates.
+  on Pojo Digital Donations updates.
   
   Keep custom PDD translations in /wp-content/languages/pdd/
   

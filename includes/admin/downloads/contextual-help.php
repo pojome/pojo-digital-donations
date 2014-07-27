@@ -26,7 +26,7 @@ function pdd_downloads_contextual_help() {
 
 	$screen->set_help_sidebar(
 		'<p><strong>' . sprintf( __( 'For more information:', 'pdd' ) . '</strong></p>' .
-		'<p>' . sprintf( __( 'Visit the <a href="%s">documentation</a> on the Easy Digital Downloads website.', 'pdd' ), esc_url( 'https://easydigitaldownloads.com/documentation/' ) ) ) . '</p>' .
+		'<p>' . sprintf( __( 'Visit the <a href="%s">documentation</a> on the Pojo Digital Donations website.', 'pdd' ), esc_url( 'https://easydigitaldownloads.com/documentation/' ) ) ) . '</p>' .
 		'<p>' . sprintf(
 					__( '<a href="%s">Post an issue</a> on <a href="%s">GitHub</a>. View <a href="%s">extensions</a> or <a href="%s">themes</a>.', 'pdd' ),
 					esc_url( 'https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues' ),
@@ -90,7 +90,7 @@ function pdd_downloads_contextual_help() {
 				<li><strong>color</strong> - <em>' . implode( '</em> | <em>', $colors ) . '</em></li>
 				<li><strong>class</strong> - ' . __( 'One or more custom CSS classes you want applied to the button.', 'pdd' ) . '</li>
 			</ul>' .
-			'<p>' . sprintf( __( 'For more information, see <a href="%s">using Shortcodes</a> on the WordPress.org Codex or <a href="%s">Easy Digital Downloads Documentation</a>', 'pdd' ), 'http://codex.wordpress.org/Shortcode', 'https://easydigitaldownloads.com/docs/display-purchase-buttons-purchase_link/' ) . '</p>'
+			'<p>' . sprintf( __( 'For more information, see <a href="%s">using Shortcodes</a> on the WordPress.org Codex or <a href="%s">Pojo Digital Donations Documentation</a>', 'pdd' ), 'http://codex.wordpress.org/Shortcode', 'https://easydigitaldownloads.com/docs/display-purchase-buttons-purchase_link/' ) . '</p>'
 	) );
 
 	do_action( 'pdd_downloads_contextual_help', $screen );

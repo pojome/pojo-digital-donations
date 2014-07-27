@@ -94,7 +94,7 @@ function pdd_admin_messages() {
             return; // Bail if we aren't using Apache... nginx doesn't use htaccess!
 
 		echo '<div class="error">';
-			echo '<p>' . sprintf( __( 'The Easy Digital Downloads .htaccess file is missing from <strong>%s</strong>!', 'pdd' ), pdd_get_upload_dir() ) . '</p>';
+			echo '<p>' . sprintf( __( 'The Pojo Digital Donations .htaccess file is missing from <strong>%s</strong>!', 'pdd' ), pdd_get_upload_dir() ) . '</p>';
 			echo '<p>' . sprintf( __( 'First, please resave the Misc settings tab a few times. If this warning continues to appear, create a file called ".htaccess" in the <strong>%s</strong> directory, and copy the following into it:', 'pdd' ), pdd_get_upload_dir() ) . '</p>';
 			echo '<p><pre>' . pdd_get_htaccess_rules() . '</pre>';
 			echo '<p><a href="' . add_query_arg( array( 'pdd_action' => 'dismiss_notices', 'pdd_notice' => 'htaccess_missing' ) ) . '">' . __( 'Dismiss Notice', 'pdd' ) . '</a></p>';

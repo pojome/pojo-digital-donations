@@ -27,7 +27,7 @@ function pdd_settings_contextual_help() {
 
 	$screen->set_help_sidebar(
 		'<p><strong>' . sprintf( __( 'For more information:', 'pdd' ) . '</strong></p>' .
-		'<p>' . sprintf( __( 'Visit the <a href="%s">documentation</a> on the Easy Digital Downloads website.', 'pdd' ), esc_url( 'https://easydigitaldownloads.com/documentation/' ) ) ) . '</p>' .
+		'<p>' . sprintf( __( 'Visit the <a href="%s">documentation</a> on the Pojo Digital Donations website.', 'pdd' ), esc_url( 'https://easydigitaldownloads.com/documentation/' ) ) ) . '</p>' .
 		'<p>' . sprintf(
 					__( '<a href="%s">Post an issue</a> on <a href="%s">GitHub</a>. View <a href="%s">extensions</a> or <a href="%s">themes</a>.', 'pdd' ),
 					esc_url( 'https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues' ),
@@ -49,7 +49,7 @@ function pdd_settings_contextual_help() {
 		'content'	=>
 			'<p>' . __( 'This screen provides ways to toggle payment gateways on or off, as well as configure gateway-specific settings. Any extra payment gateway extensions you have installed will appear on this page, and can be configured to suit your needs.', 'pdd' ) . '</p>' . 
 			'<p>' . __( '<strong>Test Payment</strong> - This included gateway is great for testing your store, as it requires no payment, and leads straight to product downloads. However, please remember to turn it off once your site is live!', 'pdd' ) . '</p>' .
-			'<p>' . __( '<strong>PayPal</strong> - A PayPal payment gateway is included as standard with Easy Digital Downloads. To test the PayPal gateway, you need a Sandbox account for PayPal and the site must be placed in Test Mode from the General settings tab. Please remember to enter your PayPal account email address in order for payments to get processed.', 'pdd' ) . '</p>'
+			'<p>' . __( '<strong>PayPal</strong> - A PayPal payment gateway is included as standard with Pojo Digital Donations. To test the PayPal gateway, you need a Sandbox account for PayPal and the site must be placed in Test Mode from the General settings tab. Please remember to enter your PayPal account email address in order for payments to get processed.', 'pdd' ) . '</p>'
 	) );
 
 	$screen->add_help_tab( array(
@@ -85,7 +85,7 @@ function pdd_settings_contextual_help() {
 	$screen->add_help_tab( array(
 		'id'		=> 'pdd-settings-extensions',
 		'title'		=> __( 'Extensions', 'pdd' ),
-		'content'	=> '<p>' . __( 'This screen provides access to settings added by most Easy Digital Downloads extensions.', 'pdd' ) . '</p>'
+		'content'	=> '<p>' . __( 'This screen provides access to settings added by most Pojo Digital Donations extensions.', 'pdd' ) . '</p>'
 	) );
 
 	$screen->add_help_tab( array(

@@ -36,8 +36,8 @@ function pdd_generate_pdf( $data ) {
 		$pdf->AddPage( 'L', 'A4' );
 
 		$pdf->SetTitle( utf8_decode( __( 'Sales and earnings reports for the current year for all products', 'pdd') ) );
-		$pdf->SetAuthor( utf8_decode( __( 'Easy Digital Downloads', 'pdd' ) ) );
-		$pdf->SetCreator( utf8_decode( __( 'Easy Digital Downloads', 'pdd' ) ) );
+		$pdf->SetAuthor( utf8_decode( __( 'Pojo Digital Donations', 'pdd' ) ) );
+		$pdf->SetCreator( utf8_decode( __( 'Pojo Digital Donations', 'pdd' ) ) );
 
 		$pdf->Image( PDD_PLUGIN_URL . 'assets/images/pdd-logo.png', 205, 10 );
 

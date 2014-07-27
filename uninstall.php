@@ -1,6 +1,6 @@
 <?php
 /**
- * Uninstall Easy Digital Downloads
+ * Uninstall Pojo Digital Donations
  *
  * @package     PDD
  * @subpackage  Uninstall

@@ -1,6 +1,6 @@
 <?php
 /**
- * Easy Digital Downloads API
+ * Pojo Digital Donations API
  *
  * This class provides a front-facing JSON/XML API that makes it possible to
  * query data from the shop.
@@ -1361,7 +1361,7 @@ class PDD_API {
 				<tbody>
 					<tr>
 						<th>
-							<label for="pdd_set_api_key"><?php _e( 'Easy Digital Downloads API Keys', 'pdd' ); ?></label>
+							<label for="pdd_set_api_key"><?php _e( 'Pojo Digital Donations API Keys', 'pdd' ); ?></label>
 						</th>
 						<td>
 							<?php if ( empty( $user->pdd_user_public_key ) ) { ?>

@@ -2,7 +2,7 @@
 /**
  * FPDF Class
  *
- * @package     Easy Digital Downloads
+ * @package     Pojo Digital Donations
  * @subpackage  FPDF
  * @since       1.1.3.2
 */
@@ -1433,7 +1433,7 @@ class FPDF {
 	}
 
 	function _putinfo() {
-		$this->_out( '/Producer ' . $this->_textstring( 'Easy Digital Downloads' ) );
+		$this->_out( '/Producer ' . $this->_textstring( 'Pojo Digital Donations' ) );
 		if ( !empty( $this->title ) )
 			$this->_out( '/Title ' . $this->_textstring( $this->title ) );
 		if ( !empty( $this->subject ) )

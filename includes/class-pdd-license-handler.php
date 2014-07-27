@@ -1,6 +1,6 @@
 <?php
 /**
- * License handler for Easy Digital Downloads
+ * License handler for Pojo Digital Donations
  *
  * This class should simplify the process of adding license information
  * to new PDD extensions.

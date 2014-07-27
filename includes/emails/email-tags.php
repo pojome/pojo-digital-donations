@@ -1,6 +1,6 @@
 <?php
 /**
- * Easy Digital Downloads API for creating Email template tags
+ * Pojo Digital Donations API for creating Email template tags
  *
  * Email tags are wrapped in { }
  *

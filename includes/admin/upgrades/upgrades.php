@@ -26,7 +26,7 @@ function pdd_upgrades_screen() {
 	$steps  = round( ( $total / 100 ), 0 );
 	?> 
 	<div class="wrap">
-		<h2><?php _e( 'Easy Digital Downloads - Upgrades', 'pdd' ); ?></h2>
+		<h2><?php _e( 'Pojo Digital Donations - Upgrades', 'pdd' ); ?></h2>
 	
 		<?php if( ! empty( $action ) ) : ?>
 

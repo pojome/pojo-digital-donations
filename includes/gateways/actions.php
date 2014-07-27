@@ -51,7 +51,7 @@ function pdd_no_gateway_error() {
 	$gateways = pdd_get_enabled_payment_gateways();
 
 	if ( empty( $gateways ) )
-		pdd_set_error( 'no_gateways', __( 'You must enable a payment gateway to use Easy Digital Downloads', 'pdd' ) );
+		pdd_set_error( 'no_gateways', __( 'You must enable a payment gateway to use Pojo Digital Donations', 'pdd' ) );
 	else
 		pdd_unset_error( 'no_gateways' );
 }

@@ -246,7 +246,7 @@ class PDD_Tracking {
 			$optout_url = add_query_arg( 'pdd_action', 'opt_out_of_tracking' );
 
 			echo '<div class="updated"><p>';
-				echo __( 'Allow Easy Digital Downloads to track plugin usage? Opt-in to tracking and our newsletter and immediately be emailed a 20% discount to the shop for <a href="https://easydigitaldownloads.com/extensions" target="_blank">Extensions and Themes</a>. No sensitive data is tracked.', 'pdd' );
+				echo __( 'Allow Pojo Digital Donations to track plugin usage? Opt-in to tracking and our newsletter and immediately be emailed a 20% discount to the shop for <a href="https://easydigitaldownloads.com/extensions" target="_blank">Extensions and Themes</a>. No sensitive data is tracked.', 'pdd' );
 				echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . __( 'Allow', 'pdd' ) . '</a>';
 				echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . __( 'Do not allow', 'pdd' ) . '</a>';
 			echo '</p></div>';

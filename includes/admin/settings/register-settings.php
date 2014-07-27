@@ -222,7 +222,7 @@ function pdd_get_registered_settings() {
 				'allow_tracking' => array(
 					'id' => 'allow_tracking',
 					'name' => __( 'Allow Usage Tracking?', 'pdd' ),
-					'desc' => __( 'Allow Easy Digital Downloads to anonymously track how this plugin is used and help us make the plugin better. Opt-in and receive a 20% discount code for any purchase from the <a href="https://easydigitaldownloads.com/extensions" target="_blank">Easy Digital Downloads store</a>. Your discount code will be emailed to you.', 'pdd' ),
+					'desc' => __( 'Allow Pojo Digital Donations to anonymously track how this plugin is used and help us make the plugin better. Opt-in and receive a 20% discount code for any purchase from the <a href="https://easydigitaldownloads.com/extensions" target="_blank">Pojo Digital Donations store</a>. Your discount code will be emailed to you.', 'pdd' ),
 					'type' => 'checkbox'
 				),
 				'uninstall_on_delete' => array(

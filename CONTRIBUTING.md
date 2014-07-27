@@ -1,6 +1,6 @@
-#Contribute To Easy Digital Downloads
+#Contribute To Pojo Digital Donations
 
-Community made patches, localisations, bug reports and contributions are always welcome and are crucial to ensure Easy Digital Downloads remains the #1 eCommerce platform for digital goods on WordPress.
+Community made patches, localisations, bug reports and contributions are always welcome and are crucial to ensure Pojo Digital Donations remains the #1 eCommerce platform for digital goods on WordPress.
 
 When contributing please ensure you follow the guidelines below so that we can keep on top of things.
 

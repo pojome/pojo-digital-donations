@@ -170,7 +170,7 @@ function pdd_tools_import_export_display() {
 	<div class="postbox">
 		<h3><span><?php _e( 'Export Settings', 'pdd' ); ?></span></h3>
 		<div class="inside">
-			<p><?php _e( 'Export the Easy Digital Downloads settings for this site as a .json file. This allows you to easily import the configuration into another site.', 'pdd' ); ?></p>
+			<p><?php _e( 'Export the Pojo Digital Donations settings for this site as a .json file. This allows you to easily import the configuration into another site.', 'pdd' ); ?></p>
 			<p><?php printf( __( 'To export shop data (purchases, customers, etc), visit the <a href="%s">Reports</a> page.', 'pdd' ), admin_url( 'edit.php?post_type=download&page=pdd-reports&tab=export' ) ); ?></p>
 			<form method="post" action="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-tools&tab=import_export' ); ?>">
 				<p><input type="hidden" name="pdd_action" value="export_settings" /></p>
@@ -185,7 +185,7 @@ function pdd_tools_import_export_display() {
 	<div class="postbox">
 		<h3><span><?php _e( 'Import Settings', 'pdd' ); ?></span></h3>
 		<div class="inside">
-			<p><?php _e( 'Import the Easy Digital Downloads settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'pdd' ); ?></p>
+			<p><?php _e( 'Import the Pojo Digital Donations settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'pdd' ); ?></p>
 			<form method="post" enctype="multipart/form-data" action="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-tools&tab=import_export' ); ?>">
 				<p>
 					<input type="file" name="import_file"/>

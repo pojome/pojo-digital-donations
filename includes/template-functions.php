@@ -680,6 +680,6 @@ add_action( 'wp_head', 'pdd_checkout_meta_tags' );
  * @return void
 */
 function pdd_version_in_header(){
-	echo '<meta name="generator" content="Easy Digital Downloads v' . PDD_VERSION . '" />' . "\n";
+	echo '<meta name="generator" content="Pojo Digital Donations v' . PDD_VERSION . '" />' . "\n";
 }
 add_action( 'wp_head', 'pdd_version_in_header' );

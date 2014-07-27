@@ -39,10 +39,10 @@ function pdd_add_ons_page() {
 	ob_start(); ?>
 	<div class="wrap" id="pdd-add-ons">
 		<h2>
-			<?php _e( 'Add Ons for Easy Digital Downloads', 'pdd' ); ?>
+			<?php _e( 'Add Ons for Pojo Digital Donations', 'pdd' ); ?>
 			&nbsp;&mdash;&nbsp;<a href="http://easydigitaldownloads.com/extensions/?utm_source=plugin-addons-page&utm_medium=plugin&ytm_campaign=PDD%20Addons%20Page&utm_content=All%20Extensions" class="button-primary" title="<?php _e( 'Browse All Extensions', 'pdd' ); ?>" target="_blank"><?php _e( 'Browse All Extensions', 'pdd' ); ?></a>
 		</h2>
-		<p><?php _e( 'These add-ons extend the functionality of Easy Digital Downloads.', 'pdd' ); ?></p>
+		<p><?php _e( 'These add-ons extend the functionality of Pojo Digital Donations.', 'pdd' ); ?></p>
 		<?php echo pdd_add_ons_get_feed(); ?>
 	</div>
 	<?php

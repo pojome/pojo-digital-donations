@@ -1,4 +1,4 @@
-=== Easy Digital Downloads ===
+=== Pojo Digital Donations ===
 Author URI: http://pippinsplugins.com
 Plugin URI: http://easydigitaldownloads.com
 Contributors: mordauk, sunnyratilal, chriscct7, section214, sumobi, sksmatt, SpencerFinnell
@@ -15,7 +15,7 @@ Sell digital downloads through WordPress with this complete digital downloads ma
 
 == Description ==
 
-Easy Digital Downloads is a complete e-commerce solution for selling digital products in a light, performant, and easy to use plugin. Rather that attempting to provide every feature under the sun, Easy Digital Downloads makes selling digital simple and complete by providing just the features you need.
+Pojo Digital Donations is a complete e-commerce solution for selling digital products in a light, performant, and easy to use plugin. Rather that attempting to provide every feature under the sun, Pojo Digital Donations makes selling digital simple and complete by providing just the features you need.
 
 
 Features of the plugin include:
@@ -35,7 +35,7 @@ Features of the plugin include:
 * Extensible with many [add-ons](https://easydigitaldownloads.com/extensions/?utm_source=readme&utm_medium=description_tab&utm_content=extensions_link&utm_campaign=pdd_extensions)
 * Developer friendly with dozens of actions and filters. [View Codex](https://easydigitaldownloads.com/codex/index.html)
 
-More information at [Easy Digital Downloads.com](https://easydigitaldownloads.com/extensions/?utm_source=readme&utm_medium=description_tab&utm_content=home_link&utm_campaign=pdd_home).
+More information at [Pojo Digital Donations.com](https://easydigitaldownloads.com/extensions/?utm_source=readme&utm_medium=description_tab&utm_content=home_link&utm_campaign=pdd_home).
 
 [youtube http://www.youtube.com/watch?v=japHPcIFs4I]
 
@@ -43,17 +43,17 @@ More information at [Easy Digital Downloads.com](https://easydigitaldownloads.co
 
 **Sell and Track Software License Keys**
 
-[Software Licensing](https://easydigitaldownloads.com/extension/software-licensing/) for Easy Digital Downloads provides a complete license key generation, activation, and checking system. It allows you to provide license keys along with your digital products that can then be used to properly license and activate the buyer’s copy of the software.
+[Software Licensing](https://easydigitaldownloads.com/extension/software-licensing/) for Pojo Digital Donations provides a complete license key generation, activation, and checking system. It allows you to provide license keys along with your digital products that can then be used to properly license and activate the buyer’s copy of the software.
 
 Includes a complete integration pack for delivering automatic upgrades for premium WordPress plugins and themes.
 
 **Build Up Your Email Subscribers**
 
-With add-ons for [Mail Chimp](http://easydigitaldownloads.com/extension/mail-chimp/), [Campaign Monitor](http://easydigitaldownloads.com/extension/campaign-monitor/), and [AWeber](http://easydigitaldownloads.com/extension/aweber/), [Wysija](https://easydigitaldownloads.com/extension/wysija/), [ActiveCampaign](https://easydigitaldownloads.com/extension/active-campaign/), [iContact](https://easydigitaldownloads.com/extension/icontact/), [Campaign Monitor](https://easydigitaldownloads.com/extension/campaign-monitor/), [Constant Contact](https://easydigitaldownloads.com/extension/constant-contact/), and more, Easy Digital Downloads can easily grow your email subscription lists while making you money at the same time.
+With add-ons for [Mail Chimp](http://easydigitaldownloads.com/extension/mail-chimp/), [Campaign Monitor](http://easydigitaldownloads.com/extension/campaign-monitor/), and [AWeber](http://easydigitaldownloads.com/extension/aweber/), [Wysija](https://easydigitaldownloads.com/extension/wysija/), [ActiveCampaign](https://easydigitaldownloads.com/extension/active-campaign/), [iContact](https://easydigitaldownloads.com/extension/icontact/), [Campaign Monitor](https://easydigitaldownloads.com/extension/campaign-monitor/), [Constant Contact](https://easydigitaldownloads.com/extension/constant-contact/), and more, Pojo Digital Donations can easily grow your email subscription lists while making you money at the same time.
 
 **Languages**
 
-Easy Digital Downloads as been translated into the following languages:
+Pojo Digital Donations as been translated into the following languages:
 
 1. English (and British English)
 2. German

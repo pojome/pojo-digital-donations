@@ -2,7 +2,7 @@
 /**
  * PDF MultiCell Table Class
  *
- * @package     Easy Digital Downloads
+ * @package     Pojo Digital Donations
  * @subpackage  FPDF
  * @since       1.1.4.0
 */

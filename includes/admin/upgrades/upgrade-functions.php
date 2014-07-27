@@ -43,7 +43,7 @@ function pdd_show_upgrade_notices() {
 
 	if ( version_compare( $pdd_version, '1.3.2', '<' ) && ! get_option( 'pdd_logs_upgraded' ) ) {
 		printf(
-			'<div class="updated"><p>' . esc_html__( 'The Purchase and File Download History in Easy Digital Downloads needs to be upgraded, click %shere%s to start the upgrade.', 'pdd' ) . '</p></div>',
+			'<div class="updated"><p>' . esc_html__( 'The Purchase and File Download History in Pojo Digital Donations needs to be upgraded, click %shere%s to start the upgrade.', 'pdd' ) . '</p></div>',
 			'<a href="' . esc_url( admin_url( 'options.php?page=pdd-upgrades' ) ) . '">',
 			'</a>'
 		);
@@ -51,7 +51,7 @@ function pdd_show_upgrade_notices() {
 
 	if ( version_compare( $pdd_version, '1.3.4', '<' ) || version_compare( $pdd_version, '1.4', '<' ) ) {
 		printf(
-			'<div class="updated"><p>' . esc_html__( 'Easy Digital Downloads needs to upgrade the plugin pages, click %shere%s to start the upgrade.', 'pdd' ) . '</p></div>',
+			'<div class="updated"><p>' . esc_html__( 'Pojo Digital Donations needs to upgrade the plugin pages, click %shere%s to start the upgrade.', 'pdd' ) . '</p></div>',
 			'<a href="' . esc_url( admin_url( 'options.php?page=pdd-upgrades' ) ) . '">',
 			'</a>'
 		);
@@ -59,7 +59,7 @@ function pdd_show_upgrade_notices() {
 
 	if ( version_compare( $pdd_version, '1.5', '<' ) ) {
 		printf(
-			'<div class="updated"><p>' . esc_html__( 'Easy Digital Downloads needs to upgrade the database, click %shere%s to start the upgrade.', 'pdd' ) . '</p></div>',
+			'<div class="updated"><p>' . esc_html__( 'Pojo Digital Donations needs to upgrade the database, click %shere%s to start the upgrade.', 'pdd' ) . '</p></div>',
 			'<a href="' . esc_url( admin_url( 'options.php?page=pdd-upgrades' ) ) . '">',
 			'</a>'
 		);
@@ -67,7 +67,7 @@ function pdd_show_upgrade_notices() {
 
 	if ( version_compare( $pdd_version, '2.0', '<' ) ) {
 		printf(
-			'<div class="updated"><p>' . esc_html__( 'Easy Digital Downloads needs to upgrade the database, click %shere%s to start the upgrade.', 'pdd' ) . '</p></div>',
+			'<div class="updated"><p>' . esc_html__( 'Pojo Digital Donations needs to upgrade the database, click %shere%s to start the upgrade.', 'pdd' ) . '</p></div>',
 			'<a href="' . esc_url( admin_url( 'options.php?page=pdd-upgrades' ) ) . '">',
 			'</a>'
 		);
@@ -75,7 +75,7 @@ function pdd_show_upgrade_notices() {
 
 	if ( PDD()->session->get( 'upgrade_sequential' ) && pdd_get_payments() ) {
 		printf(
-			'<div class="updated"><p>' . __( 'Easy Digital Downloads needs to upgrade past order numbers to make them sequential, click <a href="%s">here</a> to start the upgrade.', 'pdd' ) . '</p></div>',
+			'<div class="updated"><p>' . __( 'Pojo Digital Donations needs to upgrade past order numbers to make them sequential, click <a href="%s">here</a> to start the upgrade.', 'pdd' ) . '</p></div>',
 			admin_url( 'index.php?page=pdd-upgrades&pdd-upgrade=upgrade_sequential_payment_numbers' )
 		);
 	}

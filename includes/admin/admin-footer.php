@@ -24,7 +24,7 @@ function pdd_admin_rate_us( $footer_text ) {
 	global $typenow;
 
 	if ( $typenow == 'download' ) {
-		$rate_text = sprintf( __( 'Thank you for using <a href="%1$s" target="_blank">Easy Digital Downloads</a>! Please <a href="%2$s" target="_blank">rate us</a> on <a href="%2$s" target="_blank">WordPress.org</a>', 'pdd' ),
+		$rate_text = sprintf( __( 'Thank you for using <a href="%1$s" target="_blank">Pojo Digital Donations</a>! Please <a href="%2$s" target="_blank">rate us</a> on <a href="%2$s" target="_blank">WordPress.org</a>', 'pdd' ),
 			'https://easydigitaldownloads.com',
 			'http://wordpress.org/support/view/plugin-reviews/easy-digital-downloads?filter=5#postform'
 		);

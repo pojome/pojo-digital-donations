@@ -48,8 +48,8 @@ class PDD_Welcome {
 	public function admin_menus() {
 		// About Page
 		add_dashboard_page(
-			__( 'Welcome to Easy Digital Downloads', 'pdd' ),
-			__( 'Welcome to Easy Digital Downloads', 'pdd' ),
+			__( 'Welcome to Pojo Digital Donations', 'pdd' ),
+			__( 'Welcome to Pojo Digital Donations', 'pdd' ),
 			$this->minimum_capability,
 			'pdd-about',
 			array( $this, 'about_screen' )
@@ -57,8 +57,8 @@ class PDD_Welcome {
 
 		// Changelog Page
 		add_dashboard_page(
-			__( 'Easy Digital Downloads Changelog', 'pdd' ),
-			__( 'Easy Digital Downloads Changelog', 'pdd' ),
+			__( 'Pojo Digital Donations Changelog', 'pdd' ),
+			__( 'Pojo Digital Donations Changelog', 'pdd' ),
 			$this->minimum_capability,
 			'pdd-changelog',
 			array( $this, 'changelog_screen' )
@@ -66,8 +66,8 @@ class PDD_Welcome {
 
 		// Getting Started Page
 		add_dashboard_page(
-			__( 'Getting started with Easy Digital Downloads', 'pdd' ),
-			__( 'Getting started with Easy Digital Downloads', 'pdd' ),
+			__( 'Getting started with Pojo Digital Donations', 'pdd' ),
+			__( 'Getting started with Pojo Digital Donations', 'pdd' ),
 			$this->minimum_capability,
 			'pdd-getting-started',
 			array( $this, 'getting_started_screen' )
@@ -75,8 +75,8 @@ class PDD_Welcome {
 
 		// Credits Page
 		add_dashboard_page(
-			__( 'The people that build Easy Digital Downloads', 'pdd' ),
-			__( 'The people that build Easy Digital Downloads', 'pdd' ),
+			__( 'The people that build Pojo Digital Donations', 'pdd' ),
+			__( 'The people that build Pojo Digital Donations', 'pdd' ),
 			$this->minimum_capability,
 			'pdd-credits',
 			array( $this, 'credits_screen' )
@@ -169,8 +169,8 @@ class PDD_Welcome {
 		list( $display_version ) = explode( '-', PDD_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php printf( __( 'Welcome to Easy Digital Downloads %s', 'pdd' ), $display_version ); ?></h1>
-			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Easy Digital Downloads %s is ready to make your online store faster, safer, and better!', 'pdd' ), $display_version ); ?></div>
+			<h1><?php printf( __( 'Welcome to Pojo Digital Donations %s', 'pdd' ), $display_version ); ?></h1>
+			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Pojo Digital Donations %s is ready to make your online store faster, safer, and better!', 'pdd' ), $display_version ); ?></div>
 			<div class="pdd-badge"><?php printf( __( 'Version %s', 'pdd' ), $display_version ); ?></div>
 
 			<?php $this->tabs(); ?>
@@ -267,7 +267,7 @@ class PDD_Welcome {
 			</div>
 
 			<div class="return-to-dashboard">
-				<a href="<?php echo esc_url( admin_url( add_query_arg( array( 'post_type' => 'download', 'page' => 'pdd-settings' ), 'edit.php' ) ) ); ?>"><?php _e( 'Go to Easy Digital Downloads Settings', 'pdd' ); ?></a> &middot;
+				<a href="<?php echo esc_url( admin_url( add_query_arg( array( 'post_type' => 'download', 'page' => 'pdd-settings' ), 'edit.php' ) ) ); ?>"><?php _e( 'Go to Pojo Digital Donations Settings', 'pdd' ); ?></a> &middot;
 				<a href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'pdd-changelog' ), 'index.php' ) ) ); ?>"><?php _e( 'View the Full Changelog', 'pdd' ); ?></a>
 			</div>
 		</div>
@@ -285,8 +285,8 @@ class PDD_Welcome {
 		list( $display_version ) = explode( '-', PDD_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php _e( 'Easy Digital Downloads Changelog', 'pdd' ); ?></h1>
-			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Easy Digital Downloads %s is ready to make your online store faster, safer, and better!', 'pdd' ), $display_version ); ?></div>
+			<h1><?php _e( 'Pojo Digital Donations Changelog', 'pdd' ); ?></h1>
+			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Pojo Digital Donations %s is ready to make your online store faster, safer, and better!', 'pdd' ), $display_version ); ?></div>
 			<div class="pdd-badge"><?php printf( __( 'Version %s', 'pdd' ), $display_version ); ?></div>
 
 			<?php $this->tabs(); ?>
@@ -300,7 +300,7 @@ class PDD_Welcome {
 			</div>
 
 			<div class="return-to-dashboard">
-				<a href="<?php echo esc_url( admin_url( add_query_arg( array( 'post_type' => 'download', 'page' => 'pdd-settings' ), 'edit.php' ) ) ); ?>"><?php _e( 'Go to Easy Digital Downloads Settings', 'pdd' ); ?></a>
+				<a href="<?php echo esc_url( admin_url( add_query_arg( array( 'post_type' => 'download', 'page' => 'pdd-settings' ), 'edit.php' ) ) ); ?>"><?php _e( 'Go to Pojo Digital Donations Settings', 'pdd' ); ?></a>
 			</div>
 		</div>
 		<?php
@@ -317,13 +317,13 @@ class PDD_Welcome {
 		list( $display_version ) = explode( '-', PDD_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php printf( __( 'Welcome to Easy Digital Downloads %s', 'pdd' ), $display_version ); ?></h1>
-			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Easy Digital Downloads %s is ready to make your online store faster, safer and better!', 'pdd' ), $display_version ); ?></div>
+			<h1><?php printf( __( 'Welcome to Pojo Digital Donations %s', 'pdd' ), $display_version ); ?></h1>
+			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Pojo Digital Donations %s is ready to make your online store faster, safer and better!', 'pdd' ), $display_version ); ?></div>
 			<div class="pdd-badge"><?php printf( __( 'Version %s', 'pdd' ), $display_version ); ?></div>
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php _e( 'Use the tips below to get started using Easy Digital Downloads. You will be up and running in no time!', 'pdd' ); ?></p>
+			<p class="about-description"><?php _e( 'Use the tips below to get started using Pojo Digital Donations. You will be up and running in no time!', 'pdd' ); ?></p>
 
 			<div class="changelog">
 				<h3><?php _e( 'Creating Your First Download Product', 'pdd' );?></h3>
@@ -333,7 +333,7 @@ class PDD_Welcome {
 					<img src="<?php echo PDD_PLUGIN_URL . 'assets/images/screenshots/edit-download.png'; ?>" class="pdd-welcome-screenshots"/>
 
 					<h4><?php printf( __( '<a href="%s">%s &rarr; Add New</a>', 'pdd' ), admin_url( 'post-new.php?post_type=download' ), pdd_get_label_plural() ); ?></h4>
-					<p><?php printf( __( 'The %s menu is your access point for all aspects of your Easy Digital Downloads product creation and setup. To create your first product, simply click Add New and then fill out the product details.', 'pdd' ), pdd_get_label_plural() ); ?></p>
+					<p><?php printf( __( 'The %s menu is your access point for all aspects of your Pojo Digital Donations product creation and setup. To create your first product, simply click Add New and then fill out the product details.', 'pdd' ), pdd_get_label_plural() ); ?></p>
 
 					<h4><?php _e( 'Product Price', 'pdd' );?></h4>
 					<p><?php _e( 'Products can have simple prices or variable prices if you wish to have more than one price point for a product. For a single price, simply enter the price. For multiple price points, click <em>Enable variable pricing</em> and enter the options.', 'pdd' );?></p>
@@ -399,10 +399,10 @@ class PDD_Welcome {
 				<div class="feature-section">
 
 					<h4><?php _e( 'Get Notified of Extension Releases','pdd' );?></h4>
-					<p><?php _e( 'New extensions that make Easy Digital Downloads even more powerful are released nearly every single week. Subscribe to the newsletter to stay up to date with our latest releases. <a href="http://eepurl.com/kaerz" target="_blank">Signup now</a> to ensure you do not miss a release!', 'pdd' );?></p>
+					<p><?php _e( 'New extensions that make Pojo Digital Donations even more powerful are released nearly every single week. Subscribe to the newsletter to stay up to date with our latest releases. <a href="http://eepurl.com/kaerz" target="_blank">Signup now</a> to ensure you do not miss a release!', 'pdd' );?></p>
 
 					<h4><?php _e( 'Get Alerted About New Tutorials', 'pdd' );?></h4>
-					<p><?php _e( '<a href="http://eepurl.com/kaerz" target="_blank">Signup now</a> to hear about the latest tutorial releases that explain how to take Easy Digital Downloads further.', 'pdd' );?></p>
+					<p><?php _e( '<a href="http://eepurl.com/kaerz" target="_blank">Signup now</a> to hear about the latest tutorial releases that explain how to take Pojo Digital Donations further.', 'pdd' );?></p>
 
 				</div>
 			</div>
@@ -413,7 +413,7 @@ class PDD_Welcome {
 				<div class="feature-section">
 
 					<h4><?php _e( 'Over 250 Extensions','pdd' );?></h4>
-					<p><?php _e( 'Add-on plugins are available that greatly extend the default functionality of Easy Digital Downloads. There are extensions for payment processors, such as Stripe and PayPal, extensions for newsletter integrations, and many, many more.', 'pdd' );?></p>
+					<p><?php _e( 'Add-on plugins are available that greatly extend the default functionality of Pojo Digital Donations. There are extensions for payment processors, such as Stripe and PayPal, extensions for newsletter integrations, and many, many more.', 'pdd' );?></p>
 
 					<h4><?php _e( 'Visit the Extension Store', 'pdd' );?></h4>
 					<p><?php _e( '<a href="https://easydigitaldownloads.com/extensions" target="_blank">The Extensions store</a> has a list of all available extensions, including convenient category filters so you can find exactly what you are looking for.', 'pdd' );?></p>
@@ -436,13 +436,13 @@ class PDD_Welcome {
 		list( $display_version ) = explode( '-', PDD_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php printf( __( 'Welcome to Easy Digital Downloads %s', 'pdd' ), $display_version ); ?></h1>
-			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Easy Digital Downloads %s is ready to make your online store faster, safer and better!', 'pdd' ), $display_version ); ?></div>
+			<h1><?php printf( __( 'Welcome to Pojo Digital Donations %s', 'pdd' ), $display_version ); ?></h1>
+			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Pojo Digital Donations %s is ready to make your online store faster, safer and better!', 'pdd' ), $display_version ); ?></div>
 			<div class="pdd-badge"><?php printf( __( 'Version %s', 'pdd' ), $display_version ); ?></div>
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php _e( 'Easy Digital Downloads is created by a worldwide team of developers who aim to provide the #1 eCommerce platform for selling digital goods through WordPress.', 'pdd' ); ?></p>
+			<p class="about-description"><?php _e( 'Pojo Digital Donations is created by a worldwide team of developers who aim to provide the #1 eCommerce platform for selling digital goods through WordPress.', 'pdd' ); ?></p>
 
 			<?php echo $this->contributors(); ?>
 		</div>

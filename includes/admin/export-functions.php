@@ -2,7 +2,7 @@
 /**
  * Exports Functions
  *
- * These are functions are used for exporting data from Easy Digital Downloads.
+ * These are functions are used for exporting data from Pojo Digital Donations.
  *
  * @package     PDD
  * @subpackage  Admin/Export
