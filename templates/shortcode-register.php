@@ -1,48 +1,48 @@
 <?php
-global $edd_register_redirect;
+global $pdd_register_redirect;
 
-edd_print_errors(); ?>
+pdd_print_errors(); ?>
 
-<form id="edd_register_form" class="edd_form" action="" method="post">
-	<?php do_action( 'edd_register_form_fields_top' ); ?>
+<form id="pdd_register_form" class="pdd_form" action="" method="post">
+	<?php do_action( 'pdd_register_form_fields_top' ); ?>
 
 	<fieldset>
-		<legend><?php _e( 'Register New Account', 'edd' ); ?></legend>
+		<legend><?php _e( 'Register New Account', 'pdd' ); ?></legend>
 
-		<?php do_action( 'edd_register_form_fields_before' ); ?>
+		<?php do_action( 'pdd_register_form_fields_before' ); ?>
 
 		<p>
-			<label for="edd-user-login"><?php _e( 'Username', 'edd' ); ?></label>
-			<input id="edd-user-login" class="required edd-input" type="text" name="edd_user_login" title="<?php esc_attr_e( 'Username', 'edd' ); ?>" />
+			<label for="pdd-user-login"><?php _e( 'Username', 'pdd' ); ?></label>
+			<input id="pdd-user-login" class="required pdd-input" type="text" name="pdd_user_login" title="<?php esc_attr_e( 'Username', 'pdd' ); ?>" />
 		</p>
 
 		<p>
-			<label for="edd-user-email"><?php _e( 'Email', 'edd' ); ?></label>
-			<input id="edd-user-email" class="required edd-input" type="email" name="edd_user_email" title="<?php esc_attr_e( 'Email Address', 'edd' ); ?>" />
+			<label for="pdd-user-email"><?php _e( 'Email', 'pdd' ); ?></label>
+			<input id="pdd-user-email" class="required pdd-input" type="email" name="pdd_user_email" title="<?php esc_attr_e( 'Email Address', 'pdd' ); ?>" />
 		</p>
 
 		<p>
-			<label for="edd-user-pass"><?php _e( 'Password', 'edd' ); ?></label>
-			<input id="edd-user-pass" class="password required edd-input" type="password" name="edd_user_pass" />
+			<label for="pdd-user-pass"><?php _e( 'Password', 'pdd' ); ?></label>
+			<input id="pdd-user-pass" class="password required pdd-input" type="password" name="pdd_user_pass" />
 		</p>
 
 		<p>
-			<label for="edd-user-pass2"><?php _e( 'Confirm Password', 'edd' ); ?></label>
-			<input id="edd-user-pass2" class="password required edd-input" type="password" name="edd_user_pass2" />
+			<label for="pdd-user-pass2"><?php _e( 'Confirm Password', 'pdd' ); ?></label>
+			<input id="pdd-user-pass2" class="password required pdd-input" type="password" name="pdd_user_pass2" />
 		</p>
 
 
-		<?php do_action( 'edd_register_form_fields_before_submit' ); ?>
+		<?php do_action( 'pdd_register_form_fields_before_submit' ); ?>
 
 		<p>
-			<input type="hidden" name="edd_honeypot" value="" />
-			<input type="hidden" name="edd_action" value="user_register" />
-			<input type="hidden" name="edd_redirect" value="<?php echo esc_url( $edd_register_redirect ); ?>"/>
-			<input class="button" name="edd_register_submit" type="submit" value="<?php esc_attr_e( 'Register', 'edd' ); ?>" />
+			<input type="hidden" name="pdd_honeypot" value="" />
+			<input type="hidden" name="pdd_action" value="user_register" />
+			<input type="hidden" name="pdd_redirect" value="<?php echo esc_url( $pdd_register_redirect ); ?>"/>
+			<input class="button" name="pdd_register_submit" type="submit" value="<?php esc_attr_e( 'Register', 'pdd' ); ?>" />
 		</p>
 
-		<?php do_action( 'edd_register_form_fields_after' ); ?>
+		<?php do_action( 'pdd_register_form_fields_after' ); ?>
 	</fieldset>
 
-	<?php do_action( 'edd_register_form_fields_bottom' ); ?>
+	<?php do_action( 'pdd_register_form_fields_bottom' ); ?>
 </form>

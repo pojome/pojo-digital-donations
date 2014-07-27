@@ -2,7 +2,7 @@
 /**
  * File Downloads Log View Class
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -18,13 +18,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_File_Downloads_Log_Table Class
+ * PDD_File_Downloads_Log_Table Class
  *
  * Renders the file downloads log view
  *
  * @since 1.4
  */
-class EDD_File_Downloads_Log_Table extends WP_List_Table {
+class PDD_File_Downloads_Log_Table extends WP_List_Table {
 	
 	/**
 	 * Number of items per page
@@ -61,12 +61,12 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => edd_get_label_singular(),    // Singular name of the listed records
-			'plural'    => edd_get_label_plural(),    	// Plural name of the listed records
+			'singular'  => pdd_get_label_singular(),    // Singular name of the listed records
+			'plural'    => pdd_get_label_plural(),    	// Plural name of the listed records
 			'ajax'      => false             			// Does this table support ajax?
 		) );
 
-		add_action( 'edd_log_view_actions', array( $this, 'downloads_filter' ) );
+		add_action( 'pdd_log_view_actions', array( $this, 'downloads_filter' ) );
 	}
 
 	/**
@@ -114,7 +114,7 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 			case 'user_id' :
 				return '<a href="' . add_query_arg( 'user', $item[ $column_name ] ) . '">' . $item[ 'user_name' ] . '</a>';
 			case 'payment_id' :
-				return '<a href="' . admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . edd_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . pdd_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}
@@ -129,13 +129,13 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'		=> __( 'Log ID', 'edd' ),
-			'download'	=> edd_get_label_singular(),
-			'user_id'  	=> __( 'User', 'edd' ),
-			'payment_id'=> __( 'Payment ID', 'edd' ),
-			'file'  	=> __( 'File', 'edd' ),
-			'ip'  		=> __( 'IP Address', 'edd' ),
-			'date'  	=> __( 'Date', 'edd' )
+			'ID'		=> __( 'Log ID', 'pdd' ),
+			'download'	=> pdd_get_label_singular(),
+			'user_id'  	=> __( 'User', 'pdd' ),
+			'payment_id'=> __( 'Payment ID', 'pdd' ),
+			'file'  	=> __( 'File', 'pdd' ),
+			'ip'  		=> __( 'IP Address', 'pdd' ),
+			'date'  	=> __( 'Date', 'pdd' )
 		);
 		return $columns;
 	}
@@ -212,12 +212,12 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 			// Show only logs from a specific user
 			if( is_numeric( $user ) ) {
 				$meta_query[] = array(
-					'key'   => '_edd_log_user_id',
+					'key'   => '_pdd_log_user_id',
 					'value' => $user
 				);
 			} else {
 				$meta_query[] = array(
-					'key'     => '_edd_log_user_info',
+					'key'     => '_pdd_log_user_info',
 					'value'   => $user,
 					'compare' => 'LIKE'
 				);
@@ -227,7 +227,7 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 		if ( $payment ) {
 			// Show only logs from a specific payment
 			$meta_query[] = array(
-				'key'   => '_edd_log_payment_id',
+				'key'   => '_pdd_log_payment_id',
 				'value' => $payment
 			);
 		}
@@ -237,15 +237,15 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 		if ( ! empty( $search ) ) {
 			if ( filter_var( $search, FILTER_VALIDATE_IP ) ) {
 				// This is an IP address search
-				$key     = '_edd_log_ip';
+				$key     = '_pdd_log_ip';
 				$compare = '=';
 			} else if ( is_email( $search ) ) {
 				// This is an email search. We use this to ensure it works for guest users and logged-in users
-				$key     = '_edd_log_user_info';
+				$key     = '_pdd_log_user_info';
 				$compare = 'LIKE';
 			} else {
 				// Look for a user
-				$key = '_edd_log_user_id';
+				$key = '_pdd_log_user_id';
 				$compare = 'LIKE';
 
 				if ( ! is_numeric( $search ) ) {
@@ -309,7 +309,7 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 	 */
 	public function bulk_actions() {
 		// These aren't really bulk actions but this outputs the markup in the right place
-		edd_log_views();
+		pdd_log_views();
 	}
 
 	/**
@@ -332,8 +332,8 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 		) );
 
 		if ( $downloads ) {
-			echo '<select name="download" id="edd-log-download-filter">';
-				echo '<option value="0">' . __( 'All', 'edd' ) . '</option>';
+			echo '<select name="download" id="pdd-log-download-filter">';
+				echo '<option value="0">' . __( 'All', 'pdd' ) . '</option>';
 				foreach ( $downloads as $download ) {
 					echo '<option value="' . $download . '"' . selected( $download, $this->get_filtered_download() ) . '>' . esc_html( get_the_title( $download ) ) . '</option>';
 				}
@@ -346,11 +346,11 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.4
-	 * @global object $edd_logs EDD Logs Object
+	 * @global object $pdd_logs PDD Logs Object
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	function get_logs() {
-		global $edd_logs, $wpdb;
+		global $pdd_logs, $wpdb;
 
 		// Prevent the queries from getting cached. Without this there are occasional memory issues for some installs
 		wp_suspend_cache_addition( true );
@@ -368,26 +368,26 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 			'update_post_term_cache' => false
 		);
 
-		$logs = $edd_logs->get_connected_logs( $log_query );
+		$logs = $pdd_logs->get_connected_logs( $log_query );
 
 		if ( $logs ) {
 			foreach ( $logs as $log ) {
 
 
 				$meta        = get_post_custom( $log->ID );
-				$user_info 	 = maybe_unserialize( $meta[ '_edd_log_user_info' ][0] );
-				$payment_id  = $meta[ '_edd_log_payment_id' ][0];
-				$ip 		 = $meta[ '_edd_log_ip' ][0];
+				$user_info 	 = maybe_unserialize( $meta[ '_pdd_log_user_info' ][0] );
+				$payment_id  = $meta[ '_pdd_log_payment_id' ][0];
+				$ip 		 = $meta[ '_pdd_log_ip' ][0];
 				$user_id 	 = isset( $user_info['id'] ) ? $user_info['id'] : false;
 
 				if( ! array_key_exists( $log->post_parent, $this->queried_files ) ) {
-					$files   = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value from $wpdb->postmeta WHERE post_id = %d and meta_key = 'edd_download_files'", $log->post_parent ) ) );
+					$files   = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value from $wpdb->postmeta WHERE post_id = %d and meta_key = 'pdd_download_files'", $log->post_parent ) ) );
 					$this->queried_files[ $log->post_parent ] = $files;
 				} else {
 					$files   = $this->queried_files[ $log->post_parent ];
 				}
 
-				$file_id 	 = (int) $meta[ '_edd_log_file_id' ][0];
+				$file_id 	 = (int) $meta[ '_pdd_log_file_id' ][0];
 				$file_id 	 = $file_id !== false ? $file_id : 0;
 				$file_name 	 = isset( $files[ $file_id ]['name'] ) ? $files[ $file_id ]['name'] : null;
 
@@ -414,17 +414,17 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @global object $edd_logs EDD Logs Object
-	 * @uses EDD_File_Downloads_Log_Table::get_columns()
+	 * @global object $pdd_logs PDD Logs Object
+	 * @uses PDD_File_Downloads_Log_Table::get_columns()
 	 * @uses WP_List_Table::get_sortable_columns()
-	 * @uses EDD_File_Downloads_Log_Table::get_pagenum()
-	 * @uses EDD_File_Downloads_Log_Table::get_logs()
-	 * @uses EDD_File_Downloads_Log_Table::get_log_count()
+	 * @uses PDD_File_Downloads_Log_Table::get_pagenum()
+	 * @uses PDD_File_Downloads_Log_Table::get_logs()
+	 * @uses PDD_File_Downloads_Log_Table::get_log_count()
 	 * @uses WP_List_Table::set_pagination_args()
 	 * @return void
 	 */
 	function prepare_items() {
-		global $edd_logs;
+		global $pdd_logs;
 
 		$columns               = $this->get_columns();
 		$hidden                = array(); // No hidden columns
@@ -432,7 +432,7 @@ class EDD_File_Downloads_Log_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$current_page          = $this->get_pagenum();
 		$this->items           = $this->get_logs();
-		$total_items           = $edd_logs->get_log_count( $this->get_filtered_download(), 'file_download', $this->get_meta_query() );
+		$total_items           = $pdd_logs->get_log_count( $this->get_filtered_download(), 'file_download', $this->get_meta_query() );
 		$this->set_pagination_args( array(
 				'total_items'  => $total_items,
 				'per_page'     => $this->per_page,

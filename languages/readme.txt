@@ -6,7 +6,7 @@
   Do not put custom translations here. They will be deleted
   on Easy Digital Downloads updates.
   
-  Keep custom EDD translations in /wp-content/languages/edd/
+  Keep custom PDD translations in /wp-content/languages/pdd/
   
   You want to translate, help, or improve a translation.
   

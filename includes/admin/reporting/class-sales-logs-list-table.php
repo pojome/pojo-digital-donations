@@ -2,7 +2,7 @@
 /**
  * Sales Log View Class
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -17,13 +17,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Sales_Log_Table Class
+ * PDD_Sales_Log_Table Class
  *
  * Renders the sales log list table
  *
  * @since 1.4
  */
-class EDD_Sales_Log_Table extends WP_List_Table {
+class PDD_Sales_Log_Table extends WP_List_Table {
 	/**
 	 * Number of results to show per page
 	 *
@@ -43,12 +43,12 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => edd_get_label_singular(),    // Singular name of the listed records
-			'plural'    => edd_get_label_plural(),    	// Plural name of the listed records
+			'singular'  => pdd_get_label_singular(),    // Singular name of the listed records
+			'plural'    => pdd_get_label_plural(),    	// Plural name of the listed records
 			'ajax'      => false             			// Does this table support ajax?
 		) );
 
-		add_action( 'edd_log_view_actions', array( $this, 'downloads_filter' ) );
+		add_action( 'pdd_log_view_actions', array( $this, 'downloads_filter' ) );
 	}
 
 	/**
@@ -69,14 +69,14 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 
 			case 'user_id' :
 				return '<a href="' .
-					admin_url( 'edit.php?post_type=download&page=edd-payment-history&user=' . urlencode( $item['user_id'] ) ) .
+					admin_url( 'edit.php?post_type=download&page=pdd-payment-history&user=' . urlencode( $item['user_id'] ) ) .
 					 '">' . $item[ 'user_name' ] . '</a>';
 
 			case 'amount' :
-				return edd_currency_filter( edd_format_amount( $item['amount'] ) );
+				return pdd_currency_filter( pdd_format_amount( $item['amount'] ) );
 
 			case 'payment_id' :
-				return '<a href="' . admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . edd_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . pdd_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
 
 			default:
 				return $item[ $column_name ];
@@ -92,12 +92,12 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'		=> __( 'Log ID', 'edd' ),
-			'user_id'  	=> __( 'User', 'edd' ),
-			'download'  => edd_get_label_singular(),
-			'amount'    => __( 'Item Amount', 'edd' ),
-			'payment_id'=> __( 'Payment ID', 'edd' ),
-			'date'  	=> __( 'Date', 'edd' )
+			'ID'		=> __( 'Log ID', 'pdd' ),
+			'user_id'  	=> __( 'User', 'pdd' ),
+			'download'  => pdd_get_label_singular(),
+			'amount'    => __( 'Item Amount', 'pdd' ),
+			'payment_id'=> __( 'Payment ID', 'pdd' ),
+			'date'  	=> __( 'Date', 'pdd' )
 		);
 
 		return $columns;
@@ -164,7 +164,7 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 		if( $user ) {
 			// Show only logs from a specific user
 			$meta_query[] = array(
-				'key'   => '_edd_log_user_id',
+				'key'   => '_pdd_log_user_id',
 				'value' => $user
 			);
 		}
@@ -173,11 +173,11 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 		if ( $search ) {
 			if ( is_email( $search ) ) {
 				// This is an email search. We use this to ensure it works for guest users and logged-in users
-				$key     = '_edd_log_user_info';
+				$key     = '_pdd_log_user_info';
 				$compare = 'LIKE';
 			} else {
 				// Look for a user
-				$key = '_edd_log_user_id';
+				$key = '_pdd_log_user_id';
 				$compare = 'LIKE';
 
 				if ( ! is_numeric( $search ) ) {
@@ -228,7 +228,7 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 	 */
 	function bulk_actions() {
 		// These aren't really bulk actions but this outputs the markup in the right place
-		edd_log_views();
+		pdd_log_views();
 	}
 
 	/**
@@ -251,8 +251,8 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 		) );
 
 		if ( $downloads ) {
-			echo '<select name="download" id="edd-log-download-filter">';
-				echo '<option value="0">' . __( 'All', 'edd' ) . '</option>';
+			echo '<select name="download" id="pdd-log-download-filter">';
+				echo '<option value="0">' . __( 'All', 'pdd' ) . '</option>';
 				foreach ( $downloads as $download ) {
 					echo '<option value="' . $download . '"' . selected( $download, $this->get_filtered_download() ) . '>' . esc_html( get_the_title( $download ) ) . '</option>';
 				}
@@ -265,11 +265,11 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.4
-	 * @global object $edd_logs EDD Logs Object
+	 * @global object $pdd_logs PDD Logs Object
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	public function get_logs() {
-		global $edd_logs;
+		global $pdd_logs;
 
 		// Prevent the queries from getting cached. Without this there are occasional memory issues for some installs
 		wp_suspend_cache_addition( true );
@@ -286,22 +286,22 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 			'meta_query'  => $this->get_meta_query()
 		);
 
-		$logs = $edd_logs->get_connected_logs( $log_query );
+		$logs = $pdd_logs->get_connected_logs( $log_query );
 
 		if ( $logs ) {
 			foreach ( $logs as $log ) {
-				$payment_id = get_post_meta( $log->ID, '_edd_log_payment_id', true );
+				$payment_id = get_post_meta( $log->ID, '_pdd_log_payment_id', true );
 
 				// Make sure this payment hasn't been deleted
 				if ( get_post( $payment_id ) ) :
-					$user_info  = edd_get_payment_meta_user_info( $payment_id );
-					$cart_items = edd_get_payment_meta_cart_details( $payment_id );
+					$user_info  = pdd_get_payment_meta_user_info( $payment_id );
+					$cart_items = pdd_get_payment_meta_cart_details( $payment_id );
 					$amount     = 0;
 					if ( is_array( $cart_items ) && is_array( $user_info ) ) {
 						foreach ( $cart_items as $item ) {
 							$price_override = isset( $item['price'] ) ? $item['price'] : null;
 							if ( isset( $item['id'] ) && $item['id'] == $log->post_parent ) {
-								$amount = edd_get_download_final_price( $item['id'], $user_info, $price_override );
+								$amount = pdd_get_download_final_price( $item['id'], $user_info, $price_override );
 							}
 						}
 
@@ -327,16 +327,16 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.4
-	 * @global object $edd_logs EDD Logs Object
-	 * @uses EDD_Sales_Log_Table::get_columns()
+	 * @global object $pdd_logs PDD Logs Object
+	 * @uses PDD_Sales_Log_Table::get_columns()
 	 * @uses WP_List_Table::get_sortable_columns()
-	 * @uses EDD_Sales_Log_Table::get_pagenum()
-	 * @uses EDD_Sales_Log_Table::get_logs()
-	 * @uses EDD_Sales_Log_Table::get_log_count()
+	 * @uses PDD_Sales_Log_Table::get_pagenum()
+	 * @uses PDD_Sales_Log_Table::get_logs()
+	 * @uses PDD_Sales_Log_Table::get_log_count()
 	 * @return void
 	 */
 	public function prepare_items() {
-		global $edd_logs;
+		global $pdd_logs;
 
 		$columns               = $this->get_columns();
 		$hidden                = array();
@@ -344,7 +344,7 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$current_page          = $this->get_pagenum();
 		$this->items           = $this->get_logs();
-		$total_items           = $edd_logs->get_log_count( $this->get_filtered_download(), 'sale', $this->get_meta_query() );
+		$total_items           = $pdd_logs->get_log_count( $this->get_filtered_download(), 'sale', $this->get_meta_query() );
 
 		$this->set_pagination_args( array(
 				'total_items'  => $total_items,

@@ -2,7 +2,7 @@
 /**
  * Thickbox
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since 1.0
  * @return string "Insert Download" Button
  */
-function edd_media_button() {
+function pdd_media_button() {
 	global $pagenow, $typenow, $wp_version;
 	$output = '';
 
@@ -26,16 +26,16 @@ function edd_media_button() {
 	if ( in_array( $pagenow, array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' ) ) && $typenow != 'download' ) {
 		/* check current WP version */
 		if ( version_compare( $wp_version, '3.5', '<' ) ) {
-			$img = '<img src="' . EDD_PLUGIN_URL . 'assets/images/edd-media.png" alt="' . sprintf( __( 'Insert %s', 'edd' ), edd_get_label_singular() ) . '"/>';
-			$output = '<a href="#TB_inline?width=640&inlineId=choose-download" class="thickbox" title="' . __( 'Insert Download', 'edd' ) . '">' . $img . '</a>';
+			$img = '<img src="' . PDD_PLUGIN_URL . 'assets/images/pdd-media.png" alt="' . sprintf( __( 'Insert %s', 'pdd' ), pdd_get_label_singular() ) . '"/>';
+			$output = '<a href="#TB_inline?width=640&inlineId=choose-download" class="thickbox" title="' . __( 'Insert Download', 'pdd' ) . '">' . $img . '</a>';
 		} else {
-			$img = '<span class="wp-media-buttons-icon" id="edd-media-button"></span>';
-			$output = '<a href="#TB_inline?width=640&inlineId=choose-download" class="thickbox button edd-thickbox" title="' . sprintf( __( 'Insert %s', 'edd' ), strtolower ( edd_get_label_singular() ) ) . '" style="padding-left: .4em;">' . $img . sprintf( __( 'Insert %s', 'edd' ), strtolower( edd_get_label_singular() ) ) . '</a>';
+			$img = '<span class="wp-media-buttons-icon" id="pdd-media-button"></span>';
+			$output = '<a href="#TB_inline?width=640&inlineId=choose-download" class="thickbox button pdd-thickbox" title="' . sprintf( __( 'Insert %s', 'pdd' ), strtolower ( pdd_get_label_singular() ) ) . '" style="padding-left: .4em;">' . $img . sprintf( __( 'Insert %s', 'pdd' ), strtolower( pdd_get_label_singular() ) ) . '</a>';
 		}
 	}
 	echo $output;
 }
-add_action( 'media_buttons', 'edd_media_button', 11 );
+add_action( 'media_buttons', 'pdd_media_button', 11 );
 
 /**
  * Admin Footer For Thickbox
@@ -48,7 +48,7 @@ add_action( 'media_buttons', 'edd_media_button', 11 );
  * @global $typenow
  * @return void
  */
-function edd_admin_footer_for_thickbox() {
+function pdd_admin_footer_for_thickbox() {
 	global $pagenow, $typenow;
 
 	// Only run in post/page creation and edit screens
@@ -56,14 +56,14 @@ function edd_admin_footer_for_thickbox() {
 		<script type="text/javascript">
             function insertDownload() {
                 var id = jQuery('#products').val(),
-                    direct = jQuery('#select-edd-direct').val(),
-                    style = jQuery('#select-edd-style').val(),
-                    color = jQuery('#select-edd-color').is(':visible') ? jQuery('#select-edd-color').val() : '',
-                    text = jQuery('#edd-text').val() || '<?php _e( "Purchase", "edd" ); ?>';
+                    direct = jQuery('#select-pdd-direct').val(),
+                    style = jQuery('#select-pdd-style').val(),
+                    color = jQuery('#select-pdd-color').is(':visible') ? jQuery('#select-pdd-color').val() : '',
+                    text = jQuery('#pdd-text').val() || '<?php _e( "Purchase", "pdd" ); ?>';
 
                 // Return early if no download is selected
                 if ('' === id) {
-                    alert('<?php _e( "You must choose a download", "edd" ); ?>');
+                    alert('<?php _e( "You must choose a download", "pdd" ); ?>');
                     return;
                 }
 
@@ -77,11 +77,11 @@ function edd_admin_footer_for_thickbox() {
                 window.send_to_editor('[purchase_link id="' + id + '" style="' + style + '" color="' + color + '" text="' + text + '"' + direct +']');
             }
             jQuery(document).ready(function ($) {
-                $('#select-edd-style').change(function () {
+                $('#select-pdd-style').change(function () {
                     if ($(this).val() === 'button') {
-                        $('#edd-color-choice').slideDown();
+                        $('#pdd-color-choice').slideDown();
                     } else {
-                        $('#edd-color-choice').slideUp();
+                        $('#pdd-color-choice').slideUp();
                     }
                 });
             });
@@ -89,22 +89,22 @@ function edd_admin_footer_for_thickbox() {
 
 		<div id="choose-download" style="display: none;">
 			<div class="wrap" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-				<p><?php echo sprintf( __( 'Use the form below to insert the short code for purchasing a %s', 'edd' ), edd_get_label_singular() ); ?></p>
+				<p><?php echo sprintf( __( 'Use the form below to insert the short code for purchasing a %s', 'pdd' ), pdd_get_label_singular() ); ?></p>
 				<div>
-					<?php echo EDD()->html->product_dropdown( array( 'chosen' => true )); ?>
+					<?php echo PDD()->html->product_dropdown( array( 'chosen' => true )); ?>
 				</div>
-				<?php if( edd_shop_supports_buy_now() ) : ?>
+				<?php if( pdd_shop_supports_buy_now() ) : ?>
 					<div>
-						<select id="select-edd-direct" style="clear: both; display: block; margin-bottom: 1em; margin-top: 1em;">
-							<option value="0"><?php _e( 'Choose the button behavior', 'edd' ); ?></option>
-							<option value="1"><?php _e( 'Add to Cart', 'edd' ); ?></option>
-							<option value="2"><?php _e( 'Direct Purchase Link', 'edd' ); ?></option>
+						<select id="select-pdd-direct" style="clear: both; display: block; margin-bottom: 1em; margin-top: 1em;">
+							<option value="0"><?php _e( 'Choose the button behavior', 'pdd' ); ?></option>
+							<option value="1"><?php _e( 'Add to Cart', 'pdd' ); ?></option>
+							<option value="2"><?php _e( 'Direct Purchase Link', 'pdd' ); ?></option>
 						</select>
 					</div>
 				<?php endif; ?>
 				<div>
-					<select id="select-edd-style" style="clear: both; display: block; margin-bottom: 1em; margin-top: 1em;">
-						<option value=""><?php _e( 'Choose a style', 'edd' ); ?></option>
+					<select id="select-pdd-style" style="clear: both; display: block; margin-bottom: 1em; margin-top: 1em;">
+						<option value=""><?php _e( 'Choose a style', 'pdd' ); ?></option>
 						<?php
 							$styles = array( 'button', 'text link' );
 							foreach ( $styles as $style ) {
@@ -114,11 +114,11 @@ function edd_admin_footer_for_thickbox() {
 					</select>
 				</div>
 				<?php
-				$colors = edd_get_button_colors();
+				$colors = pdd_get_button_colors();
 				if( $colors ) { ?>
-				<div id="edd-color-choice" style="display: none;">
-					<select id="select-edd-color" style="clear: both; display: block; margin-bottom: 1em;">
-						<option value=""><?php _e('Choose a button color', 'edd'); ?></option>
+				<div id="pdd-color-choice" style="display: none;">
+					<select id="select-pdd-color" style="clear: both; display: block; margin-bottom: 1em;">
+						<option value=""><?php _e('Choose a button color', 'pdd'); ?></option>
 						<?php
 							foreach ( $colors as $key => $color ) {
 								echo '<option value="' . str_replace( ' ', '_', $key ) . '">' . $color['label'] . '</option>';
@@ -128,15 +128,15 @@ function edd_admin_footer_for_thickbox() {
 				</div>
 				<?php } ?>
 				<div>
-					<input type="text" class="regular-text" id="edd-text" value="" placeholder="<?php _e( 'Link text . . .', 'edd' ); ?>"/>
+					<input type="text" class="regular-text" id="pdd-text" value="" placeholder="<?php _e( 'Link text . . .', 'pdd' ); ?>"/>
 				</div>
 				<p class="submit">
-					<input type="button" id="edd-insert-download" class="button-primary" value="<?php echo sprintf( __( 'Insert %s', 'edd' ), edd_get_label_singular() ); ?>" onclick="insertDownload();" />
-					<a id="edd-cancel-download-insert" class="button-secondary" onclick="tb_remove();" title="<?php _e( 'Cancel', 'edd' ); ?>"><?php _e( 'Cancel', 'edd' ); ?></a>
+					<input type="button" id="pdd-insert-download" class="button-primary" value="<?php echo sprintf( __( 'Insert %s', 'pdd' ), pdd_get_label_singular() ); ?>" onclick="insertDownload();" />
+					<a id="pdd-cancel-download-insert" class="button-secondary" onclick="tb_remove();" title="<?php _e( 'Cancel', 'pdd' ); ?>"><?php _e( 'Cancel', 'pdd' ); ?></a>
 				</p>
 			</div>
 		</div>
 	<?php
 	}
 }
-add_action( 'admin_footer', 'edd_admin_footer_for_thickbox' );
+add_action( 'admin_footer', 'pdd_admin_footer_for_thickbox' );

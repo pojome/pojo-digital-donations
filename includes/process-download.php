@@ -2,7 +2,7 @@
 /**
  * Process Download
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Functions
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -21,13 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since       1.0
  * @return      void
  */
-function edd_process_download() {
+function pdd_process_download() {
 
 	if( ! isset( $_GET['download_id'] ) && isset( $_GET['download'] ) ) {
 		$_GET['download_id'] = $_GET['download'];
 	}
 
-	$args = apply_filters( 'edd_process_download_args', array(
+	$args = apply_filters( 'pdd_process_download_args', array(
 		'download' => ( isset( $_GET['download_id'] ) )  ? (int) $_GET['download_id']                    : '',
 		'email'    => ( isset( $_GET['email'] ) )        ? rawurldecode( $_GET['email'] )                   : '',
 		'expire'   => ( isset( $_GET['expire'] ) )       ? base64_decode( rawurldecode( $_GET['expire'] ) ) : '',
@@ -41,20 +41,20 @@ function edd_process_download() {
 	}
 
     // Verify the payment
-	$payment = edd_verify_download_link( $args['download'], $args['key'], $args['email'], $args['expire'], $args['file_key'] );
+	$payment = pdd_verify_download_link( $args['download'], $args['key'], $args['email'], $args['expire'], $args['file_key'] );
 
 	// Determine the download method set in settings
-	$method  = edd_get_file_download_method();
+	$method  = pdd_get_file_download_method();
 
 	// Defaulting this to true for now because the method below doesn't work well
-	$has_access = apply_filters( 'edd_file_download_has_access', true, $payment, $args );
+	$has_access = apply_filters( 'pdd_file_download_has_access', true, $payment, $args );
 
-	//$has_access = ( edd_logged_in_only() && is_user_logged_in() ) || !edd_logged_in_only() ? true : false;
+	//$has_access = ( pdd_logged_in_only() && is_user_logged_in() ) || !pdd_logged_in_only() ? true : false;
 	if ( $payment && $has_access ) {
-		do_action( 'edd_process_verified_download', $args['download'], $args['email'], $payment );
+		do_action( 'pdd_process_verified_download', $args['download'], $args['email'], $payment );
 
 		// Payment has been verified, setup the download
-		$download_files = edd_get_download_files( $args['download'] );
+		$download_files = pdd_get_download_files( $args['download'] );
 		$attachment_id  = ! empty( $download_files[ $file_key ]['attachment_id'] ) ? absint( $download_files[ $args['file_key'] ]['attachment_id'] ) : false;
 
 		/*
@@ -74,7 +74,7 @@ function edd_process_download() {
 		}
 
 		// Allow the file to be altered before any headers are sent
-		$requested_file = apply_filters( 'edd_requested_file', $requested_file, $download_files, $args['file_key'] );
+		$requested_file = apply_filters( 'pdd_requested_file', $requested_file, $download_files, $args['file_key'] );
 
 		// Record this file download in the log
 		$user_info = array();
@@ -84,13 +84,13 @@ function edd_process_download() {
 			$user_info['id']   = get_current_user_id();
 			$user_info['name'] = $user_data->display_name;
 		}
-		edd_record_download_in_log( $args['download'], $args['file_key'], $user_info, edd_get_ip(), $payment, $args['price_id'] );
+		pdd_record_download_in_log( $args['download'], $args['file_key'], $user_info, pdd_get_ip(), $payment, $args['price_id'] );
 
-		$file_extension = edd_get_file_extension( $requested_file );
-		$ctype          = edd_get_file_ctype( $file_extension );
+		$file_extension = pdd_get_file_extension( $requested_file );
+		$ctype          = pdd_get_file_ctype( $file_extension );
 
 
-		if ( ! edd_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		if ( ! pdd_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 			set_time_limit(0);
 		}
 		if ( function_exists( 'get_magic_quotes_runtime' ) && get_magic_quotes_runtime() ) {
@@ -103,13 +103,13 @@ function edd_process_download() {
 		}
 		@ini_set( 'zlib.output_compression', 'Off' );
 
-		do_action( 'edd_process_download_headers', $requested_file, $args['download'], $args['email'], $payment );
+		do_action( 'pdd_process_download_headers', $requested_file, $args['download'], $args['email'], $payment );
 
 		nocache_headers();
 		header("Robots: none");
 		header("Content-Type: " . $ctype . "");
 		header("Content-Description: File Transfer");
-		header("Content-Disposition: attachment; filename=\"" . apply_filters( 'edd_requested_file_name', basename( $requested_file ) ) . "\"");
+		header("Content-Disposition: attachment; filename=\"" . apply_filters( 'pdd_requested_file_name', basename( $requested_file ) ) . "\"");
 		header("Content-Transfer-Encoding: binary");
 
 		if( 'x_sendfile' == $method && ( ! function_exists( 'apache_get_modules' ) || ! in_array( 'mod_xsendfile', apache_get_modules() ) ) ) {
@@ -187,7 +187,7 @@ function edd_process_download() {
 				}
 
 				if( $direct ) {
-					edd_deliver_download( $file_path );
+					pdd_deliver_download( $file_path );
 				} else {
 					// The file supplied does not have a discoverable absolute path
 					header( "Location: " . $requested_file );
@@ -197,15 +197,15 @@ function edd_process_download() {
 
 		endswitch;
 
-		edd_die();
+		pdd_die();
 	} else {
-		$error_message = __( 'You do not have permission to download this file', 'edd' );
-		wp_die( apply_filters( 'edd_deny_download_message', $error_message, __( 'Purchase Verification Failed', 'edd' ) ) );
+		$error_message = __( 'You do not have permission to download this file', 'pdd' );
+		wp_die( apply_filters( 'pdd_deny_download_message', $error_message, __( 'Purchase Verification Failed', 'pdd' ) ) );
 	}
 
 	exit;
 }
-add_action( 'init', 'edd_process_download', 100 );
+add_action( 'init', 'pdd_process_download', 100 );
 
 /**
  * Deliver the download file
@@ -216,11 +216,11 @@ add_action( 'init', 'edd_process_download', 100 );
  * @param    string    file
  * @return   void
  */
-function edd_deliver_download( $file = '' ) {
+function pdd_deliver_download( $file = '' ) {
 
-	global $edd_options;
+	global $pdd_options;
 
-	$symlink = apply_filters( 'edd_symlink_file_downloads', isset( $edd_options['symlink_file_downloads'] ) );
+	$symlink = apply_filters( 'pdd_symlink_file_downloads', isset( $pdd_options['symlink_file_downloads'] ) );
 
 	/*
 	 * If symlinks are enabled, a link to the file will be created
@@ -231,20 +231,20 @@ function edd_deliver_download( $file = '' ) {
 	if( $symlink && function_exists( 'symlink' ) ) {
 
 		// Generate a symbolic link
-		$ext       = edd_get_file_extension( $file );
+		$ext       = pdd_get_file_extension( $file );
 		$parts     = explode( '.', $file );
 		$name      = basename( $parts[0] );
 		$md5       = md5( $file );
 		$file_name = $name . '_' . substr( $md5, 0, -15 ) . '.' . $ext;
-		$path      = edd_get_symlink_dir() . '/' . $file_name;
-		$url       = edd_get_symlink_url() . '/' . $file_name;
+		$path      = pdd_get_symlink_dir() . '/' . $file_name;
+		$url       = pdd_get_symlink_url() . '/' . $file_name;
 
 		// Set a transient to ensure this symlink is not deleted before it can be used
 		set_transient( md5( $file_name ), '1', 30 );
 
 		// Schedule deletion of the symlink
-		if ( ! wp_next_scheduled( 'edd_cleanup_file_symlinks' ) )
-			wp_schedule_single_event( current_time( 'timestamp' )+60, 'edd_cleanup_file_symlinks' );
+		if ( ! wp_next_scheduled( 'pdd_cleanup_file_symlinks' ) )
+			wp_schedule_single_event( current_time( 'timestamp' )+60, 'pdd_cleanup_file_symlinks' );
 
 		// Make sure the symlink doesn't already exist before we create it
 		if( ! file_exists( $path ) )
@@ -256,13 +256,13 @@ function edd_deliver_download( $file = '' ) {
 			// Send the browser to the file
 			header( 'Location: ' . $url );
 		} else {
-			edd_readfile_chunked( $file );
+			pdd_readfile_chunked( $file );
 		}
 
 	} else {
 
 		// Read the file and deliver it in chunks
-		edd_readfile_chunked( $file );
+		pdd_readfile_chunked( $file );
 
 	}
 
@@ -276,7 +276,7 @@ function edd_deliver_download( $file = '' ) {
  * @param    string    file extension
  * @return   string
  */
-function edd_get_file_ctype( $extension ) {
+function pdd_get_file_ctype( $extension ) {
 	switch( $extension ):
 		case 'ac'       : $ctype = "application/pkix-attr-cert"; break;
 		case 'adp'      : $ctype = "audio/adpcm"; break;
@@ -575,7 +575,7 @@ function edd_get_file_ctype( $extension ) {
 		$ctype = 'application/octet-stream';
 	}
 
-	return apply_filters( 'edd_file_ctype', $ctype );
+	return apply_filters( 'pdd_file_ctype', $ctype );
 }
 
 /**
@@ -587,7 +587,7 @@ function edd_get_file_ctype( $extension ) {
  * @param    boolean $retbytes  Return the bytes of file
  * @return   bool|string        If string, $status || $cnt
  */
-function edd_readfile_chunked( $file, $retbytes = true ) {
+function pdd_readfile_chunked( $file, $retbytes = true ) {
 
 	$chunksize = 1024 * 1024;
 	$buffer    = '';

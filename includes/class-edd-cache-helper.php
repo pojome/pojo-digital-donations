@@ -5,13 +5,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
  * Cache helper
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Classes/Cache Helper
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.7
 */
-class EDD_Cache_Helper {
+class PDD_Cache_Helper {
 
 	/**
 	 * Initializes the object instance
@@ -30,29 +30,29 @@ class EDD_Cache_Helper {
 	 */
 	public function init() {
 
-		if ( false === ( $page_uris = get_transient( 'edd_cache_excluded_uris' ) ) ) {
+		if ( false === ( $page_uris = get_transient( 'pdd_cache_excluded_uris' ) ) ) {
 
-			global $edd_options;
+			global $pdd_options;
 
-			if( empty( $edd_options['purchase_page'] ) | empty( $edd_options['success_page'] ) )
+			if( empty( $pdd_options['purchase_page'] ) | empty( $pdd_options['success_page'] ) )
 				return;
 
 			$page_uris   = array();
 
 			// Exclude querystring when using page ID
-			$page_uris[] = 'p=' . $edd_options['purchase_page'];
-			$page_uris[] = 'p=' . $edd_options['success_page'];
+			$page_uris[] = 'p=' . $pdd_options['purchase_page'];
+			$page_uris[] = 'p=' . $pdd_options['success_page'];
 
 	    	// Exclude permalinks
-			$checkout_page  = get_post( $edd_options['purchase_page'] );
-			$success_page   = get_post( $edd_options['success_page'] );
+			$checkout_page  = get_post( $pdd_options['purchase_page'] );
+			$success_page   = get_post( $pdd_options['success_page'] );
 
 	    	if ( ! is_null( $checkout_page ) )
 	    		$page_uris[] = '/' . $checkout_page->post_name;
 	    	if ( ! is_null( $success_page ) )
 	    		$page_uris[] = '/' . $success_page->post_name;
 
-	    	set_transient( 'edd_cache_excluded_uris', $page_uris );
+	    	set_transient( 'pdd_cache_excluded_uris', $page_uris );
 		}
 
 		if ( is_array( $page_uris ) ) {
@@ -96,7 +96,7 @@ class EDD_Cache_Helper {
 			if ( $enabled && ! in_array( '_wp_session_', $settings ) ) {
 				?>
 				<div class="error">
-					<p><?php printf( __( 'In order for <strong>database caching</strong> to work with Easy Digital Downloads you must add <code>_wp_session_</code> to the "Ignored query stems" option in W3 Total Cache settings <a href="%s">here</a>.', 'edd' ), admin_url( 'admin.php?page=w3tc_dbcache' ) ); ?></p>
+					<p><?php printf( __( 'In order for <strong>database caching</strong> to work with Easy Digital Downloads you must add <code>_wp_session_</code> to the "Ignored query stems" option in W3 Total Cache settings <a href="%s">here</a>.', 'pdd' ), admin_url( 'admin.php?page=w3tc_dbcache' ) ); ?></p>
 				</div>
 				<?php
 			}
@@ -105,4 +105,4 @@ class EDD_Cache_Helper {
 	}
 }
 
-new EDD_Cache_Helper();
+new PDD_Cache_Helper();

@@ -1,10 +1,10 @@
 <?php
 /**
- * EDD Session
+ * PDD Session
  *
  * This is a wrapper class for WP_Session / PHP $_SESSION and handles the storage of cart items, purchase sessions, etc
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Classes/Session
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -15,11 +15,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * EDD_Session Class
+ * PDD_Session Class
  *
  * @since 1.5
  */
-class EDD_Session {
+class PDD_Session {
 
 	/**
 	 * Holds our session data
@@ -34,7 +34,7 @@ class EDD_Session {
 	/**
 	 * Whether to use PHP $_SESSION or WP_Session
 	 *
-	 * PHP $_SESSION is opt-in only by defining the EDD_USE_PHP_SESSIONS constant
+	 * PHP $_SESSION is opt-in only by defining the PDD_USE_PHP_SESSIONS constant
 	 *
 	 * @var bool
 	 * @access private
@@ -53,11 +53,11 @@ class EDD_Session {
 	 */
 	public function __construct() {
 		
-		$this->use_php_sessions = defined( 'EDD_USE_PHP_SESSIONS' ) && EDD_USE_PHP_SESSIONS;
+		$this->use_php_sessions = defined( 'PDD_USE_PHP_SESSIONS' ) && PDD_USE_PHP_SESSIONS;
 
 		if( $this->use_php_sessions ) {
 
-			// Use PHP SESSION (must be enabled via the EDD_USE_PHP_SESSIONS constant)
+			// Use PHP SESSION (must be enabled via the PDD_USE_PHP_SESSIONS constant)
 
 			if( ! session_id() ) {
 				add_action( 'init', 'session_start', -2 );
@@ -68,16 +68,16 @@ class EDD_Session {
 			// Use WP_Session (default)
 
 			if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
-				define( 'WP_SESSION_COOKIE', 'edd_wp_session' );
+				define( 'WP_SESSION_COOKIE', 'pdd_wp_session' );
 			}
 
 			if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
-				require_once EDD_PLUGIN_DIR . 'includes/libraries/class-recursive-arrayaccess.php';
+				require_once PDD_PLUGIN_DIR . 'includes/libraries/class-recursive-arrayaccess.php';
 			}
 
 			if ( ! class_exists( 'WP_Session' ) ) {
-				require_once EDD_PLUGIN_DIR . 'includes/libraries/class-wp-session.php';
-				require_once EDD_PLUGIN_DIR . 'includes/libraries/wp-session.php';
+				require_once PDD_PLUGIN_DIR . 'includes/libraries/class-wp-session.php';
+				require_once PDD_PLUGIN_DIR . 'includes/libraries/wp-session.php';
 			}
 	
 			//add_filter( 'wp_session_expiration_variant', array( $this, 'set_expiration_variant_time' ), 99999 );
@@ -104,13 +104,13 @@ class EDD_Session {
 	public function init() {
 
 		if( $this->use_php_sessions ) {
-			$this->session = isset( $_SESSION['edd'] ) && is_array( $_SESSION['edd'] ) ? $_SESSION['edd'] : array();
+			$this->session = isset( $_SESSION['pdd'] ) && is_array( $_SESSION['pdd'] ) ? $_SESSION['pdd'] : array();
 		} else {
 			$this->session = WP_Session::get_instance();
 		}
 
-		$cart     = $this->get( 'edd_cart' );
-		$purchase = $this->get( 'edd_purchase' );
+		$cart     = $this->get( 'pdd_cart' );
+		$purchase = $this->get( 'pdd_purchase' );
 
 		if( ! empty( $cart ) || ! empty( $purchase ) ) {
 			$this->set_cart_cookie();
@@ -167,7 +167,7 @@ class EDD_Session {
 		}
 
 		if( $this->use_php_sessions ) {
-			$_SESSION['edd'] = $this->session;
+			$_SESSION['pdd'] = $this->session;
 		}
 
 		return $this->session[ $key ];
@@ -186,9 +186,9 @@ class EDD_Session {
 	public function set_cart_cookie( $set = true ) {
 		if( ! headers_sent() ) {
 			if( $set ) {
-				@setcookie( 'edd_items_in_cart', '1', time() + 30 * 60, COOKIEPATH, COOKIE_DOMAIN, false );
+				@setcookie( 'pdd_items_in_cart', '1', time() + 30 * 60, COOKIEPATH, COOKIE_DOMAIN, false );
 			} else {
-				@setcookie( 'edd_items_in_cart', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
+				@setcookie( 'pdd_items_in_cart', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
 			}
 		}
 	}

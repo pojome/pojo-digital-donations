@@ -2,7 +2,7 @@
 /**
  * Admin Options Page
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Settings
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -18,20 +18,20 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Renders the options page contents.
  *
  * @since 1.0
- * @global $edd_options Array of all the EDD Options
+ * @global $pdd_options Array of all the PDD Options
  * @return void
  */
-function edd_options_page() {
-	global $edd_options;
+function pdd_options_page() {
+	global $pdd_options;
 
-	$active_tab = isset( $_GET[ 'tab' ] ) && array_key_exists( $_GET['tab'], edd_get_settings_tabs() ) ? $_GET[ 'tab' ] : 'general';
+	$active_tab = isset( $_GET[ 'tab' ] ) && array_key_exists( $_GET['tab'], pdd_get_settings_tabs() ) ? $_GET[ 'tab' ] : 'general';
 
 	ob_start();
 	?>
 	<div class="wrap">
 		<h2 class="nav-tab-wrapper">
 			<?php
-			foreach( edd_get_settings_tabs() as $tab_id => $tab_name ) {
+			foreach( pdd_get_settings_tabs() as $tab_id => $tab_name ) {
 
 				$tab_url = add_query_arg( array(
 					'settings-updated' => false,
@@ -50,8 +50,8 @@ function edd_options_page() {
 			<form method="post" action="options.php">
 				<table class="form-table">
 				<?php
-				settings_fields( 'edd_settings' );
-				do_settings_fields( 'edd_settings_' . $active_tab, 'edd_settings_' . $active_tab );
+				settings_fields( 'pdd_settings' );
+				do_settings_fields( 'pdd_settings_' . $active_tab, 'pdd_settings_' . $active_tab );
 				?>
 				</table>
 				<?php submit_button(); ?>

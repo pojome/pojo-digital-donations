@@ -3,19 +3,19 @@
  * License handler for Easy Digital Downloads
  *
  * This class should simplify the process of adding license information
- * to new EDD extensions.
+ * to new PDD extensions.
  *
  * @version 1.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-if ( ! class_exists( 'EDD_License' ) ) :
+if ( ! class_exists( 'PDD_License' ) ) :
 
 /**
- * EDD_License Class
+ * PDD_License Class
  */
-class EDD_License {
+class PDD_License {
 	private $file;
 	private $license;
 	private $item_name;
@@ -27,7 +27,7 @@ class EDD_License {
 	/**
 	 * Class constructor
 	 *
-	 * @global  array $edd_options
+	 * @global  array $pdd_options
 	 * @param string  $_file
 	 * @param string  $_item_name
 	 * @param string  $_version
@@ -36,13 +36,13 @@ class EDD_License {
 	 * @param string  $_api_url
 	 */
 	function __construct( $_file, $_item_name, $_version, $_author, $_optname = null, $_api_url = null ) {
-		global $edd_options;
+		global $pdd_options;
 
 		$this->file           = $_file;
 		$this->item_name      = $_item_name;
-		$this->item_shortname = 'edd_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $this->item_name ) ) );
+		$this->item_shortname = 'pdd_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $this->item_name ) ) );
 		$this->version        = $_version;
-		$this->license        = isset( $edd_options[ $this->item_shortname . '_license_key' ] ) ? trim( $edd_options[ $this->item_shortname . '_license_key' ] ) : '';
+		$this->license        = isset( $pdd_options[ $this->item_shortname . '_license_key' ] ) ? trim( $pdd_options[ $this->item_shortname . '_license_key' ] ) : '';
 		$this->author         = $_author;
 		$this->api_url        = is_null( $_api_url ) ? $this->api_url : $_api_url;
 
@@ -52,8 +52,8 @@ class EDD_License {
 		 * handler will automatically pick these up and use those in lieu of the
 		 * user having to reactive their license.
 		 */
-		if ( ! empty( $_optname ) && isset( $edd_options[ $_optname ] ) && empty( $this->license ) ) {
-			$this->license = trim( $edd_options[ $_optname ] );
+		if ( ! empty( $_optname ) && isset( $pdd_options[ $_optname ] ) && empty( $this->license ) ) {
+			$this->license = trim( $pdd_options[ $_optname ] );
 		}
 
 		// Setup hooks
@@ -69,7 +69,7 @@ class EDD_License {
 	 * @return  void
 	 */
 	private function includes() {
-		if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) require_once 'EDD_SL_Plugin_Updater.php';
+		if ( ! class_exists( 'PDD_SL_Plugin_Updater' ) ) require_once 'PDD_SL_Plugin_Updater.php';
 	}
 
 	/**
@@ -80,7 +80,7 @@ class EDD_License {
 	 */
 	private function hooks() {
 		// Register settings
-		add_filter( 'edd_settings_licenses', array( $this, 'settings' ), 1 );
+		add_filter( 'pdd_settings_licenses', array( $this, 'settings' ), 1 );
 
 		// Activate license key on settings save
 		add_action( 'admin_init', array( $this, 'activate_license' ) );
@@ -96,7 +96,7 @@ class EDD_License {
 	 * Auto updater
 	 *
 	 * @access  private
-	 * @global  array $edd_options
+	 * @global  array $pdd_options
 	 * @return  void
 	 */
 	public function auto_updater() {
@@ -105,7 +105,7 @@ class EDD_License {
 			return;
 
 		// Setup the updater
-		$edd_updater = new EDD_SL_Plugin_Updater(
+		$pdd_updater = new PDD_SL_Plugin_Updater(
 			$this->api_url,
 			$this->file,
 			array(
@@ -126,10 +126,10 @@ class EDD_License {
 	 * @return  array
 	 */
 	public function settings( $settings ) {
-		$edd_license_settings = array(
+		$pdd_license_settings = array(
 			array(
 				'id'      => $this->item_shortname . '_license_key',
-				'name'    => sprintf( __( '%1$s License Key', 'edd' ), $this->item_name ),
+				'name'    => sprintf( __( '%1$s License Key', 'pdd' ), $this->item_name ),
 				'desc'    => '',
 				'type'    => 'license_key',
 				'options' => array( 'is_valid_license_option' => $this->item_shortname . '_license_active' ),
@@ -137,7 +137,7 @@ class EDD_License {
 			)
 		);
 
-		return array_merge( $settings, $edd_license_settings );
+		return array_merge( $settings, $pdd_license_settings );
 	}
 
 
@@ -149,11 +149,11 @@ class EDD_License {
 	 */
 	public function activate_license() {
 
-		if ( ! isset( $_POST['edd_settings'] ) ) {
+		if ( ! isset( $_POST['pdd_settings'] ) ) {
 			return;
 		}
 
-		if ( ! isset( $_POST['edd_settings'][ $this->item_shortname . '_license_key' ] ) ) {
+		if ( ! isset( $_POST['pdd_settings'][ $this->item_shortname . '_license_key' ] ) ) {
 			return;
 		}
 
@@ -172,11 +172,11 @@ class EDD_License {
 			return;
 		}
 
-		$license = sanitize_text_field( $_POST['edd_settings'][ $this->item_shortname . '_license_key' ] );
+		$license = sanitize_text_field( $_POST['pdd_settings'][ $this->item_shortname . '_license_key' ] );
 
 		// Data to send to the API
 		$api_params = array(
-			'edd_action' => 'activate_license',
+			'pdd_action' => 'activate_license',
 			'license'    => $license,
 			'item_name'  => urlencode( $this->item_name ),
 			'url'        => home_url()
@@ -213,10 +213,10 @@ class EDD_License {
 	 */
 	public function deactivate_license() {
 
-		if ( ! isset( $_POST['edd_settings'] ) )
+		if ( ! isset( $_POST['pdd_settings'] ) )
 			return;
 
-		if ( ! isset( $_POST['edd_settings'][ $this->item_shortname . '_license_key' ] ) )
+		if ( ! isset( $_POST['pdd_settings'][ $this->item_shortname . '_license_key' ] ) )
 			return;
 
 		if( ! current_user_can( 'manage_shop_settings' ) ) {
@@ -228,7 +228,7 @@ class EDD_License {
 
 			// Data to send to the API
 			$api_params = array(
-				'edd_action' => 'deactivate_license',
+				'pdd_action' => 'deactivate_license',
 				'license'    => $this->license,
 				'item_name'  => urlencode( $this->item_name ),
 				'url'        => home_url()

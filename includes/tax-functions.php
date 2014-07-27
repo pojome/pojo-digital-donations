@@ -6,7 +6,7 @@
  * Functions for retrieving tax amounts and such for individual payments are in
  * includes/payment-functions.php and includes/cart-functions.php
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Functions/Taxes
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -17,17 +17,17 @@
 if ( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Checks if taxes are enabled by using the option set from the EDD Settings.
+ * Checks if taxes are enabled by using the option set from the PDD Settings.
  * The value returned can be filtered.
  *
  * @since 1.3.3
- * @global $edd_options
+ * @global $pdd_options
  * @return bool Whether or not taxes are enabled
  */
-function edd_use_taxes() {
-	global $edd_options;
+function pdd_use_taxes() {
+	global $pdd_options;
 
-	return apply_filters( 'edd_use_taxes', isset( $edd_options['enable_taxes'] ) );
+	return apply_filters( 'pdd_use_taxes', isset( $pdd_options['enable_taxes'] ) );
 }
 
 /**
@@ -35,44 +35,44 @@ function edd_use_taxes() {
  * have been entered
  *
  * @since 1.4.1
- * @global $edd_options
+ * @global $pdd_options
  * @return bool Whether or not taxes are calculated after discount
  */
-function edd_taxes_after_discounts() {
-	global $edd_options;
-	$ret = isset( $edd_options['taxes_after_discounts'] ) && edd_use_taxes();
-	return apply_filters( 'edd_taxes_after_discounts', $ret );
+function pdd_taxes_after_discounts() {
+	global $pdd_options;
+	$ret = isset( $pdd_options['taxes_after_discounts'] ) && pdd_use_taxes();
+	return apply_filters( 'pdd_taxes_after_discounts', $ret );
 }
 
 /**
  * Retrieve tax rates
  *
  * @since 1.6
- * @global $edd_options
+ * @global $pdd_options
  * @return array Defined tax rates
  */
-function edd_get_tax_rates() {
+function pdd_get_tax_rates() {
 
-	$rates = get_option( 'edd_tax_rates', array() );
-	return apply_filters( 'edd_get_tax_rates', $rates );
+	$rates = get_option( 'pdd_tax_rates', array() );
+	return apply_filters( 'pdd_get_tax_rates', $rates );
 }
 
 /**
  * Get taxation rate
  *
  * @since 1.3.3
- * @global $edd_options
+ * @global $pdd_options
  *
  * @param bool $country
  * @param bool $state
  * @return mixed|void
  */
-function edd_get_tax_rate( $country = false, $state = false ) {
-	global $edd_options;
+function pdd_get_tax_rate( $country = false, $state = false ) {
+	global $pdd_options;
 
-	$rate = isset( $edd_options['tax_rate'] ) ? (float) $edd_options['tax_rate'] : 0;
+	$rate = isset( $pdd_options['tax_rate'] ) ? (float) $pdd_options['tax_rate'] : 0;
 
-	$user_address = edd_get_customer_address();
+	$user_address = pdd_get_customer_address();
 
 	if( empty( $country ) ) {
 		if( ! empty( $_POST['billing_country'] ) ) {
@@ -80,7 +80,7 @@ function edd_get_tax_rate( $country = false, $state = false ) {
 		} elseif( is_user_logged_in() && ! empty( $user_address ) ) {
 			$country = $user_address['country'];
 		}
-		$country = ! empty( $country ) ? $country : edd_get_shop_country();
+		$country = ! empty( $country ) ? $country : pdd_get_shop_country();
 	}
 
 	if( empty( $state ) ) {
@@ -89,11 +89,11 @@ function edd_get_tax_rate( $country = false, $state = false ) {
 		} elseif( is_user_logged_in() && ! empty( $user_address ) ) {
 			$state = $user_address['state'];
 		}
-		$state = ! empty( $state ) ? $state : edd_get_shop_state();
+		$state = ! empty( $state ) ? $state : pdd_get_shop_state();
 	}
 
 	if( ! empty( $country ) ) {
-		$tax_rates   = edd_get_tax_rates();
+		$tax_rates   = pdd_get_tax_rates();
 
 		if( ! empty( $tax_rates ) ) {
 
@@ -125,7 +125,7 @@ function edd_get_tax_rate( $country = false, $state = false ) {
 		// Convert to a number we can use
 		$rate = $rate / 100;
 	}
-	return apply_filters( 'edd_tax_rate', $rate, $country, $state );
+	return apply_filters( 'pdd_tax_rate', $rate, $country, $state );
 }
 
 /**
@@ -136,11 +136,11 @@ function edd_get_tax_rate( $country = false, $state = false ) {
  * @param string $state The state to retrieve a rate for
  * @return string Formatted rate
  */
-function edd_get_formatted_tax_rate( $country = false, $state = false ) {
-	$rate = edd_get_tax_rate( $country, $state );
+function pdd_get_formatted_tax_rate( $country = false, $state = false ) {
+	$rate = pdd_get_tax_rate( $country, $state );
 	$rate = round( $rate * 100, 4 );
 	$formatted = $rate .= '%';
-	return apply_filters( 'edd_formatted_tax_rate', $formatted, $rate, $country, $state );
+	return apply_filters( 'pdd_formatted_tax_rate', $formatted, $rate, $country, $state );
 }
 
 /**
@@ -152,15 +152,15 @@ function edd_get_formatted_tax_rate( $country = false, $state = false ) {
  * @param $state string The state to calculate tax for. Will use default if not passed
  * @return float $tax Taxed amount
  */
-function edd_calculate_tax( $amount = 0, $country = false, $state = false ) {
-	global $edd_options;
+function pdd_calculate_tax( $amount = 0, $country = false, $state = false ) {
+	global $pdd_options;
 
-	$rate = edd_get_tax_rate( $country, $state );
+	$rate = pdd_get_tax_rate( $country, $state );
 	$tax  = 0.00;
 
-	if ( edd_use_taxes() ) {
+	if ( pdd_use_taxes() ) {
 
-		if ( edd_prices_include_tax() ) {
+		if ( pdd_prices_include_tax() ) {
 			$pre_tax = ( $amount / ( 1 + $rate ) );
 			$tax     = $amount - $pre_tax;
 		} else {
@@ -169,7 +169,7 @@ function edd_calculate_tax( $amount = 0, $country = false, $state = false ) {
 
 	}
 
-	return apply_filters( 'edd_taxed_amount', $tax, $rate, $country, $state );
+	return apply_filters( 'pdd_taxed_amount', $tax, $rate, $country, $state );
 }
 
 /**
@@ -177,11 +177,11 @@ function edd_calculate_tax( $amount = 0, $country = false, $state = false ) {
  *
  * @since 1.3.3
  * @param $year int The year to retrieve taxes for, i.e. 2012
- * @uses edd_get_sales_tax_for_year()
+ * @uses pdd_get_sales_tax_for_year()
  * @return void
 */
-function edd_sales_tax_for_year( $year = null ) {
-	echo edd_currency_filter( edd_format_amount( edd_get_sales_tax_for_year( $year ) ) );
+function pdd_sales_tax_for_year( $year = null ) {
+	echo pdd_currency_filter( pdd_format_amount( pdd_get_sales_tax_for_year( $year ) ) );
 }
 
 /**
@@ -189,10 +189,10 @@ function edd_sales_tax_for_year( $year = null ) {
  *
  * @since 1.3.3
  * @param $year int The year to retrieve taxes for, i.e. 2012
- * @uses edd_get_payment_tax()
+ * @uses pdd_get_payment_tax()
  * @return float $tax Sales tax
  */
-function edd_get_sales_tax_for_year( $year = null ) {
+function pdd_get_sales_tax_for_year( $year = null ) {
 	
 	// Start at zero
 	$tax = 0;
@@ -201,7 +201,7 @@ function edd_get_sales_tax_for_year( $year = null ) {
 
 
 		$args = array(
-			'post_type' 		=> 'edd_payment',
+			'post_type' 		=> 'pdd_payment',
 			'post_status'       => array( 'publish', 'revoked' ),
 			'posts_per_page' 	=> -1,
 			'year' 				=> $year,
@@ -213,14 +213,14 @@ function edd_get_sales_tax_for_year( $year = null ) {
 		if( $payments ) {
 
 			foreach( $payments as $payment ) {
-				$tax += edd_get_payment_tax( $payment );
+				$tax += pdd_get_payment_tax( $payment );
 			}
 
 		}
 
 	}
 
-	return apply_filters( 'edd_get_sales_tax_for_year', $tax, $year );
+	return apply_filters( 'pdd_get_sales_tax_for_year', $tax, $year );
 }
 
 /**
@@ -231,36 +231,36 @@ function edd_get_sales_tax_for_year( $year = null ) {
  * @since 1.5
  * @return bool
  */
-function edd_is_cart_taxed() {
-	return edd_use_taxes();
+function pdd_is_cart_taxed() {
+	return pdd_use_taxes();
 }
 
 /**
  * Check if the individual product prices include tax
  *
  * @since 1.5
- * @global $edd_options
+ * @global $pdd_options
  * @return bool $include_tax
 */
-function edd_prices_include_tax() {
-	global $edd_options;
+function pdd_prices_include_tax() {
+	global $pdd_options;
 
-	$ret = isset( $edd_options['prices_include_tax'] ) && $edd_options['prices_include_tax'] == 'yes' && edd_use_taxes();
+	$ret = isset( $pdd_options['prices_include_tax'] ) && $pdd_options['prices_include_tax'] == 'yes' && pdd_use_taxes();
 
-	return apply_filters( 'edd_prices_include_tax', $ret );
+	return apply_filters( 'pdd_prices_include_tax', $ret );
 }
 
 /**
  * Checks whether the user has enabled display of taxes on the checkout
  *
  * @since 1.5
- * @global $edd_options
+ * @global $pdd_options
  * @return bool $include_tax
  */
-function edd_prices_show_tax_on_checkout() {
-	global $edd_options;
-	$ret = isset( $edd_options['checkout_include_tax'] ) && $edd_options['checkout_include_tax'] == 'yes' && edd_use_taxes();
-	return apply_filters( 'edd_taxes_on_prices_on_checkout', $ret );
+function pdd_prices_show_tax_on_checkout() {
+	global $pdd_options;
+	$ret = isset( $pdd_options['checkout_include_tax'] ) && $pdd_options['checkout_include_tax'] == 'yes' && pdd_use_taxes();
+	return apply_filters( 'pdd_taxes_on_prices_on_checkout', $ret );
 }
 
 /**
@@ -272,12 +272,12 @@ function edd_prices_show_tax_on_checkout() {
  * @author Daniel J Griffiths
  * @return bool
  */
-function edd_display_tax_rate() {
-	global $edd_options;
+function pdd_display_tax_rate() {
+	global $pdd_options;
 
-	$ret = edd_use_taxes() && isset( $edd_options['display_tax_rate'] );
+	$ret = pdd_use_taxes() && isset( $pdd_options['display_tax_rate'] );
 
-	return apply_filters( 'edd_display_tax_rate', $ret );
+	return apply_filters( 'pdd_display_tax_rate', $ret );
 }
 
 /**
@@ -286,12 +286,12 @@ function edd_display_tax_rate() {
  * @since 1.y
  * @return bool
  */
-function edd_cart_needs_tax_address_fields() {
+function pdd_cart_needs_tax_address_fields() {
 
-	if( ! edd_is_cart_taxed() )
+	if( ! pdd_is_cart_taxed() )
 		return false;
 
-	return ! did_action( 'edd_after_cc_fields', 'edd_default_cc_address_fields' );
+	return ! did_action( 'pdd_after_cc_fields', 'pdd_default_cc_address_fields' );
 
 }
 
@@ -301,7 +301,7 @@ function edd_cart_needs_tax_address_fields() {
  * @since 1.9
  * @return bool
  */
-function edd_download_is_tax_exclusive( $download_id = 0 ) {
-	$ret = (bool) get_post_meta( $download_id, '_edd_download_tax_exclusive', true );
-	return apply_filters( 'edd_download_is_tax_exclusive', $ret, $download_id );
+function pdd_download_is_tax_exclusive( $download_id = 0 ) {
+	$ret = (bool) get_post_meta( $download_id, '_pdd_download_tax_exclusive', true );
+	return apply_filters( 'pdd_download_is_tax_exclusive', $ret, $download_id );
 }

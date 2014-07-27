@@ -2,7 +2,7 @@
 /**
  * Admin Pages
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Pages
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -17,54 +17,54 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * links to global variables
  *
  * @since 1.0
- * @global $edd_discounts_page
- * @global $edd_payments_page
- * @global $edd_settings_page
- * @global $edd_reports_page
- * @global $edd_add_ons_page
- * @global $edd_settings_export
- * @global $edd_upgrades_screen
+ * @global $pdd_discounts_page
+ * @global $pdd_payments_page
+ * @global $pdd_settings_page
+ * @global $pdd_reports_page
+ * @global $pdd_add_ons_page
+ * @global $pdd_settings_export
+ * @global $pdd_upgrades_screen
  * @return void
  */
-function edd_add_options_link() {
-	global $edd_discounts_page, $edd_payments_page, $edd_settings_page, $edd_reports_page, $edd_add_ons_page, $edd_settings_export, $edd_upgrades_screen, $edd_tools_page;
+function pdd_add_options_link() {
+	global $pdd_discounts_page, $pdd_payments_page, $pdd_settings_page, $pdd_reports_page, $pdd_add_ons_page, $pdd_settings_export, $pdd_upgrades_screen, $pdd_tools_page;
 
-	$edd_payment            = get_post_type_object( 'edd_payment' );
+	$pdd_payment            = get_post_type_object( 'pdd_payment' );
 
-	$edd_payments_page      = add_submenu_page( 'edit.php?post_type=download', $edd_payment->labels->name, $edd_payment->labels->menu_name, 'edit_shop_payments', 'edd-payment-history', 'edd_payment_history_page' );
-	$edd_discounts_page     = add_submenu_page( 'edit.php?post_type=download', __( 'Discount Codes', 'edd' ), __( 'Discount Codes', 'edd' ), 'manage_shop_discounts', 'edd-discounts', 'edd_discounts_page' );
-	$edd_reports_page 	    = add_submenu_page( 'edit.php?post_type=download', __( 'Earnings and Sales Reports', 'edd' ), __( 'Reports', 'edd' ), 'view_shop_reports', 'edd-reports', 'edd_reports_page' );
-	$edd_settings_page 	    = add_submenu_page( 'edit.php?post_type=download', __( 'Easy Digital Download Settings', 'edd' ), __( 'Settings', 'edd' ), 'manage_shop_settings', 'edd-settings', 'edd_options_page' );
-	$edd_tools_page         = add_submenu_page( 'edit.php?post_type=download', __( 'Easy Digital Download Info and Tools', 'edd' ), __( 'Tools', 'edd' ), 'install_plugins', 'edd-tools', 'edd_tools_page' );
-	$edd_add_ons_page 	    = add_submenu_page( 'edit.php?post_type=download', __( 'Easy Digital Download Add Ons', 'edd' ), __( 'Add Ons', 'edd' ), 'install_plugins', 'edd-addons', 'edd_add_ons_page' );
-	$edd_upgrades_screen    = add_submenu_page( null, __( 'EDD Upgrades', 'edd' ), __( 'EDD Upgrades', 'edd' ), 'install_plugins', 'edd-upgrades', 'edd_upgrades_screen' );
+	$pdd_payments_page      = add_submenu_page( 'edit.php?post_type=download', $pdd_payment->labels->name, $pdd_payment->labels->menu_name, 'edit_shop_payments', 'pdd-payment-history', 'pdd_payment_history_page' );
+	$pdd_discounts_page     = add_submenu_page( 'edit.php?post_type=download', __( 'Discount Codes', 'pdd' ), __( 'Discount Codes', 'pdd' ), 'manage_shop_discounts', 'pdd-discounts', 'pdd_discounts_page' );
+	$pdd_reports_page 	    = add_submenu_page( 'edit.php?post_type=download', __( 'Earnings and Sales Reports', 'pdd' ), __( 'Reports', 'pdd' ), 'view_shop_reports', 'pdd-reports', 'pdd_reports_page' );
+	$pdd_settings_page 	    = add_submenu_page( 'edit.php?post_type=download', __( 'Easy Digital Download Settings', 'pdd' ), __( 'Settings', 'pdd' ), 'manage_shop_settings', 'pdd-settings', 'pdd_options_page' );
+	$pdd_tools_page         = add_submenu_page( 'edit.php?post_type=download', __( 'Easy Digital Download Info and Tools', 'pdd' ), __( 'Tools', 'pdd' ), 'install_plugins', 'pdd-tools', 'pdd_tools_page' );
+	$pdd_add_ons_page 	    = add_submenu_page( 'edit.php?post_type=download', __( 'Easy Digital Download Add Ons', 'pdd' ), __( 'Add Ons', 'pdd' ), 'install_plugins', 'pdd-addons', 'pdd_add_ons_page' );
+	$pdd_upgrades_screen    = add_submenu_page( null, __( 'PDD Upgrades', 'pdd' ), __( 'PDD Upgrades', 'pdd' ), 'install_plugins', 'pdd-upgrades', 'pdd_upgrades_screen' );
 }
-add_action( 'admin_menu', 'edd_add_options_link', 10 );
+add_action( 'admin_menu', 'pdd_add_options_link', 10 );
 
 /**
- *  Determines whether the current admin page is an EDD admin page.
+ *  Determines whether the current admin page is an PDD admin page.
  *  
  *  Only works after the `wp_loaded` hook, & most effective 
  *  starting on `admin_menu` hook.
  *  
  *  @since 1.9.6
- *  @return bool True if EDD admin page.
+ *  @return bool True if PDD admin page.
  */
-function edd_is_admin_page() {
+function pdd_is_admin_page() {
 
 	if ( ! is_admin() || ! did_action( 'wp_loaded' ) ) {
 		return false;
 	}
 	
-	global $pagenow, $typenow, $edd_discounts_page, $edd_payments_page, $edd_settings_page, $edd_reports_page, $edd_system_info_page, $edd_add_ons_page, $edd_settings_export, $edd_upgrades_screen;
+	global $pagenow, $typenow, $pdd_discounts_page, $pdd_payments_page, $pdd_settings_page, $pdd_reports_page, $pdd_system_info_page, $pdd_add_ons_page, $pdd_settings_export, $pdd_upgrades_screen;
 
 	if ( 'download' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
 		return true;
 	}
 	
-	$edd_admin_pages = apply_filters( 'edd_admin_pages', array( $edd_discounts_page, $edd_payments_page, $edd_settings_page, $edd_reports_page, $edd_system_info_page, $edd_add_ons_page, $edd_settings_export, $edd_upgrades_screen, ) );
+	$pdd_admin_pages = apply_filters( 'pdd_admin_pages', array( $pdd_discounts_page, $pdd_payments_page, $pdd_settings_page, $pdd_reports_page, $pdd_system_info_page, $pdd_add_ons_page, $pdd_settings_export, $pdd_upgrades_screen, ) );
 	
-	if ( in_array( $pagenow, $edd_admin_pages ) ) {
+	if ( in_array( $pagenow, $pdd_admin_pages ) ) {
 		return true;
 	} else {
 		return false;

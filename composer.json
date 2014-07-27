@@ -1,9 +1,9 @@
 {
-    "name": "easydigitaldownloads/Easy-Digital-Downloads",
+    "name": "pojome/pojo-digital-donations",
     "type": "project",
-    "description": "The world's easiest way to sell digital downloads through WordPress for free",
-    "keywords": ["edd", "eddwp", "easy digital downloads"],
-    "homepage": "https://easydigitaldownloads.com/",
+    "description": "The world's easiest way to sell digital donations through WordPress for free",
+    "keywords": ["pdd", "pddwp", "pojo digital donations"],
+    "homepage": "https://pojo.me/",
     "license": "GPL-2.0+",
     "require": {
         "php": ">=5.3.0"

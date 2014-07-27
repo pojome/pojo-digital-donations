@@ -2,7 +2,7 @@
 /**
  * Admin Payment Actions
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Payments
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -19,33 +19,33 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since       1.9
  * @return      void
 */
-function edd_update_payment_details( $data ) {
+function pdd_update_payment_details( $data ) {
 
-	if( ! current_user_can( 'edit_shop_payment', $data['edd_payment_id' ] ) ) {
-		wp_die( __( 'You do not have permission to edit this payment record', 'edd' ), __( 'Error', 'edd' ) );
+	if( ! current_user_can( 'edit_shop_payment', $data['pdd_payment_id' ] ) ) {
+		wp_die( __( 'You do not have permission to edit this payment record', 'pdd' ), __( 'Error', 'pdd' ) );
 	}
 
-	check_admin_referer( 'edd_update_payment_details_nonce' );
+	check_admin_referer( 'pdd_update_payment_details_nonce' );
 
 	// Retrieve the payment ID
-	$payment_id = absint( $data['edd_payment_id'] );
+	$payment_id = absint( $data['pdd_payment_id'] );
 
 	// Retrieve existing payment meta
-	$meta       = edd_get_payment_meta( $payment_id );
-	$user_info  = edd_get_payment_meta_user_info( $payment_id );
+	$meta       = pdd_get_payment_meta( $payment_id );
+	$user_info  = pdd_get_payment_meta_user_info( $payment_id );
 
-	$status     = $data['edd-payment-status'];
-	$unlimited  = isset( $data['edd-unlimited-downloads'] ) ? '1' : '';
-	$user_id    = intval( $data['edd-payment-user-id'] );
-	$date       = sanitize_text_field( $data['edd-payment-date'] );
-	$hour       = sanitize_text_field( $data['edd-payment-time-hour'] );
-	$minute     = sanitize_text_field( $data['edd-payment-time-min'] );
-	$email      = sanitize_text_field( $data['edd-payment-user-email'] );
-	$names      = sanitize_text_field( $data['edd-payment-user-name'] );
-	$address    = array_map( 'trim', $data['edd-payment-address'][0] );
+	$status     = $data['pdd-payment-status'];
+	$unlimited  = isset( $data['pdd-unlimited-downloads'] ) ? '1' : '';
+	$user_id    = intval( $data['pdd-payment-user-id'] );
+	$date       = sanitize_text_field( $data['pdd-payment-date'] );
+	$hour       = sanitize_text_field( $data['pdd-payment-time-hour'] );
+	$minute     = sanitize_text_field( $data['pdd-payment-time-min'] );
+	$email      = sanitize_text_field( $data['pdd-payment-user-email'] );
+	$names      = sanitize_text_field( $data['pdd-payment-user-name'] );
+	$address    = array_map( 'trim', $data['pdd-payment-address'][0] );
 
-	$total      = edd_sanitize_amount( $_POST['edd-payment-total'] );
-	$tax        = isset( $_POST['edd-payment-tax'] ) ? edd_sanitize_amount( $_POST['edd-payment-tax'] ) : 0;
+	$total      = pdd_sanitize_amount( $_POST['pdd-payment-total'] );
+	$tax        = isset( $_POST['pdd-payment-tax'] ) ? pdd_sanitize_amount( $_POST['pdd-payment-tax'] ) : 0;
 
 	// Setup date from input values
 	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
@@ -59,8 +59,8 @@ function edd_update_payment_details( $data ) {
 	}
 
 	// Setup purchased Downloads and price options
-	$updated_downloads = isset( $_POST['edd-payment-details-downloads'] ) ? $_POST['edd-payment-details-downloads'] : false;
-	if( $updated_downloads && ! empty( $_POST['edd-payment-downloads-changed'] ) ) {
+	$updated_downloads = isset( $_POST['pdd-payment-details-downloads'] ) ? $_POST['pdd-payment-details-downloads'] : false;
+	if( $updated_downloads && ! empty( $_POST['pdd-payment-downloads-changed'] ) ) {
 		$downloads    = array();
 		$cart_details = array();
 		$i = 0;
@@ -70,7 +70,7 @@ function edd_update_payment_details( $data ) {
 			$item['quantity'] = absint( $download['quantity'] );
 			$price_id         = (int) $download['price_id'];
 
-			if( $price_id !== false && edd_has_variable_prices( $item['id'] ) ) {
+			if( $price_id !== false && pdd_has_variable_prices( $item['id'] ) ) {
 				$item['options'] = array(
 					'price_id'   => $price_id
 				);
@@ -107,14 +107,14 @@ function edd_update_payment_details( $data ) {
 	$meta['tax']             = $tax;
 
 	// Check for payment notes
-	if ( ! empty( $data['edd-payment-note'] ) ) {
+	if ( ! empty( $data['pdd-payment-note'] ) ) {
 
-		$note  = wp_kses( $data['edd-payment-note'], array() );
-		edd_insert_payment_note( $payment_id, $note );
+		$note  = wp_kses( $data['pdd-payment-note'], array() );
+		pdd_insert_payment_note( $payment_id, $note );
 
 	}
 
-	do_action( 'edd_update_edited_purchase', $payment_id );
+	do_action( 'pdd_update_edited_purchase', $payment_id );
 
 	// Update main payment record
 	wp_update_post( array(
@@ -123,23 +123,23 @@ function edd_update_payment_details( $data ) {
 	) );
 
 	// Set new status
-	edd_update_payment_status( $payment_id, $status );
+	pdd_update_payment_status( $payment_id, $status );
 
-	update_post_meta( $payment_id, '_edd_payment_user_id',             $user_id );
-	update_post_meta( $payment_id, '_edd_payment_user_email',          $email   );
-	update_post_meta( $payment_id, '_edd_payment_meta',                $meta    );
-	update_post_meta( $payment_id, '_edd_payment_total',               $total   );
-	update_post_meta( $payment_id, '_edd_payment_downloads',           $total   );
-	update_post_meta( $payment_id, '_edd_payment_unlimited_downloads', $unlimited );
+	update_post_meta( $payment_id, '_pdd_payment_user_id',             $user_id );
+	update_post_meta( $payment_id, '_pdd_payment_user_email',          $email   );
+	update_post_meta( $payment_id, '_pdd_payment_meta',                $meta    );
+	update_post_meta( $payment_id, '_pdd_payment_total',               $total   );
+	update_post_meta( $payment_id, '_pdd_payment_downloads',           $total   );
+	update_post_meta( $payment_id, '_pdd_payment_unlimited_downloads', $unlimited );
 
-	do_action( 'edd_updated_edited_purchase', $payment_id );
+	do_action( 'pdd_updated_edited_purchase', $payment_id );
 
-	wp_safe_redirect( admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&edd-message=payment-updated&id=' . $payment_id ) );
+	wp_safe_redirect( admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details&pdd-message=payment-updated&id=' . $payment_id ) );
 	exit;
 }
-add_action( 'edd_update_payment_details', 'edd_update_payment_details' );
+add_action( 'pdd_update_payment_details', 'pdd_update_payment_details' );
 
-function edd_ajax_store_payment_note() {
+function pdd_ajax_store_payment_note() {
 
 	$payment_id = absint( $_POST['payment_id'] );
 	$note       = wp_kses( $_POST['note'], array() );
@@ -150,10 +150,10 @@ function edd_ajax_store_payment_note() {
 	if( empty( $note ) )
 		die( '-1' );
 
-	$note_id = edd_insert_payment_note( $payment_id, $note );
-	die( edd_get_payment_note_html( $note_id ) );
+	$note_id = pdd_insert_payment_note( $payment_id, $note );
+	die( pdd_get_payment_note_html( $note_id ) );
 }
-add_action( 'wp_ajax_edd_insert_payment_note', 'edd_ajax_store_payment_note' );
+add_action( 'wp_ajax_pdd_insert_payment_note', 'pdd_ajax_store_payment_note' );
 
 /**
  * Triggers a payment note deletion without ajax
@@ -162,22 +162,22 @@ add_action( 'wp_ajax_edd_insert_payment_note', 'edd_ajax_store_payment_note' );
  * @param array $data Arguments passed
  * @return void
 */
-function edd_trigger_payment_note_deletion( $data ) {
+function pdd_trigger_payment_note_deletion( $data ) {
 
-	if( ! wp_verify_nonce( $data['_wpnonce'], 'edd_delete_payment_note_' . $data['note_id'] ) )
+	if( ! wp_verify_nonce( $data['_wpnonce'], 'pdd_delete_payment_note_' . $data['note_id'] ) )
 		return;
 
 	if( ! current_user_can( 'edit_shop_payment', $data['payment_id' ] ) ) {
-		wp_die( __( 'You do not have permission to edit this payment record', 'edd' ), __( 'Error', 'edd' ) );
+		wp_die( __( 'You do not have permission to edit this payment record', 'pdd' ), __( 'Error', 'pdd' ) );
 	}
 
-	$edit_order_url = admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&edd-message=payment-note-deleted&id=' . absint( $data['payment_id'] ) );
+	$edit_order_url = admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details&pdd-message=payment-note-deleted&id=' . absint( $data['payment_id'] ) );
 
-	edd_delete_payment_note( $data['note_id'], $data['payment_id'] );
+	pdd_delete_payment_note( $data['note_id'], $data['payment_id'] );
 
 	wp_redirect( $edit_order_url );
 }
-add_action( 'edd_delete_payment_note', 'edd_trigger_payment_note_deletion' );
+add_action( 'pdd_delete_payment_note', 'pdd_trigger_payment_note_deletion' );
 
 /**
  * Delete a payment note deletion with ajax
@@ -186,20 +186,20 @@ add_action( 'edd_delete_payment_note', 'edd_trigger_payment_note_deletion' );
  * @param array $data Arguments passed
  * @return void
 */
-function edd_ajax_delete_payment_note() {
+function pdd_ajax_delete_payment_note() {
 
 	if( ! current_user_can( 'edit_shop_payment', $_POST['payment_id' ] ) ) {
-		wp_die( __( 'You do not have permission to edit this payment record', 'edd' ), __( 'Error', 'edd' ) );
+		wp_die( __( 'You do not have permission to edit this payment record', 'pdd' ), __( 'Error', 'pdd' ) );
 	}
 
-	if( edd_delete_payment_note( $_POST['note_id'], $_POST['payment_id'] ) ) {
+	if( pdd_delete_payment_note( $_POST['note_id'], $_POST['payment_id'] ) ) {
 		die( '1' );
 	} else {
 		die( '-1' );
 	}
 
 }
-add_action( 'wp_ajax_edd_delete_payment_note', 'edd_ajax_delete_payment_note' );
+add_action( 'wp_ajax_pdd_delete_payment_note', 'pdd_ajax_delete_payment_note' );
 
 /**
  * Retrieves a new download link for a purchased file
@@ -207,7 +207,7 @@ add_action( 'wp_ajax_edd_delete_payment_note', 'edd_ajax_delete_payment_note' );
  * @since 2.0
  * @return string
 */
-function edd_ajax_generate_file_download_link() {
+function pdd_ajax_generate_file_download_link() {
 
 	if( ! current_user_can( 'view_shop_reports' ) ) {
 		die( '-1' );
@@ -223,16 +223,16 @@ function edd_ajax_generate_file_download_link() {
 	if( empty( $download_id ) )
 		die( '-3' );
 
-	$payment_key = edd_get_payment_key( $payment_id );
-	$email       = edd_get_payment_user_email( $payment_id );
+	$payment_key = pdd_get_payment_key( $payment_id );
+	$email       = pdd_get_payment_user_email( $payment_id );
 
-	$limit = edd_get_file_download_limit( $download_id );
+	$limit = pdd_get_file_download_limit( $download_id );
 	if ( ! empty( $limit ) ) {
 		// Increase the file download limit when generating new links
-		edd_set_file_download_limit_override( $download_id, $payment_id );
+		pdd_set_file_download_limit_override( $download_id, $payment_id );
 	}
 
-	$files = edd_get_download_files( $download_id, $price_id );
+	$files = pdd_get_download_files( $download_id, $price_id );
 	if( ! $files ) {
 		die( '-4' );
 	}
@@ -241,7 +241,7 @@ function edd_ajax_generate_file_download_link() {
 
 	foreach( $files as $file_key => $file ) {
 
-		$file_urls .= edd_get_download_file_url( $payment_key, $email, $file_key, $download_id, $price_id );
+		$file_urls .= pdd_get_download_file_url( $payment_key, $email, $file_key, $download_id, $price_id );
 		$file_urls .= "\n\n";
 
 	}
@@ -249,4 +249,4 @@ function edd_ajax_generate_file_download_link() {
 	die( $file_urls );
 
 }
-add_action( 'wp_ajax_edd_get_file_download_link', 'edd_ajax_generate_file_download_link' );
+add_action( 'wp_ajax_pdd_get_file_download_link', 'pdd_ajax_generate_file_download_link' );

@@ -2,7 +2,7 @@
 /**
  * Gateway Error Log View Class
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -17,14 +17,14 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Gateway_Error_Log_Table Class
+ * PDD_Gateway_Error_Log_Table Class
  *
  * Renders the gateway errors list table
  *
  * @access      private
  * @since       1.4
  */
-class EDD_Gateway_Error_Log_Table extends WP_List_Table {
+class PDD_Gateway_Error_Log_Table extends WP_List_Table {
 	/**
 	 * Number of items per page
 	 *
@@ -44,8 +44,8 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => edd_get_label_singular(),    // Singular name of the listed records
-			'plural'    => edd_get_label_plural(),    	// Plural name of the listed records
+			'singular'  => pdd_get_label_singular(),    // Singular name of the listed records
+			'plural'    => pdd_get_label_plural(),    	// Plural name of the listed records
 			'ajax'      => false             			// Does this table support ajax?
 		) );
 	}
@@ -64,7 +64,7 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 			case 'error' :
-				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : __( 'Payment Error', 'edd' );
+				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : __( 'Payment Error', 'pdd' );
 			default:
 				return $item[ $column_name ];
 		}
@@ -80,7 +80,7 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 	 */
 	public function column_message( $item ) {
 	?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox" title="<?php _e( 'View Log Message', 'edd' ); ?> "><?php _e( 'View Log Message', 'edd' ); ?></a>
+		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox" title="<?php _e( 'View Log Message', 'pdd' ); ?> "><?php _e( 'View Log Message', 'pdd' ); ?></a>
 		<div id="log-message-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
@@ -94,7 +94,7 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 				$data    = substr( $log_message, $serialized, strlen( $log_message ) - 1 );
 
 				echo wpautop( $intro );
-				echo wpautop( __( '<strong>Log data:</strong>', 'edd' ) );
+				echo wpautop( __( '<strong>Log data:</strong>', 'pdd' ) );
 				echo '<div style="word-wrap: break-word;">' . wpautop( $data ) . '</div>';
 			} else {
 				// No serialized data found
@@ -114,12 +114,12 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => __( 'Log ID', 'edd' ),
-			'payment_id' => __( 'Payment ID', 'edd' ),
-			'error'      => __( 'Error', 'edd' ),
-			'message'    => __( 'Error Message', 'edd' ),
-			'gateway'    => __( 'Gateway', 'edd' ),
-			'date'       => __( 'Date', 'edd' )
+			'ID'         => __( 'Log ID', 'pdd' ),
+			'payment_id' => __( 'Payment ID', 'pdd' ),
+			'error'      => __( 'Error', 'pdd' ),
+			'message'    => __( 'Error Message', 'pdd' ),
+			'gateway'    => __( 'Gateway', 'pdd' ),
+			'date'       => __( 'Date', 'pdd' )
 		);
 
 		return $columns;
@@ -145,7 +145,7 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 	 */
 	public function bulk_actions() {
 		// These aren't really bulk actions but this outputs the markup in the right place
-		edd_log_views();
+		pdd_log_views();
 	}
 
 	/**
@@ -153,11 +153,11 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.4
-	 * @global object $edd_logs EDD Logs Object
+	 * @global object $pdd_logs PDD Logs Object
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	public function get_logs() {
-		global $edd_logs;
+		global $pdd_logs;
 
 		// Prevent the queries from getting cached. Without this there are occasional memory issues for some installs
 		wp_suspend_cache_addition( true );
@@ -169,7 +169,7 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 			'paged'       => $paged
 		);
 
-		$logs = $edd_logs->get_connected_logs( $log_query );
+		$logs = $pdd_logs->get_connected_logs( $log_query );
 
 		if ( $logs ) {
 			foreach ( $logs as $log ) {
@@ -178,7 +178,7 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 					'ID'         => $log->ID,
 					'payment_id' => $log->post_parent,
 					'error'      => 'error',
-					'gateway'    => edd_get_payment_gateway( $log->post_parent ),
+					'gateway'    => pdd_get_payment_gateway( $log->post_parent ),
 					'date'	     => $log->post_date
 				);
 			}
@@ -192,16 +192,16 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.4
-	 * @global object $edd_logs EDD Logs Object
-	 * @uses EDD_Gateway_Error_Log_Table::get_columns()
+	 * @global object $pdd_logs PDD Logs Object
+	 * @uses PDD_Gateway_Error_Log_Table::get_columns()
 	 * @uses WP_List_Table::get_sortable_columns()
-	 * @uses EDD_Gateway_Error_Log_Table::get_pagenum()
-	 * @uses EDD_Gateway_Error_Log_Table::get_logs()
-	 * @uses EDD_Gateway_Error_Log_Table::get_log_count()
+	 * @uses PDD_Gateway_Error_Log_Table::get_pagenum()
+	 * @uses PDD_Gateway_Error_Log_Table::get_logs()
+	 * @uses PDD_Gateway_Error_Log_Table::get_log_count()
 	 * @return void
 	 */
 	public function prepare_items() {
-		global $edd_logs;
+		global $pdd_logs;
 
 		$columns               = $this->get_columns();
 		$hidden                = array(); // No hidden columns
@@ -209,7 +209,7 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$current_page          = $this->get_pagenum();
 		$this->items           = $this->get_logs();
-		$total_items           = $edd_logs->get_log_count( 0, 'gateway_error' );
+		$total_items           = $pdd_logs->get_log_count( 0, 'gateway_error' );
 
 		$this->set_pagination_args( array(
 				'total_items'  => $total_items,

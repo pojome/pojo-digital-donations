@@ -4,7 +4,7 @@
  *
  * This class is for adding arbitrary fees to the cart. Fees can be positive or negative (discounts)
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Classes/Fees
  * @copyright   Copyright (c) 2012, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -15,19 +15,19 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * EDD_Fees Class
+ * PDD_Fees Class
  *
  * @since 1.5
  */
-class EDD_Fees {
+class PDD_Fees {
 
 	/**
-	 * Setup the EDD Fees
+	 * Setup the PDD Fees
 	 *
 	 * @since 1.5
 	 */
 	public function __construct() {
-		add_filter( 'edd_payment_meta', array( $this, 'record_fees' ), 10, 2 );
+		add_filter( 'pdd_payment_meta', array( $this, 'record_fees' ), 10, 2 );
 	}
 
 	/**
@@ -37,8 +37,8 @@ class EDD_Fees {
 	 *
 	 * @param array $args Fee arguments
 	 *
-	 * @uses EDD_Fees::get_fees()
-	 * @uses EDD_Session::set()
+	 * @uses PDD_Fees::get_fees()
+	 * @uses PDD_Session::set()
 	 *
 	 * @return mixed
 	 */
@@ -88,13 +88,13 @@ class EDD_Fees {
 		unset( $args['id'] );
 
 		// Sanitize the amount
-		$args['amount'] = edd_sanitize_amount( $args['amount'] );
+		$args['amount'] = pdd_sanitize_amount( $args['amount'] );
 
 		// Set the fee
 		$fees[ $key ] = $args;
 
 		// Update fees
-		EDD()->session->set( 'edd_cart_fees', $fees );
+		PDD()->session->set( 'pdd_cart_fees', $fees );
 
 		return $fees;
 	}
@@ -105,8 +105,8 @@ class EDD_Fees {
 	 * @access public
 	 * @since 1.5
 	 * @param string $id Fee ID
-	 * @uses EDD_Fees::get_fees()
-	 * @uses EDD_Session::set()
+	 * @uses PDD_Fees::get_fees()
+	 * @uses PDD_Session::set()
 	 * @return array $fees
 	 */
 	public function remove_fee( $id = '' ) {
@@ -115,7 +115,7 @@ class EDD_Fees {
 
 		if ( isset( $fees[ $id ] ) ) {
 			unset( $fees[ $id ] );
-			EDD()->session->set( 'edd_cart_fees', $fees );
+			PDD()->session->set( 'pdd_cart_fees', $fees );
 		}
 
 		return $fees;
@@ -127,7 +127,7 @@ class EDD_Fees {
 	 * @access public
 	 * @since 1.5
 	 * @param string $type Fee type, "fee" or "item"
-	 * @uses EDD_Fees::get_fees()
+	 * @uses PDD_Fees::get_fees()
 	 * @return bool
 	 */
 	public function has_fees( $type = 'fee' ) {
@@ -141,11 +141,11 @@ class EDD_Fees {
 	 * @access public
 	 * @since 1.5
 	 * @param string $type Fee type, "fee" or "item"
-	 * @uses EDD_Session::get()
+	 * @uses PDD_Session::get()
 	 * @return mixed array|bool
 	 */
 	public function get_fees( $type = 'fee' ) {
-		$fees = EDD()->session->get( 'edd_cart_fees' );
+		$fees = PDD()->session->get( 'pdd_cart_fees' );
 		if( ! empty( $fees ) && ! empty( $type ) && 'all' !== $type ) {
 			foreach( $fees as $key => $fee ) {
 				if( ! empty( $fee['type'] ) && $type != $fee['type'] ) {
@@ -181,8 +181,8 @@ class EDD_Fees {
 	 * @access public
 	 * @since 2.0
 	 * @param string $type Fee type, "fee" or "item"
-	 * @uses EDD_Fees::get_fees()
-	 * @uses EDD_Fees::has_fees()
+	 * @uses PDD_Fees::get_fees()
+	 * @uses PDD_Fees::has_fees()
 	 * @return float $total Total fee amount
 	 */
 	public function type_total( $type = 'fee' ) {
@@ -191,11 +191,11 @@ class EDD_Fees {
 
 		if ( $this->has_fees( $type ) ) {
 			foreach ( $fees as $fee ) {
-				$total += edd_sanitize_amount( $fee['amount'] );
+				$total += pdd_sanitize_amount( $fee['amount'] );
 			}
 		}
 
-		return edd_sanitize_amount( $total );
+		return pdd_sanitize_amount( $total );
 	}
 
 	/**
@@ -205,8 +205,8 @@ class EDD_Fees {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @uses EDD_Fees::get_fees()
-	 * @uses EDD_Fees::has_fees()
+	 * @uses PDD_Fees::get_fees()
+	 * @uses PDD_Fees::has_fees()
 	 * @return float $total Total fee amount
 	 */
 	public function total() {
@@ -215,11 +215,11 @@ class EDD_Fees {
 
 		if ( $this->has_fees( 'all' ) ) {
 			foreach ( $fees as $fee ) {
-				$total += edd_sanitize_amount( $fee['amount'] );
+				$total += pdd_sanitize_amount( $fee['amount'] );
 			}
 		}
 
-		return edd_sanitize_amount( $total );
+		return pdd_sanitize_amount( $total );
 	}
 
 	/**
@@ -227,7 +227,7 @@ class EDD_Fees {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @uses EDD_Session::set()
+	 * @uses PDD_Session::set()
 	 * @param array $payment_meta The meta data to store with the payment
 	 * @param array $payment_data The info sent from process-purchase.php
 	 * @return array $payment_meta Return the payment meta with the fees added
@@ -235,7 +235,7 @@ class EDD_Fees {
 	public function record_fees( $payment_meta, $payment_data ) {
 		if ( $this->has_fees( 'all' ) ) {
 			$payment_meta['fees'] = $this->get_fees( 'all' );
-			EDD()->session->set( 'edd_cart_fees', null );
+			PDD()->session->set( 'pdd_cart_fees', null );
 		}
 
 		return $payment_meta;

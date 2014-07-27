@@ -2,7 +2,7 @@
 /**
  * Graphing Functions
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -18,9 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since 1.3
  * @return void
 */
-function edd_reports_graph() {
+function pdd_reports_graph() {
 	// Retrieve the queried dates
-	$dates = edd_get_report_dates();
+	$dates = pdd_get_report_dates();
 
 	// Determine graph options
 	switch ( $dates['range'] ) :
@@ -58,8 +58,8 @@ function edd_reports_graph() {
 		$month = date( 'n', current_time( 'timestamp' ) );
 		while ( $hour <= 23 ) :
 
-			$sales    = edd_get_sales_by_date( $dates['day'], $month, $dates['year'], $hour );
-			$earnings = edd_get_earnings_by_date( $dates['day'], $month, $dates['year'], $hour );
+			$sales    = pdd_get_sales_by_date( $dates['day'], $month, $dates['year'], $hour );
+			$earnings = pdd_get_earnings_by_date( $dates['day'], $month, $dates['year'], $hour );
 			
 			$sales_totals += $sales;
 			$earnings_totals += $earnings;
@@ -78,10 +78,10 @@ function edd_reports_graph() {
 		$day_end = $dates['day_end'];
 		$month   = $dates['m_start'];
 		while ( $day <= $day_end ) :
-			$sales = edd_get_sales_by_date( $day, $month, $dates['year'] );
+			$sales = pdd_get_sales_by_date( $day, $month, $dates['year'] );
 			$sales_totals += $sales;
 
-			$earnings = edd_get_earnings_by_date( $day, $month, $dates['year'] );
+			$earnings = pdd_get_earnings_by_date( $day, $month, $dates['year'] );
 			$earnings_totals += $earnings;
 
 			$date = mktime( 0, 0, 0, $month, $day, $dates['year'] ) * 1000;
@@ -112,10 +112,10 @@ function edd_reports_graph() {
 					$num_of_days 	= cal_days_in_month( CAL_GREGORIAN, $i, $y );
 					$d 				= 1;
 					while ( $d <= $num_of_days ) :
-						$sales = edd_get_sales_by_date( $d, $i, $y );
+						$sales = pdd_get_sales_by_date( $d, $i, $y );
 						$sales_totals += $sales;
 
-						$earnings = edd_get_earnings_by_date( $d, $i, $y );
+						$earnings = pdd_get_earnings_by_date( $d, $i, $y );
 						$earnings_totals += $earnings;
 
 						$date = mktime( 0, 0, 0, $i, $d, $y ) * 1000;
@@ -124,10 +124,10 @@ function edd_reports_graph() {
 					$d++;
 					endwhile;
 				else :
-					$sales = edd_get_sales_by_date( null, $i, $y );
+					$sales = pdd_get_sales_by_date( null, $i, $y );
 					$sales_totals += $sales;
 
-					$earnings = edd_get_earnings_by_date( null, $i, $y );
+					$earnings = pdd_get_earnings_by_date( null, $i, $y );
 					$earnings_totals += $earnings;
 
 					$date = mktime( 0, 0, 0, $i, 1, $y ) * 1000;
@@ -143,31 +143,31 @@ function edd_reports_graph() {
 	}
 
 	$data = array(
-		__( 'Earnings', 'edd' ) => $earnings_data,
-		__( 'Sales', 'edd' )    => $sales_data
+		__( 'Earnings', 'pdd' ) => $earnings_data,
+		__( 'Sales', 'pdd' )    => $sales_data
 	);
 
 	?>
-	<div id="edd-dashboard-widgets-wrap">
+	<div id="pdd-dashboard-widgets-wrap">
 		<div class="metabox-holder" style="padding-top: 0;">
 			<div class="postbox">
-				<h3><span><?php _e('Earnings Over Time', 'edd'); ?></span></h3>
+				<h3><span><?php _e('Earnings Over Time', 'pdd'); ?></span></h3>
 	
 				<div class="inside">
 					<?php
-					edd_reports_graph_controls();
-					$graph = new EDD_Graph( $data );
+					pdd_reports_graph_controls();
+					$graph = new PDD_Graph( $data );
 					$graph->set( 'x_mode', 'time' );
 					$graph->set( 'multiple_y_axes', true );
 					$graph->display();
 					
-					$estimated = edd_estimated_monthly_stats();
+					$estimated = pdd_estimated_monthly_stats();
 					?>
 					
-					<p class="edd_graph_totals"><strong><?php _e( 'Total earnings for period shown: ', 'edd' ); echo edd_currency_filter( edd_format_amount( $earnings_totals ) ); ?></strong></p>
-					<p class="edd_graph_totals"><strong><?php _e( 'Total sales for period shown: ', 'edd' ); echo edd_format_amount( $sales_totals, false ); ?></strong></p>
-					<p class="edd_graph_totals"><strong><?php _e( 'Estimated monthly earnings: ', 'edd' ); echo edd_currency_filter( edd_format_amount( $estimated['earnings'] ) ); ?></strong></p>
-					<p class="edd_graph_totals"><strong><?php _e( 'Estimated monthly sales: ', 'edd' ); echo edd_format_amount( $estimated['sales'], false ); ?></strong></p>
+					<p class="pdd_graph_totals"><strong><?php _e( 'Total earnings for period shown: ', 'pdd' ); echo pdd_currency_filter( pdd_format_amount( $earnings_totals ) ); ?></strong></p>
+					<p class="pdd_graph_totals"><strong><?php _e( 'Total sales for period shown: ', 'pdd' ); echo pdd_format_amount( $sales_totals, false ); ?></strong></p>
+					<p class="pdd_graph_totals"><strong><?php _e( 'Estimated monthly earnings: ', 'pdd' ); echo pdd_currency_filter( pdd_format_amount( $estimated['earnings'] ) ); ?></strong></p>
+					<p class="pdd_graph_totals"><strong><?php _e( 'Estimated monthly sales: ', 'pdd' ); echo pdd_format_amount( $estimated['sales'], false ); ?></strong></p>
 				</div>
 			</div>
 		</div>
@@ -182,9 +182,9 @@ function edd_reports_graph() {
  * @since 1.9
  * @return void
 */
-function edd_reports_graph_of_download( $download_id = 0 ) {
+function pdd_reports_graph_of_download( $download_id = 0 ) {
 	// Retrieve the queried dates
-	$dates = edd_get_report_dates();
+	$dates = pdd_get_report_dates();
 
 	// Determine graph options
 	switch ( $dates['range'] ) :
@@ -221,7 +221,7 @@ function edd_reports_graph_of_download( $download_id = 0 ) {
 
 	$earnings_data = array();
 	$sales_data    = array();
-	$stats          = new EDD_Payment_Stats;
+	$stats          = new PDD_Payment_Stats;
 
 	if( $dates['range'] == 'today' || $dates['range'] == 'yesterday' ) {
 		// Hour by hour
@@ -329,27 +329,27 @@ function edd_reports_graph_of_download( $download_id = 0 ) {
 	}
 
 	$data = array(
-		__( 'Earnings', 'edd' ) => $earnings_data,
-		__( 'Sales', 'edd' )    => $sales_data
+		__( 'Earnings', 'pdd' ) => $earnings_data,
+		__( 'Sales', 'pdd' )    => $sales_data
 	);
 
    	?>
 	<div class="metabox-holder" style="padding-top: 0;">
 		<div class="postbox">
-			<h3><span><?php printf( __('Earnings Over Time for %s', 'edd' ), get_the_title( $download_id ) ); ?></span></h3>
+			<h3><span><?php printf( __('Earnings Over Time for %s', 'pdd' ), get_the_title( $download_id ) ); ?></span></h3>
 
 			<div class="inside">
 				<?php 
-				edd_reports_graph_controls(); 
-				$graph = new EDD_Graph( $data );
+				pdd_reports_graph_controls(); 
+				$graph = new PDD_Graph( $data );
 				$graph->set( 'x_mode', 'time' );
 				$graph->set( 'multiple_y_axes', true );
 				$graph->display();
 				?>
-				<p class="edd_graph_totals"><strong><?php _e( 'Total earnings for period shown: ', 'edd' ); echo edd_currency_filter( edd_format_amount( $earnings_totals ) ); ?></strong></p>
-				<p class="edd_graph_totals"><strong><?php _e( 'Total sales for period shown: ', 'edd' ); echo $sales_totals; ?></strong></p>
-				<p class="edd_graph_totals"><strong><?php printf( __( 'Average monthly earnings: %s', 'edd' ), edd_get_average_monthly_download_earnings( $download_id ) ); ?>
-				<p class="edd_graph_totals"><strong><?php printf( __( 'Average monthly sales: %s', 'edd' ), number_format( edd_get_average_monthly_download_sales( $download_id ), 0 ) ); ?>
+				<p class="pdd_graph_totals"><strong><?php _e( 'Total earnings for period shown: ', 'pdd' ); echo pdd_currency_filter( pdd_format_amount( $earnings_totals ) ); ?></strong></p>
+				<p class="pdd_graph_totals"><strong><?php _e( 'Total sales for period shown: ', 'pdd' ); echo $sales_totals; ?></strong></p>
+				<p class="pdd_graph_totals"><strong><?php printf( __( 'Average monthly earnings: %s', 'pdd' ), pdd_get_average_monthly_download_earnings( $download_id ) ); ?>
+				<p class="pdd_graph_totals"><strong><?php printf( __( 'Average monthly sales: %s', 'pdd' ), number_format( pdd_get_average_monthly_download_sales( $download_id ), 0 ) ); ?>
 			</div>
 		</div>
 	</div>
@@ -363,41 +363,41 @@ function edd_reports_graph_of_download( $download_id = 0 ) {
  * @since 1.3
  * @return void
 */
-function edd_reports_graph_controls() {
-	$date_options = apply_filters( 'edd_report_date_options', array(
-		'today' 	    => __( 'Today', 'edd' ),
-		'yesterday'     => __( 'Yesterday', 'edd' ),
-		'this_week' 	=> __( 'This Week', 'edd' ),
-		'last_week' 	=> __( 'Last Week', 'edd' ),
-		'this_month' 	=> __( 'This Month', 'edd' ),
-		'last_month' 	=> __( 'Last Month', 'edd' ),
-		'this_quarter'	=> __( 'This Quarter', 'edd' ),
-		'last_quarter'	=> __( 'Last Quarter', 'edd' ),
-		'this_year'		=> __( 'This Year', 'edd' ),
-		'last_year'		=> __( 'Last Year', 'edd' ),
-		'other'			=> __( 'Custom', 'edd' )
+function pdd_reports_graph_controls() {
+	$date_options = apply_filters( 'pdd_report_date_options', array(
+		'today' 	    => __( 'Today', 'pdd' ),
+		'yesterday'     => __( 'Yesterday', 'pdd' ),
+		'this_week' 	=> __( 'This Week', 'pdd' ),
+		'last_week' 	=> __( 'Last Week', 'pdd' ),
+		'this_month' 	=> __( 'This Month', 'pdd' ),
+		'last_month' 	=> __( 'Last Month', 'pdd' ),
+		'this_quarter'	=> __( 'This Quarter', 'pdd' ),
+		'last_quarter'	=> __( 'Last Quarter', 'pdd' ),
+		'this_year'		=> __( 'This Year', 'pdd' ),
+		'last_year'		=> __( 'Last Year', 'pdd' ),
+		'other'			=> __( 'Custom', 'pdd' )
 	) );
 
-	$dates = edd_get_report_dates();
+	$dates = pdd_get_report_dates();
 
 	$display = $dates['range'] == 'other' ? '' : 'style="display:none;"';
 
-	$view = edd_get_reporting_view();
+	$view = pdd_get_reporting_view();
 
 	?>
-	<form id="edd-graphs-filter" method="get">
+	<form id="pdd-graphs-filter" method="get">
 		<div class="tablenav top">
 			<div class="alignleft actions">
 
 		       	<input type="hidden" name="post_type" value="download"/>
-		       	<input type="hidden" name="page" value="edd-reports"/>
+		       	<input type="hidden" name="page" value="pdd-reports"/>
 		       	<input type="hidden" name="view" value="<?php echo esc_attr( $view ); ?>"/>
 
 		       	<?php if( isset( $_GET['download-id'] ) ) : ?>
 		       		<input type="hidden" name="download-id" value="<?php echo absint( $_GET['download-id'] ); ?>"/>
 		       	<?php endif; ?>
 
-		       	<select id="edd-graphs-date-options" name="range">
+		       	<select id="pdd-graphs-date-options" name="range">
 		       		<?php
 		       		foreach ( $date_options as $key => $option ) {
 		       			echo '<option value="' . esc_attr( $key ) . '" ' . selected( $key, $dates['range'] ) . '>' . esc_html( $option ) . '</option>';
@@ -405,33 +405,33 @@ function edd_reports_graph_controls() {
 		       		?>
 		       	</select>
 
-		       	<div id="edd-date-range-options" <?php echo $display; ?>>
-					<span><?php _e( 'From', 'edd' ); ?>&nbsp;</span>
-			       	<select id="edd-graphs-month-start" name="m_start">
+		       	<div id="pdd-date-range-options" <?php echo $display; ?>>
+					<span><?php _e( 'From', 'pdd' ); ?>&nbsp;</span>
+			       	<select id="pdd-graphs-month-start" name="m_start">
 			       		<?php for ( $i = 1; $i <= 12; $i++ ) : ?>
-			       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_start'] ); ?>><?php echo edd_month_num_to_name( $i ); ?></option>
+			       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_start'] ); ?>><?php echo pdd_month_num_to_name( $i ); ?></option>
 				       	<?php endfor; ?>
 			       	</select>
-			       	<select id="edd-graphs-year" name="year">
+			       	<select id="pdd-graphs-year" name="year">
 			       		<?php for ( $i = 2007; $i <= date( 'Y' ); $i++ ) : ?>
 			       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['year'] ); ?>><?php echo $i; ?></option>
 				       	<?php endfor; ?>
 			       	</select>
-			       	<span><?php _e( 'To', 'edd' ); ?>&nbsp;</span>
-			       	<select id="edd-graphs-month-start" name="m_end">
+			       	<span><?php _e( 'To', 'pdd' ); ?>&nbsp;</span>
+			       	<select id="pdd-graphs-month-start" name="m_end">
 			       		<?php for ( $i = 1; $i <= 12; $i++ ) : ?>
-			       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_end'] ); ?>><?php echo edd_month_num_to_name( $i ); ?></option>
+			       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_end'] ); ?>><?php echo pdd_month_num_to_name( $i ); ?></option>
 				       	<?php endfor; ?>
 			       	</select>
-			       	<select id="edd-graphs-year" name="year_end">
+			       	<select id="pdd-graphs-year" name="year_end">
 			       		<?php for ( $i = 2007; $i <= date( 'Y' ); $i++ ) : ?>
 			       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['year_end'] ); ?>><?php echo $i; ?></option>
 				       	<?php endfor; ?>
 			       	</select>
 			    </div>
 
-			    <input type="hidden" name="edd_action" value="filter_reports" />
-		       	<input type="submit" class="button-secondary" value="<?php _e( 'Filter', 'edd' ); ?>"/>
+			    <input type="hidden" name="pdd_action" value="filter_reports" />
+		       	<input type="submit" class="button-secondary" value="<?php _e( 'Filter', 'pdd' ); ?>"/>
 			</div>
 		</div>
 	</form>
@@ -447,7 +447,7 @@ function edd_reports_graph_controls() {
  * @since 1.3
  * @return array
 */
-function edd_get_report_dates() {
+function pdd_get_report_dates() {
 	$dates = array();
 
 	$current_time = current_time( 'timestamp' );
@@ -603,7 +603,7 @@ function edd_get_report_dates() {
 
 	endswitch;
 
-	return apply_filters( 'edd_report_dates', $dates );
+	return apply_filters( 'pdd_report_dates', $dates );
 }
 
 /**
@@ -613,12 +613,12 @@ function edd_get_report_dates() {
  *
  * @param $data
  */
-function edd_parse_report_dates( $data ) {
-	$dates = edd_get_report_dates();
+function pdd_parse_report_dates( $data ) {
+	$dates = pdd_get_report_dates();
 
-	$view = edd_get_reporting_view();
+	$view = pdd_get_reporting_view();
 	$id   = isset( $_GET['download-id'] ) ? $_GET['download-id'] : null;
 
-	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=download&page=edd-reports&view=' . esc_attr( $view ) . '&download-id=' . absint( $id ) ) ) ); edd_die();
+	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=download&page=pdd-reports&view=' . esc_attr( $view ) . '&download-id=' . absint( $id ) ) ) ); pdd_die();
 }
-add_action( 'edd_filter_reports', 'edd_parse_report_dates' );
+add_action( 'pdd_filter_reports', 'pdd_parse_report_dates' );

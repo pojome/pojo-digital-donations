@@ -2,7 +2,7 @@
 /**
  * Download Reports Table Class
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -18,13 +18,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Download_Reports_Table Class
+ * PDD_Download_Reports_Table Class
  *
  * Renders the Download Reports table
  *
  * @since 1.5
  */
-class EDD_Download_Reports_Table extends WP_List_Table {
+class PDD_Download_Reports_Table extends WP_List_Table {
 
 	/**
 	 * @var int Number of items per page
@@ -49,12 +49,12 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => edd_get_label_singular(),    // Singular name of the listed records
-			'plural'    => edd_get_label_plural(),    	// Plural name of the listed records
+			'singular'  => pdd_get_label_singular(),    // Singular name of the listed records
+			'plural'    => pdd_get_label_plural(),    	// Plural name of the listed records
 			'ajax'      => false             			// Does this table support ajax?
 		) );
 
-		add_action( 'edd_report_view_actions', array( $this, 'category_filter' ) );
+		add_action( 'pdd_report_view_actions', array( $this, 'category_filter' ) );
 
 		$this->query();
 
@@ -74,13 +74,13 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		switch( $column_name ){
 			case 'earnings' :
-				return edd_currency_filter( edd_format_amount( $item[ $column_name ] ) );
+				return pdd_currency_filter( pdd_format_amount( $item[ $column_name ] ) );
 			case 'average_sales' :
 				return round( $item[ $column_name ] );
 			case 'average_earnings' :
-				return edd_currency_filter( edd_format_amount( $item[ $column_name ] ) );
+				return pdd_currency_filter( pdd_format_amount( $item[ $column_name ] ) );
 			case 'details' :
-				return '<a href="' . admin_url( 'edit.php?post_type=download&page=edd-reports&view=downloads&download-id=' . $item[ 'ID' ] ) . '">' . __( 'View Detailed Report', 'edd' ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=download&page=pdd-reports&view=downloads&download-id=' . $item[ 'ID' ] ) . '">' . __( 'View Detailed Report', 'pdd' ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}
@@ -95,12 +95,12 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'title'     		=> edd_get_label_singular(),
-			'sales'  			=> __( 'Sales', 'edd' ),
-			'earnings'  		=> __( 'Earnings', 'edd' ),
-			'average_sales'  	=> __( 'Monthly Average Sales', 'edd' ),
-			'average_earnings'  => __( 'Monthly Average Earnings', 'edd' ),
-			'details'           => __( 'Detailed Report', 'edd' )
+			'title'     		=> pdd_get_label_singular(),
+			'sales'  			=> __( 'Sales', 'pdd' ),
+			'earnings'  		=> __( 'Earnings', 'pdd' ),
+			'average_sales'  	=> __( 'Monthly Average Sales', 'pdd' ),
+			'average_earnings'  => __( 'Monthly Average Earnings', 'pdd' ),
+			'details'           => __( 'Detailed Report', 'pdd' )
 		);
 
 		return $columns;
@@ -170,7 +170,7 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 	 */
 	public function bulk_actions() {
 		// These aren't really bulk actions but this outputs the markup in the right place
-		edd_report_views();
+		pdd_report_views();
 	}
 
 
@@ -183,7 +183,7 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 	 */
 	public function category_filter() {
 		if( get_terms( 'download_category' ) ) {
-			echo EDD()->html->category_dropdown( 'category', $this->get_category() );
+			echo PDD()->html->category_dropdown( 'category', $this->get_category() );
 		}
 	}
 
@@ -227,16 +227,16 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 
 			case 'sales' :
 				$args['orderby'] = 'meta_value_num';
-				$args['meta_key'] = '_edd_download_sales';
+				$args['meta_key'] = '_pdd_download_sales';
 				break;
 
 			case 'earnings' :
 				$args['orderby'] = 'meta_value_num';
-				$args['meta_key'] = '_edd_download_earnings';
+				$args['meta_key'] = '_pdd_download_earnings';
 				break;
 		endswitch;
 
-		$args = apply_filters( 'edd_download_reports_prepare_items_args', $args, $this );
+		$args = apply_filters( 'pdd_download_reports_prepare_items_args', $args, $this );
 
 		$this->products = new WP_Query( $args );
 
@@ -259,10 +259,10 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 				$reports_data[] = array(
 					'ID' 				=> $download,
 					'title' 			=> get_the_title( $download ),
-					'sales' 			=> edd_get_download_sales_stats( $download ),
-					'earnings'			=> edd_get_download_earnings_stats( $download ),
-					'average_sales'   	=> edd_get_average_monthly_download_sales( $download ),
-					'average_earnings'  => edd_get_average_monthly_download_earnings( $download )
+					'sales' 			=> pdd_get_download_sales_stats( $download ),
+					'earnings'			=> pdd_get_download_earnings_stats( $download ),
+					'average_sales'   	=> pdd_get_average_monthly_download_sales( $download ),
+					'average_earnings'  => pdd_get_average_monthly_download_earnings( $download )
 				);
 			}
 		}
@@ -276,11 +276,11 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @uses EDD_Download_Reports_Table::get_columns()
-	 * @uses EDD_Download_Reports_Table::get_sortable_columns()
-	 * @uses EDD_Download_Reports_Table::reports_data()
-	 * @uses EDD_Download_Reports_Table::get_pagenum()
-	 * @uses EDD_Download_Reports_Table::get_total_downloads()
+	 * @uses PDD_Download_Reports_Table::get_columns()
+	 * @uses PDD_Download_Reports_Table::get_sortable_columns()
+	 * @uses PDD_Download_Reports_Table::reports_data()
+	 * @uses PDD_Download_Reports_Table::get_pagenum()
+	 * @uses PDD_Download_Reports_Table::get_total_downloads()
 	 * @return void
 	 */
 	public function prepare_items() {

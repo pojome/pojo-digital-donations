@@ -7,7 +7,7 @@
  * @since       1.1.4.0
 */
 
-class edd_pdf extends FPDF {
+class pdd_pdf extends FPDF {
 
 	var $widths;
 	var $aligns;

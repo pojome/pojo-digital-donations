@@ -4,7 +4,7 @@
  *
  * Functions related to users / customers
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Functions
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * @return bool|object List of all user purchases
  */
-function edd_get_users_purchases( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
+function pdd_get_users_purchases( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
 	if ( empty( $user ) ) {
 		$user = get_current_user_id();
 	}
@@ -44,7 +44,7 @@ function edd_get_users_purchases( $user = 0, $number = 20, $pagination = false, 
 			$paged = 1;
 	}
 
-	$args = apply_filters( 'edd_get_users_purchases_args', array(
+	$args = apply_filters( 'pdd_get_users_purchases_args', array(
 		'user'    => $user,
 		'number'  => $number,
 		'status'  => $status,
@@ -56,7 +56,7 @@ function edd_get_users_purchases( $user = 0, $number = 20, $pagination = false, 
 	else
 		$args['nopaging'] = true;
 
-	$purchases = edd_get_payments( $args );
+	$purchases = pdd_get_payments( $args );
 
 	// No purchases
 	if ( ! $purchases )
@@ -77,12 +77,12 @@ function edd_get_users_purchases( $user = 0, $number = 20, $pagination = false, 
  * 
  * @return bool|object List of unique products purchased by user
  */
-function edd_get_users_purchased_products( $user = 0, $status = 'complete' ) {
+function pdd_get_users_purchased_products( $user = 0, $status = 'complete' ) {
 	if ( empty( $user ) )
 		$user = get_current_user_id();
 
 	// Get the purchase history
-	$purchase_history = edd_get_users_purchases( $user, -1, false, $status );
+	$purchase_history = pdd_get_users_purchases( $user, -1, false, $status );
 
 	if ( empty( $purchase_history ) )
 		return false;
@@ -90,7 +90,7 @@ function edd_get_users_purchased_products( $user = 0, $status = 'complete' ) {
 	// Get all the items purchased
 	$purchase_data = array();
 	foreach ( $purchase_history as $purchase ) {
-		$purchase_data[] = edd_get_payment_meta_downloads( $purchase->ID );
+		$purchase_data[] = pdd_get_payment_meta_downloads( $purchase->ID );
 	}
 
 	if ( empty( $purchase_data ) )
@@ -120,13 +120,13 @@ function edd_get_users_purchased_products( $user = 0, $status = 'complete' ) {
 	
 	$post_type 	 = get_post_type( $product_ids[0] );
 
-	$args = apply_filters( 'edd_get_users_purchased_products_args', array(
+	$args = apply_filters( 'pdd_get_users_purchased_products_args', array(
 		'include'			=> $product_ids,
 		'post_type' 		=> $post_type,
 		'posts_per_page'  	=> -1
 	) );
 
-	return apply_filters( 'edd_users_purchased_products_list', get_posts( $args ) );
+	return apply_filters( 'pdd_users_purchased_products_list', get_posts( $args ) );
 }
 
 /**
@@ -141,9 +141,9 @@ function edd_get_users_purchased_products( $user = 0, $status = 'complete' ) {
  * @param       int $variable_price_id - the variable price ID to check for
  * @return      boolean - true if has purchased, false otherwise
  */
-function edd_has_user_purchased( $user_id, $downloads, $variable_price_id = null ) {
+function pdd_has_user_purchased( $user_id, $downloads, $variable_price_id = null ) {
 
-	$users_purchases = edd_get_users_purchases( $user_id );
+	$users_purchases = pdd_get_users_purchases( $user_id );
 
 	$return = false;
 
@@ -154,12 +154,12 @@ function edd_has_user_purchased( $user_id, $downloads, $variable_price_id = null
 	if ( $users_purchases ) {
 		foreach ( $users_purchases as $purchase ) {
 
-			$purchased_files = edd_get_payment_meta_downloads( $purchase->ID );
+			$purchased_files = pdd_get_payment_meta_downloads( $purchase->ID );
 
 			if ( is_array( $purchased_files ) ) {
 				foreach ( $purchased_files as $download ) {
 					if ( in_array( $download['id'], $downloads ) ) {
-						$variable_prices = edd_has_variable_prices( $download['id'] );
+						$variable_prices = pdd_has_variable_prices( $download['id'] );
 						if ( $variable_prices && ! is_null( $variable_price_id ) && $variable_price_id !== false ) {
 							if ( isset( $download['options']['price_id'] ) && $variable_price_id == $download['options']['price_id'] ) {
 								return true;
@@ -188,12 +188,12 @@ function edd_has_user_purchased( $user_id, $downloads, $variable_price_id = null
  * @param       $user_id int - the ID of the user to check
  * @return      bool - true if has purchased, false other wise.
  */
-function edd_has_purchases( $user_id = null ) {
+function pdd_has_purchases( $user_id = null ) {
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( edd_get_users_purchases( $user_id, 1 ) ) {
+	if ( pdd_get_users_purchases( $user_id, 1 ) ) {
 		return true; // User has at least one purchase
 	}
 	return false; // User has never purchased anything
@@ -211,7 +211,7 @@ function edd_has_purchases( $user_id = null ) {
  * @param       $mode string - "test" or "live"
  * @return      array
  */
-function edd_get_purchase_stats_by_user( $user = '' ) {
+function pdd_get_purchase_stats_by_user( $user = '' ) {
 
 	global $wpdb;
 
@@ -235,11 +235,11 @@ function edd_get_purchase_stats_by_user( $user = '' ) {
 			FROM {$wpdb->prefix}postmeta {$wpdb->prefix}meta_1
 			LEFT JOIN {$wpdb->prefix}postmeta {$wpdb->prefix}meta_2
 				ON {$wpdb->prefix}meta_1.post_id = {$wpdb->prefix}meta_2.post_id
-				AND {$wpdb->prefix}meta_1.meta_key = '_edd_payment_total'
+				AND {$wpdb->prefix}meta_1.meta_key = '_pdd_payment_total'
 			INNER JOIN {$wpdb->prefix}posts
 				ON {$wpdb->prefix}posts.ID = {$wpdb->prefix}meta_2.post_id
 				AND {$wpdb->prefix}posts.post_status = 'publish'
-			WHERE {$wpdb->prefix}meta_2.meta_key = '_edd_payment_user_{$field}'
+			WHERE {$wpdb->prefix}meta_2.meta_key = '_pdd_payment_user_{$field}'
 			AND {$wpdb->prefix}meta_2.meta_value = '%s'";
 
 		$purchases = $wpdb->get_col( $wpdb->prepare( $query, $user ) );
@@ -255,7 +255,7 @@ function edd_get_purchase_stats_by_user( $user = '' ) {
 
 	}
 
-	return (array) apply_filters( 'edd_purchase_stats_by_user', $stats, $user );
+	return (array) apply_filters( 'pdd_purchase_stats_by_user', $stats, $user );
 }
 
 
@@ -269,11 +269,11 @@ function edd_get_purchase_stats_by_user( $user = '' ) {
  * @param       $user mixed - ID or email
  * @return      int - the total number of purchases
  */
-function edd_count_purchases_of_customer( $user = null ) {
+function pdd_count_purchases_of_customer( $user = null ) {
 	if ( empty( $user ) )
 		$user = get_current_user_id();
 
-	$stats = edd_get_purchase_stats_by_user( $user );
+	$stats = pdd_get_purchase_stats_by_user( $user );
 
 	return isset( $stats['purchases'] ) ? $stats['purchases'] : 0;
 }
@@ -286,9 +286,9 @@ function edd_count_purchases_of_customer( $user = null ) {
  * @param       $user mixed - ID or email
  * @return      float - the total amount the user has spent
  */
-function edd_purchase_total_of_user( $user = null ) {
+function pdd_purchase_total_of_user( $user = null ) {
 
-	$stats = edd_get_purchase_stats_by_user( $user );
+	$stats = pdd_get_purchase_stats_by_user( $user );
 
 	return $stats['total_spent'];
 }
@@ -301,13 +301,13 @@ function edd_purchase_total_of_user( $user = null ) {
  * @param       $user mixed - ID or email
  * @return      int - The total number of files the user has downloaded
  */
-function edd_count_file_downloads_of_user( $user ) {
-	global $edd_logs;
+function pdd_count_file_downloads_of_user( $user ) {
+	global $pdd_logs;
 
 	if ( is_email( $user ) ) {
 		$meta_query = array(
 			array(
-				'key'     => '_edd_log_user_info',
+				'key'     => '_pdd_log_user_info',
 				'value'   => $user,
 				'compare' => 'LIKE'
 			)
@@ -315,13 +315,13 @@ function edd_count_file_downloads_of_user( $user ) {
 	} else {
 		$meta_query = array(
 			array(
-				'key'     => '_edd_log_user_id',
+				'key'     => '_pdd_log_user_id',
 				'value'   => $user
 			)
 		);
 	}
 
-	return $edd_logs->get_log_count( null, 'file_download', $meta_query );
+	return $pdd_logs->get_log_count( null, 'file_download', $meta_query );
 }
 
 /**
@@ -332,10 +332,10 @@ function edd_count_file_downloads_of_user( $user ) {
  * @param       $username string - the username to validate
  * @return      bool
  */
-function edd_validate_username( $username ) {
+function pdd_validate_username( $username ) {
 	$sanitized = sanitize_user( $username, false );
 	$valid = ( $sanitized == $username );
-	return (bool) apply_filters( 'edd_validate_username', $valid, $username );
+	return (bool) apply_filters( 'pdd_validate_username', $valid, $username );
 }
 
 
@@ -350,30 +350,30 @@ function edd_validate_username( $username ) {
  * @param       $user_id INT - the new user's ID
  * @return      void
  */
-function edd_add_past_purchases_to_new_user( $user_id ) {
+function pdd_add_past_purchases_to_new_user( $user_id ) {
 
 	$email    = get_the_author_meta( 'user_email', $user_id );
 
-	$payments = edd_get_payments( array( 's' => $email ) );
+	$payments = pdd_get_payments( array( 's' => $email ) );
 	
 	if( $payments ) {
 		foreach( $payments as $payment ) {
-			if( intval( edd_get_payment_user_id( $payment->ID ) ) > 0 )
+			if( intval( pdd_get_payment_user_id( $payment->ID ) ) > 0 )
 				continue; // This payment already associated with an account
 
-			$meta                    = edd_get_payment_meta( $payment->ID );
+			$meta                    = pdd_get_payment_meta( $payment->ID );
 			$meta['user_info']       = maybe_unserialize( $meta['user_info'] );
 			$meta['user_info']['id'] = $user_id;
 			$meta['user_info']       = $meta['user_info'];
 
 			// Store the updated user ID in the payment meta
-			update_post_meta( $payment->ID, '_edd_payment_meta', $meta );
-			update_post_meta( $payment->ID, '_edd_payment_user_id', $user_id );
+			update_post_meta( $payment->ID, '_pdd_payment_meta', $meta );
+			update_post_meta( $payment->ID, '_pdd_payment_user_id', $user_id );
 		}
 	}
 
 }
-add_action( 'user_register', 'edd_add_past_purchases_to_new_user' );
+add_action( 'user_register', 'pdd_add_past_purchases_to_new_user' );
 
 
 /**
@@ -385,14 +385,14 @@ add_action( 'user_register', 'edd_add_past_purchases_to_new_user' );
  *   Database API
  * @return 		int - The total number of customers.
  */
-function edd_count_total_customers() {
+function pdd_count_total_customers() {
 	global $wpdb;
 
 	$count = wp_cache_get( 'customer_count', 'customers' );
 
 	if( false == $count ) {
 	
-		$count = $wpdb->get_col( "SELECT COUNT(DISTINCT meta_value) FROM $wpdb->postmeta WHERE meta_key = '_edd_payment_user_email'" );
+		$count = $wpdb->get_col( "SELECT COUNT(DISTINCT meta_value) FROM $wpdb->postmeta WHERE meta_key = '_pdd_payment_user_email'" );
 
 		$count = $count[0];
 
@@ -411,12 +411,12 @@ function edd_count_total_customers() {
  * @since 		1.8
  * @return 		array - The customer's address, if any
  */
-function edd_get_customer_address( $user_id = 0 ) {
+function pdd_get_customer_address( $user_id = 0 ) {
 	if( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
 
-	$address = get_user_meta( $user_id, '_edd_user_address', true );
+	$address = get_user_meta( $user_id, '_pdd_user_address', true );
 
 	if( ! isset( $address['line1'] ) )
 		$address['line1'] = '';
@@ -446,7 +446,7 @@ function edd_get_customer_address( $user_id = 0 ) {
  * @since 		1.8.8
  * @return 		void
  */
-function edd_new_user_notification( $user_id = 0, $user_data = array() ) {
-	wp_new_user_notification( $user_id, __( '[Password entered at checkout]', 'edd' ) );
+function pdd_new_user_notification( $user_id = 0, $user_data = array() ) {
+	wp_new_user_notification( $user_id, __( '[Password entered at checkout]', 'pdd' ) );
 }
-add_action( 'edd_insert_user', 'edd_new_user_notification', 10, 2 );
+add_action( 'pdd_insert_user', 'pdd_new_user_notification', 10, 2 );

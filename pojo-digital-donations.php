@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pojo Digital Donations. If not, see <http://www.gnu.org/licenses/>.
  *
- * @package EDD
+ * @package PDD
  * @category Core
  * @author Pippin Williamson
  * @version 2.0.4
@@ -48,7 +48,7 @@ final class Easy_Digital_Downloads {
 	private static $instance;
 
 	/**
-	 * EDD Roles Object
+	 * PDD Roles Object
 	 *
 	 * @var object
 	 * @since 1.5
@@ -56,7 +56,7 @@ final class Easy_Digital_Downloads {
 	public $roles;
 
 	/**
-	 * EDD Cart Fees Object
+	 * PDD Cart Fees Object
 	 *
 	 * @var object
 	 * @since 1.5
@@ -64,7 +64,7 @@ final class Easy_Digital_Downloads {
 	public $fees;
 
 	/**
-	 * EDD API Object
+	 * PDD API Object
 	 *
 	 * @var object
 	 * @since 1.5
@@ -72,7 +72,7 @@ final class Easy_Digital_Downloads {
 	public $api;
 
 	/**
-	 * EDD HTML Session Object
+	 * PDD HTML Session Object
 	 *
 	 * This holds cart items, purchase sessions, and anything else stored in the session
 	 *
@@ -83,15 +83,15 @@ final class Easy_Digital_Downloads {
 	public $session;
 
 	/**
-	 * EDD HTML Element Helper Object
+	 * PDD HTML Element Helper Object
 	 *
-	 * @var EDD_HTML_Elements
+	 * @var PDD_HTML_Elements
 	 * @since 1.5
 	 */
 	public $html;
 
 	/**
-	 * EDD Email Template Tags Object
+	 * PDD Email Template Tags Object
 	 *
 	 * @var object
 	 * @since 1.9
@@ -110,7 +110,7 @@ final class Easy_Digital_Downloads {
 	 * @uses Easy_Digital_Downloads::setup_constants() Setup the constants needed
 	 * @uses Easy_Digital_Downloads::includes() Include the required files
 	 * @uses Easy_Digital_Downloads::load_textdomain() load the language files
-	 * @see EDD()
+	 * @see PDD()
 	 * @return Easy_Digital_Downloads
 	 */
 	public static function instance() {
@@ -119,12 +119,12 @@ final class Easy_Digital_Downloads {
 			self::$instance->setup_constants();
 			self::$instance->includes();
 			self::$instance->load_textdomain();
-			self::$instance->roles      = new EDD_Roles();
-			self::$instance->fees       = new EDD_Fees();
-			self::$instance->api        = new EDD_API();
-			self::$instance->session    = new EDD_Session();
-			self::$instance->html       = new EDD_HTML_Elements();
-			self::$instance->email_tags = new EDD_Email_Template_Tags();
+			self::$instance->roles      = new PDD_Roles();
+			self::$instance->fees       = new PDD_Fees();
+			self::$instance->api        = new PDD_API();
+			self::$instance->session    = new PDD_Session();
+			self::$instance->html       = new PDD_HTML_Elements();
+			self::$instance->email_tags = new PDD_Email_Template_Tags();
 		}
 		return self::$instance;
 	}
@@ -141,7 +141,7 @@ final class Easy_Digital_Downloads {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'edd' ), '1.6' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'pdd' ), '1.6' );
 	}
 
 	/**
@@ -153,7 +153,7 @@ final class Easy_Digital_Downloads {
 	 */
 	public function __wakeup() {
 		// Unserializing instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'edd' ), '1.6' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'pdd' ), '1.6' );
 	}
 
 	/**
@@ -165,23 +165,23 @@ final class Easy_Digital_Downloads {
 	 */
 	private function setup_constants() {
 		// Plugin version
-		if ( ! defined( 'EDD_VERSION' ) ) {
-			define( 'EDD_VERSION', '2.0.4' );
+		if ( ! defined( 'PDD_VERSION' ) ) {
+			define( 'PDD_VERSION', '2.0.4' );
 		}
 
 		// Plugin Folder Path
-		if ( ! defined( 'EDD_PLUGIN_DIR' ) ) {
-			define( 'EDD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+		if ( ! defined( 'PDD_PLUGIN_DIR' ) ) {
+			define( 'PDD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 		}
 
 		// Plugin Folder URL
-		if ( ! defined( 'EDD_PLUGIN_URL' ) ) {
-			define( 'EDD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+		if ( ! defined( 'PDD_PLUGIN_URL' ) ) {
+			define( 'PDD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 		}
 
 		// Plugin Root File
-		if ( ! defined( 'EDD_PLUGIN_FILE' ) ) {
-			define( 'EDD_PLUGIN_FILE', __FILE__ );
+		if ( ! defined( 'PDD_PLUGIN_FILE' ) ) {
+			define( 'PDD_PLUGIN_FILE', __FILE__ );
 		}
 	}
 
@@ -193,99 +193,99 @@ final class Easy_Digital_Downloads {
 	 * @return void
 	 */
 	private function includes() {
-		global $edd_options;
+		global $pdd_options;
 
-		require_once EDD_PLUGIN_DIR . 'includes/admin/settings/register-settings.php';
-		$edd_options = edd_get_settings();
+		require_once PDD_PLUGIN_DIR . 'includes/admin/settings/register-settings.php';
+		$pdd_options = pdd_get_settings();
 
-		require_once EDD_PLUGIN_DIR . 'includes/actions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/deprecated-functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/ajax-functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/template-functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/checkout/template.php';
-		require_once EDD_PLUGIN_DIR . 'includes/checkout/functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/cart/functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/cart/template.php';
-		require_once EDD_PLUGIN_DIR . 'includes/cart/actions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/class-edd-api.php';
-		require_once EDD_PLUGIN_DIR . 'includes/class-edd-cache-helper.php';
-		require_once EDD_PLUGIN_DIR . 'includes/class-edd-cron.php';
-		require_once EDD_PLUGIN_DIR . 'includes/class-edd-fees.php';
-		require_once EDD_PLUGIN_DIR . 'includes/class-edd-html-elements.php';
-		require_once EDD_PLUGIN_DIR . 'includes/class-edd-license-handler.php';
-		require_once EDD_PLUGIN_DIR . 'includes/class-edd-logging.php';
-		require_once EDD_PLUGIN_DIR . 'includes/class-edd-session.php';
-		require_once EDD_PLUGIN_DIR . 'includes/class-edd-stats.php';
-		require_once EDD_PLUGIN_DIR . 'includes/class-edd-roles.php';
-		require_once EDD_PLUGIN_DIR . 'includes/country-functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/formatting.php';
-		require_once EDD_PLUGIN_DIR . 'includes/widgets.php';
-		require_once EDD_PLUGIN_DIR . 'includes/mime-types.php';
-		require_once EDD_PLUGIN_DIR . 'includes/gateways/actions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/gateways/functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
-		require_once EDD_PLUGIN_DIR . 'includes/gateways/manual.php';
-		require_once EDD_PLUGIN_DIR . 'includes/discount-functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/payments/functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/payments/actions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/payments/class-payment-stats.php';
-		require_once EDD_PLUGIN_DIR . 'includes/payments/class-payments-query.php';
-		require_once EDD_PLUGIN_DIR . 'includes/misc-functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/download-functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/scripts.php';
-		require_once EDD_PLUGIN_DIR . 'includes/post-types.php';
-		require_once EDD_PLUGIN_DIR . 'includes/plugin-compatibility.php';
-		require_once EDD_PLUGIN_DIR . 'includes/emails/functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/emails/template.php';
-		require_once EDD_PLUGIN_DIR . 'includes/emails/actions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/emails/email-tags.php';
-		require_once EDD_PLUGIN_DIR . 'includes/error-tracking.php';
-		require_once EDD_PLUGIN_DIR . 'includes/user-functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/query-filters.php';
-		require_once EDD_PLUGIN_DIR . 'includes/tax-functions.php';
-		require_once EDD_PLUGIN_DIR . 'includes/process-purchase.php';
-		require_once EDD_PLUGIN_DIR . 'includes/login-register.php';
-		require_once EDD_PLUGIN_DIR . 'includes/shortcodes.php';
+		require_once PDD_PLUGIN_DIR . 'includes/actions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/deprecated-functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/ajax-functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/template-functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/checkout/template.php';
+		require_once PDD_PLUGIN_DIR . 'includes/checkout/functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/cart/functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/cart/template.php';
+		require_once PDD_PLUGIN_DIR . 'includes/cart/actions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-api.php';
+		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-cache-helper.php';
+		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-cron.php';
+		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-fees.php';
+		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-html-elements.php';
+		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-license-handler.php';
+		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-logging.php';
+		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-session.php';
+		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-stats.php';
+		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-roles.php';
+		require_once PDD_PLUGIN_DIR . 'includes/country-functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/formatting.php';
+		require_once PDD_PLUGIN_DIR . 'includes/widgets.php';
+		require_once PDD_PLUGIN_DIR . 'includes/mime-types.php';
+		require_once PDD_PLUGIN_DIR . 'includes/gateways/actions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/gateways/functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
+		require_once PDD_PLUGIN_DIR . 'includes/gateways/manual.php';
+		require_once PDD_PLUGIN_DIR . 'includes/discount-functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/payments/functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/payments/actions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/payments/class-payment-stats.php';
+		require_once PDD_PLUGIN_DIR . 'includes/payments/class-payments-query.php';
+		require_once PDD_PLUGIN_DIR . 'includes/misc-functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/download-functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/scripts.php';
+		require_once PDD_PLUGIN_DIR . 'includes/post-types.php';
+		require_once PDD_PLUGIN_DIR . 'includes/plugin-compatibility.php';
+		require_once PDD_PLUGIN_DIR . 'includes/emails/functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/emails/template.php';
+		require_once PDD_PLUGIN_DIR . 'includes/emails/actions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/emails/email-tags.php';
+		require_once PDD_PLUGIN_DIR . 'includes/error-tracking.php';
+		require_once PDD_PLUGIN_DIR . 'includes/user-functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/query-filters.php';
+		require_once PDD_PLUGIN_DIR . 'includes/tax-functions.php';
+		require_once PDD_PLUGIN_DIR . 'includes/process-purchase.php';
+		require_once PDD_PLUGIN_DIR . 'includes/login-register.php';
+		require_once PDD_PLUGIN_DIR . 'includes/shortcodes.php';
 
 		if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-			require_once EDD_PLUGIN_DIR . 'includes/admin/add-ons.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/admin-footer.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/admin-actions.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/admin-notices.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/admin-pages.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/export-functions.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/thickbox.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/upload-functions.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/downloads/dashboard-columns.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/downloads/metabox.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/downloads/contextual-help.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/discounts/contextual-help.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/discounts/discount-actions.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/discounts/discount-codes.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/payments/actions.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/payments/contextual-help.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/reporting/contextual-help.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/reporting/class-edd-graph.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/settings/display-settings.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/settings/contextual-help.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/tracking.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/tools.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/plugins.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/welcome.php';
-			require_once EDD_PLUGIN_DIR . 'includes/admin/class-edd-heartbeat.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/add-ons.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/admin-footer.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/admin-actions.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/admin-notices.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/admin-pages.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/export-functions.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/thickbox.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/upload-functions.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/downloads/dashboard-columns.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/downloads/metabox.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/downloads/contextual-help.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/discounts/contextual-help.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/discounts/discount-actions.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/discounts/discount-codes.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/payments/actions.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/payments/contextual-help.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/reporting/contextual-help.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/reporting/class-pdd-graph.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/settings/display-settings.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/settings/contextual-help.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/tracking.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/tools.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/plugins.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/welcome.php';
+			require_once PDD_PLUGIN_DIR . 'includes/admin/class-pdd-heartbeat.php';
 		} else {
-			require_once EDD_PLUGIN_DIR . 'includes/process-download.php';
-			require_once EDD_PLUGIN_DIR . 'includes/theme-compatibility.php';
+			require_once PDD_PLUGIN_DIR . 'includes/process-download.php';
+			require_once PDD_PLUGIN_DIR . 'includes/theme-compatibility.php';
 		}
 
-		require_once EDD_PLUGIN_DIR . 'includes/install.php';
+		require_once PDD_PLUGIN_DIR . 'includes/install.php';
 	}
 
 	/**
@@ -297,26 +297,26 @@ final class Easy_Digital_Downloads {
 	 */
 	public function load_textdomain() {
 		// Set filter for plugin's languages directory
-		$edd_lang_dir = dirname( plugin_basename( EDD_PLUGIN_FILE ) ) . '/languages/';
-		$edd_lang_dir = apply_filters( 'edd_languages_directory', $edd_lang_dir );
+		$pdd_lang_dir = dirname( plugin_basename( PDD_PLUGIN_FILE ) ) . '/languages/';
+		$pdd_lang_dir = apply_filters( 'pdd_languages_directory', $pdd_lang_dir );
 
 		// Traditional WordPress plugin locale filter
-		$locale        = apply_filters( 'plugin_locale',  get_locale(), 'edd' );
-		$mofile        = sprintf( '%1$s-%2$s.mo', 'edd', $locale );
+		$locale        = apply_filters( 'plugin_locale',  get_locale(), 'pdd' );
+		$mofile        = sprintf( '%1$s-%2$s.mo', 'pdd', $locale );
 
 		// Setup paths to current locale file
-		$mofile_local  = $edd_lang_dir . $mofile;
-		$mofile_global = WP_LANG_DIR . '/edd/' . $mofile;
+		$mofile_local  = $pdd_lang_dir . $mofile;
+		$mofile_global = WP_LANG_DIR . '/pdd/' . $mofile;
 
 		if ( file_exists( $mofile_global ) ) {
-			// Look in global /wp-content/languages/edd folder
-			load_textdomain( 'edd', $mofile_global );
+			// Look in global /wp-content/languages/pdd folder
+			load_textdomain( 'pdd', $mofile_global );
 		} elseif ( file_exists( $mofile_local ) ) {
 			// Look in local /wp-content/plugins/easy-digital-downloads/languages/ folder
-			load_textdomain( 'edd', $mofile_local );
+			load_textdomain( 'pdd', $mofile_local );
 		} else {
 			// Load the default language files
-			load_plugin_textdomain( 'edd', false, $edd_lang_dir );
+			load_plugin_textdomain( 'pdd', false, $pdd_lang_dir );
 		}
 	}
 }
@@ -331,14 +331,14 @@ endif; // End if class_exists check
  * Use this function like you would a global variable, except without needing
  * to declare the global.
  *
- * Example: <?php $edd = EDD(); ?>
+ * Example: <?php $pdd = PDD(); ?>
  *
  * @since 1.4
  * @return Easy_Digital_Downloads The one true Easy_Digital_Downloads Instance
  */
-function EDD() {
+function PDD() {
 	return Easy_Digital_Downloads::instance();
 }
 
-// Get EDD Running
-EDD();
+// Get PDD Running
+PDD();

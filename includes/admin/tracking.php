@@ -1,8 +1,8 @@
 <?php
 /**
- * Tracking functions for reporting plugin usage to the EDD site for users that have opted in
+ * Tracking functions for reporting plugin usage to the PDD site for users that have opted in
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -20,10 +20,10 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @since  1.8.2
  * @return void
  */
-class EDD_Tracking {
+class PDD_Tracking {
 
 	/**
-	 * The data to send to the EDD site
+	 * The data to send to the PDD site
 	 *
 	 * @access private
 	 */
@@ -39,9 +39,9 @@ class EDD_Tracking {
 
 		$this->schedule_send();
 
-		add_action( 'edd_settings_general_sanitize', array( $this, 'check_for_settings_optin' ) );
-		add_action( 'edd_opt_into_tracking', array( $this, 'check_for_optin' ) );
-		add_action( 'edd_opt_out_of_tracking', array( $this, 'check_for_optout' ) );
+		add_action( 'pdd_settings_general_sanitize', array( $this, 'check_for_settings_optin' ) );
+		add_action( 'pdd_opt_into_tracking', array( $this, 'check_for_optin' ) );
+		add_action( 'pdd_opt_out_of_tracking', array( $this, 'check_for_optout' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 
 	}
@@ -53,8 +53,8 @@ class EDD_Tracking {
 	 * @return bool
 	 */
 	private function tracking_allowed() {
-		global $edd_options;
-		return isset( $edd_options['allow_tracking'] );
+		global $pdd_options;
+		return isset( $pdd_options['allow_tracking'] );
 	}
 
 	/**
@@ -103,7 +103,7 @@ class EDD_Tracking {
 	}
 
 	/**
-	 * Send the data to the EDD server
+	 * Send the data to the PDD server
 	 *
 	 * @access private
 	 * @return void
@@ -120,17 +120,17 @@ class EDD_Tracking {
 
 		$this->setup_data();
 
-		$request = wp_remote_post( 'https://easydigitaldownloads.com/?edd_action=checkin', array(
+		$request = wp_remote_post( 'https://easydigitaldownloads.com/?pdd_action=checkin', array(
 			'method'      => 'POST',
 			'timeout'     => 20,
 			'redirection' => 5,
 			'httpversion' => '1.0',
 			'blocking'    => true,
 			'body'        => $this->data,
-			'user-agent'  => 'EDD/' . EDD_VERSION . '; ' . get_bloginfo( 'url' )
+			'user-agent'  => 'PDD/' . PDD_VERSION . '; ' . get_bloginfo( 'url' )
 		) );
 
-		update_option( 'edd_tracking_last_send', time() );
+		update_option( 'pdd_tracking_last_send', time() );
 
 	}
 
@@ -161,15 +161,15 @@ class EDD_Tracking {
 	 */
 	public function check_for_optin( $data ) {
 
-		global $edd_options;
+		global $pdd_options;
 
-		$edd_options['allow_tracking'] = '1';
+		$pdd_options['allow_tracking'] = '1';
 
-		update_option( 'edd_settings', $edd_options );
+		update_option( 'pdd_settings', $pdd_options );
 
 		$this->send_checkin( true );
 
-		update_option( 'edd_tracking_notice', '1' );
+		update_option( 'pdd_tracking_notice', '1' );
 
 	}
 
@@ -181,15 +181,15 @@ class EDD_Tracking {
 	 */
 	public function check_for_optout( $data ) {
 
-		global $edd_options;
-		if( isset( $edd_options['allow_tracking'] ) ) {
-			unset( $edd_options['allow_tracking'] );
-			update_option( 'edd_settings', $edd_options );
+		global $pdd_options;
+		if( isset( $pdd_options['allow_tracking'] ) ) {
+			unset( $pdd_options['allow_tracking'] );
+			update_option( 'pdd_settings', $pdd_options );
 		}
 
-		update_option( 'edd_tracking_notice', '1' );
+		update_option( 'pdd_tracking_notice', '1' );
 
-		wp_redirect( remove_query_arg( 'edd_action' ) ); exit;
+		wp_redirect( remove_query_arg( 'pdd_action' ) ); exit;
 
 	}
 
@@ -200,7 +200,7 @@ class EDD_Tracking {
 	 * @return false/string
 	 */
 	private function get_last_send() {
-		return get_option( 'edd_tracking_last_send' );
+		return get_option( 'pdd_tracking_last_send' );
 	}
 
 	/**
@@ -211,7 +211,7 @@ class EDD_Tracking {
 	 */
 	private function schedule_send() {
 		// We send once a week (while tracking is allowed) to check in, which can be used to determine active sites
-		add_action( 'edd_weekly_scheduled_events', array( $this, 'send_checkin' ) );
+		add_action( 'pdd_weekly_scheduled_events', array( $this, 'send_checkin' ) );
 	}
 
 	/**
@@ -222,14 +222,14 @@ class EDD_Tracking {
 	 */
 	public function admin_notice() {
 
-		global $edd_options;
+		global $pdd_options;
 
-		$hide_notice = get_option( 'edd_tracking_notice' );
+		$hide_notice = get_option( 'pdd_tracking_notice' );
 
 		if( $hide_notice )
 			return;
 
-		if( isset( $edd_options['allow_tracking'] ) )
+		if( isset( $pdd_options['allow_tracking'] ) )
 			return;
 
 		if( ! current_user_can( 'manage_options' ) )
@@ -240,18 +240,18 @@ class EDD_Tracking {
 			stristr( network_site_url( '/' ), 'localhost' ) !== false ||
 			stristr( network_site_url( '/' ), ':8888'     ) !== false // This is common with MAMP on OS X
 		) {
-			update_option( 'edd_tracking_notice', '1' );
+			update_option( 'pdd_tracking_notice', '1' );
 		} else {
-			$optin_url  = add_query_arg( 'edd_action', 'opt_into_tracking' );
-			$optout_url = add_query_arg( 'edd_action', 'opt_out_of_tracking' );
+			$optin_url  = add_query_arg( 'pdd_action', 'opt_into_tracking' );
+			$optout_url = add_query_arg( 'pdd_action', 'opt_out_of_tracking' );
 
 			echo '<div class="updated"><p>';
-				echo __( 'Allow Easy Digital Downloads to track plugin usage? Opt-in to tracking and our newsletter and immediately be emailed a 20% discount to the shop for <a href="https://easydigitaldownloads.com/extensions" target="_blank">Extensions and Themes</a>. No sensitive data is tracked.', 'edd' );
-				echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . __( 'Allow', 'edd' ) . '</a>';
-				echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . __( 'Do not allow', 'edd' ) . '</a>';
+				echo __( 'Allow Easy Digital Downloads to track plugin usage? Opt-in to tracking and our newsletter and immediately be emailed a 20% discount to the shop for <a href="https://easydigitaldownloads.com/extensions" target="_blank">Extensions and Themes</a>. No sensitive data is tracked.', 'pdd' );
+				echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . __( 'Allow', 'pdd' ) . '</a>';
+				echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . __( 'Do not allow', 'pdd' ) . '</a>';
 			echo '</p></div>';
 		}
 	}
 
 }
-$edd_tracking = new EDD_Tracking;
+$pdd_tracking = new PDD_Tracking;

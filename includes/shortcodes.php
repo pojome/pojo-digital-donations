@@ -2,7 +2,7 @@
 /**
  * Shortcodes
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Shortcodes
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -22,18 +22,18 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @param string $content
  * @return string Fully formatted purchase link
  */
-function edd_download_shortcode( $atts, $content = null ) {
-	global $post, $edd_options;
+function pdd_download_shortcode( $atts, $content = null ) {
+	global $post, $pdd_options;
 
 	$atts = shortcode_atts( array(
 		'id' 	        => $post->ID,
 		'sku'			=> '',
 		'price'         => '1',
 		'paypal_direct' => '0',
-		'text'	        => isset( $edd_options[ 'add_to_cart_text' ] )  && $edd_options[ 'add_to_cart_text' ]    != '' ? $edd_options[ 'add_to_cart_text' ] : __( 'Purchase', 'edd' ),
-		'style'         => isset( $edd_options[ 'button_style' ] ) 	 	? $edd_options[ 'button_style' ] 		: 'button',
-		'color'         => isset( $edd_options[ 'checkout_color' ] ) 	? $edd_options[ 'checkout_color' ] 		: 'blue',
-		'class'         => 'edd-submit',
+		'text'	        => isset( $pdd_options[ 'add_to_cart_text' ] )  && $pdd_options[ 'add_to_cart_text' ]    != '' ? $pdd_options[ 'add_to_cart_text' ] : __( 'Purchase', 'pdd' ),
+		'style'         => isset( $pdd_options[ 'button_style' ] ) 	 	? $pdd_options[ 'button_style' ] 		: 'button',
+		'color'         => isset( $pdd_options[ 'checkout_color' ] ) 	? $pdd_options[ 'checkout_color' ] 		: 'blue',
+		'class'         => 'pdd-submit',
 		'form_id'       => ''
 	),
 	$atts, 'purchase_link' );
@@ -46,18 +46,18 @@ function edd_download_shortcode( $atts, $content = null ) {
 		// Edd_get_purchase_link() expects the ID to be download_id since v1.3
 		$atts['download_id'] = $atts['id'];
 
-		$download = edd_get_download( $atts['download_id'] );
+		$download = pdd_get_download( $atts['download_id'] );
 	} elseif( isset( $atts['sku'] ) ) {
-		$download = edd_get_download_by( 'sku', $atts['sku'] );
+		$download = pdd_get_download_by( 'sku', $atts['sku'] );
 
 		$atts['download_id'] = $download->ID;
 	}
 
 	if ( $download ) {
-		return edd_get_purchase_link( $atts );
+		return pdd_get_purchase_link( $atts );
 	}
 }
-add_shortcode( 'purchase_link', 'edd_download_shortcode' );
+add_shortcode( 'purchase_link', 'pdd_download_shortcode' );
 
 /**
  * Download History Shortcode
@@ -67,14 +67,14 @@ add_shortcode( 'purchase_link', 'edd_download_shortcode' );
  * @since 1.0
  * @return string
  */
-function edd_download_history() {
+function pdd_download_history() {
 	if ( is_user_logged_in() ) {
 		ob_start();
-		edd_get_template_part( 'history', 'downloads' );
+		pdd_get_template_part( 'history', 'downloads' );
 		return ob_get_clean();
 	}
 }
-add_shortcode( 'download_history', 'edd_download_history' );
+add_shortcode( 'download_history', 'pdd_download_history' );
 
 /**
  * Purchase History Shortcode
@@ -84,14 +84,14 @@ add_shortcode( 'download_history', 'edd_download_history' );
  * @since 1.0
  * @return string
  */
-function edd_purchase_history() {
+function pdd_purchase_history() {
 	if ( is_user_logged_in() ) {
 		ob_start();
-		edd_get_template_part( 'history', 'purchases' );
+		pdd_get_template_part( 'history', 'purchases' );
 		return ob_get_clean();
 	}
 }
-add_shortcode( 'purchase_history', 'edd_purchase_history' );
+add_shortcode( 'purchase_history', 'pdd_purchase_history' );
 
 /**
  * Checkout Form Shortcode
@@ -103,10 +103,10 @@ add_shortcode( 'purchase_history', 'edd_purchase_history' );
  * @param string $content
  * @return string
  */
-function edd_checkout_form_shortcode( $atts, $content = null ) {
-	return edd_checkout_form();
+function pdd_checkout_form_shortcode( $atts, $content = null ) {
+	return pdd_checkout_form();
 }
-add_shortcode( 'download_checkout', 'edd_checkout_form_shortcode' );
+add_shortcode( 'download_checkout', 'pdd_checkout_form_shortcode' );
 
 /**
  * Download Cart Shortcode
@@ -118,30 +118,30 @@ add_shortcode( 'download_checkout', 'edd_checkout_form_shortcode' );
  * @param string $content
  * @return string
  */
-function edd_cart_shortcode( $atts, $content = null ) {
-	return edd_shopping_cart();
+function pdd_cart_shortcode( $atts, $content = null ) {
+	return pdd_shopping_cart();
 }
-add_shortcode( 'download_cart', 'edd_cart_shortcode' );
+add_shortcode( 'download_cart', 'pdd_cart_shortcode' );
 
 /**
  * Login Shortcode
  *
  * Shows a login form allowing users to users to log in. This function simply
- * calls the edd_login_form function to display the login form.
+ * calls the pdd_login_form function to display the login form.
  *
  * @since 1.0
  * @param array $atts Shortcode attributes
  * @param string $content
- * @uses edd_login_form()
+ * @uses pdd_login_form()
  * @return string
  */
-function edd_login_form_shortcode( $atts, $content = null ) {
+function pdd_login_form_shortcode( $atts, $content = null ) {
 	$args = shortcode_atts( array(
 		'redirect' => '',
-	), $atts, 'edd_login' );
-	return edd_login_form( $args['redirect'] );
+	), $atts, 'pdd_login' );
+	return pdd_login_form( $args['redirect'] );
 }
-add_shortcode( 'edd_login', 'edd_login_form_shortcode' );
+add_shortcode( 'pdd_login', 'pdd_login_form_shortcode' );
 
 /**
  * Register Shortcode
@@ -151,16 +151,16 @@ add_shortcode( 'edd_login', 'edd_login_form_shortcode' );
  * @since 2.0
  * @param array $atts Shortcode attributes
  * @param string $content
- * @uses edd_register_form()
+ * @uses pdd_register_form()
  * @return string
  */
-function edd_register_form_shortcode( $atts, $content = null ) {
+function pdd_register_form_shortcode( $atts, $content = null ) {
 	$args = shortcode_atts( array(
 		'redirect' => '',
-	), $atts, 'edd_register' );
-	return edd_register_form( $args['redirect'] );
+	), $atts, 'pdd_register' );
+	return pdd_register_form( $args['redirect'] );
 }
-add_shortcode( 'edd_register', 'edd_register_form_shortcode' );
+add_shortcode( 'pdd_register', 'pdd_register_form_shortcode' );
 
 /**
  * Discounts short code
@@ -171,25 +171,25 @@ add_shortcode( 'edd_register', 'edd_register_form_shortcode' );
  * @since 1.0.8.2
  * @param array $atts Shortcode attributes
  * @param string $content
- * @uses edd_get_discounts()
+ * @uses pdd_get_discounts()
  * @return string $discounts_lists List of all the active discount codes
  */
-function edd_discounts_shortcode( $atts, $content = null ) {
-	$discounts = edd_get_discounts();
+function pdd_discounts_shortcode( $atts, $content = null ) {
+	$discounts = pdd_get_discounts();
 
-	$discounts_list = '<ul id="edd_discounts_list">';
+	$discounts_list = '<ul id="pdd_discounts_list">';
 
-	if ( ! empty( $discounts ) && edd_has_active_discounts() ) {
+	if ( ! empty( $discounts ) && pdd_has_active_discounts() ) {
 
 		foreach ( $discounts as $discount ) {
 
-			if ( edd_is_discount_active( $discount->ID ) ) {
+			if ( pdd_is_discount_active( $discount->ID ) ) {
 
-				$discounts_list .= '<li class="edd_discount">';
+				$discounts_list .= '<li class="pdd_discount">';
 
-					$discounts_list .= '<span class="edd_discount_name">' . edd_get_discount_code( $discount->ID ) . '</span>';
-					$discounts_list .= '<span class="edd_discount_separator"> - </span>';
-					$discounts_list .= '<span class="edd_discount_amount">' . edd_format_discount_rate( edd_get_discount_type( $discount->ID ), edd_get_discount_amount( $discount->ID ) ) . '</span>';
+					$discounts_list .= '<span class="pdd_discount_name">' . pdd_get_discount_code( $discount->ID ) . '</span>';
+					$discounts_list .= '<span class="pdd_discount_separator"> - </span>';
+					$discounts_list .= '<span class="pdd_discount_amount">' . pdd_format_discount_rate( pdd_get_discount_type( $discount->ID ), pdd_get_discount_amount( $discount->ID ) ) . '</span>';
 
 				$discounts_list .= '</li>';
 
@@ -198,14 +198,14 @@ function edd_discounts_shortcode( $atts, $content = null ) {
 		}
 
 	} else {
-		$discounts_list .= '<li class="edd_discount">' . __( 'No discounts found', 'edd' ) . '</li>';
+		$discounts_list .= '<li class="pdd_discount">' . __( 'No discounts found', 'pdd' ) . '</li>';
 	}
 
 	$discounts_list .= '</ul>';
 
 	return $discounts_list;
 }
-add_shortcode( 'download_discounts', 'edd_discounts_shortcode' );
+add_shortcode( 'download_discounts', 'pdd_discounts_shortcode' );
 
 /**
  * Purchase Collection Shortcode
@@ -218,30 +218,30 @@ add_shortcode( 'download_discounts', 'edd_discounts_shortcode' );
  * @param string $content
  * @return string
  */
-function edd_purchase_collection_shortcode( $atts, $content = null ) {
-	global $edd_options;
+function pdd_purchase_collection_shortcode( $atts, $content = null ) {
+	global $pdd_options;
 
 	$args = shortcode_atts( array(
 		'taxonomy'	=> '',
 		'terms'		=> '',
-		'text'		=> __('Purchase All Items', 'edd'),
-		'style'		=> isset( $edd_options['button_style'] ) ? $edd_options['button_style'] : 'button',
-		'color'		=> isset( $edd_options['checkout_color'] ) ? $edd_options['checkout_color'] : 'blue',
-		'class'		=> 'edd-submit'
+		'text'		=> __('Purchase All Items', 'pdd'),
+		'style'		=> isset( $pdd_options['button_style'] ) ? $pdd_options['button_style'] : 'button',
+		'color'		=> isset( $pdd_options['checkout_color'] ) ? $pdd_options['checkout_color'] : 'blue',
+		'class'		=> 'pdd-submit'
 	), $atts, 'purchase_collection' );
 
 	$button_display = implode( ' ', array( $args['style'], $args['color'], $args['class'] ) );
 
-	return '<a href="' . add_query_arg( array( 'edd_action' => 'purchase_collection', 'taxonomy' => $args['taxonomy'], 'terms' => $args['terms'] ) ) . '" class="' . $button_display . '">' . $args['text'] . '</a>';
+	return '<a href="' . add_query_arg( array( 'pdd_action' => 'purchase_collection', 'taxonomy' => $args['taxonomy'], 'terms' => $args['terms'] ) ) . '" class="' . $button_display . '">' . $args['text'] . '</a>';
 }
-add_shortcode( 'purchase_collection', 'edd_purchase_collection_shortcode' );
+add_shortcode( 'purchase_collection', 'pdd_purchase_collection_shortcode' );
 
 /**
  * Downloads Shortcode
  *
  * This shortcodes uses the WordPress Query API to get downloads with the
  * arguments specified when using the shortcode. A list of the arguments
- * can be found from the EDD Dccumentation. The shortcode will take all the
+ * can be found from the PDD Dccumentation. The shortcode will take all the
  * parameters and display the downloads queried in a valid HTML <div> tags.
  *
  * @since 1.0.6
@@ -250,7 +250,7 @@ add_shortcode( 'purchase_collection', 'edd_purchase_collection_shortcode' );
  * @param string $content
  * @return string $display Output generated from the downloads queried
  */
-function edd_downloads_query( $atts, $content = null ) {
+function pdd_downloads_query( $atts, $content = null ) {
 	
 	$atts = shortcode_atts( array(
 		'category'         => '',
@@ -284,7 +284,7 @@ function edd_downloads_query( $atts, $content = null ) {
 	switch ( $atts['orderby'] ) {
 		case 'price':
 			$atts['orderby']   = 'meta_value';
-			$query['meta_key'] = 'edd_price';
+			$query['meta_key'] = 'pdd_price';
 			$query['orderby']  = 'meta_value_num';
 		break;
 
@@ -373,39 +373,39 @@ function edd_downloads_query( $atts, $content = null ) {
 	endswitch;
 
 	// Allow the query to be manipulated by other plugins
-	$query = apply_filters( 'edd_downloads_query', $query, $atts );
+	$query = apply_filters( 'pdd_downloads_query', $query, $atts );
 
 	$downloads = new WP_Query( $query );
 	if ( $downloads->have_posts() ) :
 		$i = 1;
-		$wrapper_class = 'edd_download_columns_' . $atts['columns'];
+		$wrapper_class = 'pdd_download_columns_' . $atts['columns'];
 		ob_start(); ?>
-		<div class="edd_downloads_list <?php echo apply_filters( 'edd_downloads_list_wrapper_class', $wrapper_class, $atts ); ?>">
+		<div class="pdd_downloads_list <?php echo apply_filters( 'pdd_downloads_list_wrapper_class', $wrapper_class, $atts ); ?>">
 			<?php while ( $downloads->have_posts() ) : $downloads->the_post(); ?>
-				<div itemscope itemtype="http://schema.org/Product" class="<?php echo apply_filters( 'edd_download_class', 'edd_download', get_the_ID(), $atts, $i ); ?>" id="edd_download_<?php echo get_the_ID(); ?>" style="width: <?php echo $column_width; ?>; float: left;">
-					<div class="edd_download_inner">
+				<div itemscope itemtype="http://schema.org/Product" class="<?php echo apply_filters( 'pdd_download_class', 'pdd_download', get_the_ID(), $atts, $i ); ?>" id="pdd_download_<?php echo get_the_ID(); ?>" style="width: <?php echo $column_width; ?>; float: left;">
+					<div class="pdd_download_inner">
 						<?php
 
-						do_action( 'edd_download_before' );
+						do_action( 'pdd_download_before' );
 
 						if ( 'false' != $atts['thumbnails'] ) :
-							edd_get_template_part( 'shortcode', 'content-image' );
+							pdd_get_template_part( 'shortcode', 'content-image' );
 						endif;
 
-						edd_get_template_part( 'shortcode', 'content-title' );
+						pdd_get_template_part( 'shortcode', 'content-title' );
 
 						if ( $atts['excerpt'] == 'yes' && $atts['full_content'] != 'yes' )
-							edd_get_template_part( 'shortcode', 'content-excerpt' );
+							pdd_get_template_part( 'shortcode', 'content-excerpt' );
 						else if ( $atts['full_content'] == 'yes' )
-							edd_get_template_part( 'shortcode', 'content-full' );
+							pdd_get_template_part( 'shortcode', 'content-full' );
 
 						if ( $atts['price'] == 'yes' )
-							edd_get_template_part( 'shortcode', 'content-price' );
+							pdd_get_template_part( 'shortcode', 'content-price' );
 
 						if ( $atts['buy_button'] == 'yes' )
-							edd_get_template_part( 'shortcode', 'content-cart-button' );
+							pdd_get_template_part( 'shortcode', 'content-cart-button' );
 
-						do_action( 'edd_download_after' );
+						do_action( 'pdd_download_after' );
 
 						?>
 					</div>
@@ -417,7 +417,7 @@ function edd_downloads_query( $atts, $content = null ) {
 
 			<?php wp_reset_postdata(); ?>
 
-			<div id="edd_download_pagination" class="navigation">
+			<div id="pdd_download_pagination" class="navigation">
 				<?php
 				if ( is_single() ) {
 					echo paginate_links( array(
@@ -442,12 +442,12 @@ function edd_downloads_query( $atts, $content = null ) {
 		<?php
 		$display = ob_get_clean();
 	else:
-		$display = sprintf( _x( 'No %s found', 'download post type name', 'edd' ), edd_get_label_plural() );
+		$display = sprintf( _x( 'No %s found', 'download post type name', 'pdd' ), pdd_get_label_plural() );
 	endif;
 
 	return apply_filters( 'downloads_shortcode', $display, $atts, $atts['buy_button'], $atts['columns'], $column_width, $downloads, $atts['excerpt'], $atts['full_content'], $atts['price'], $atts['thumbnails'], $query );
 }
-add_shortcode( 'downloads', 'edd_downloads_query' );
+add_shortcode( 'downloads', 'pdd_downloads_query' );
 
 /**
  * Price Shortcode
@@ -459,18 +459,18 @@ add_shortcode( 'downloads', 'edd_downloads_query' );
  * @param string $content
  * @return string
  */
-function edd_download_price_shortcode( $atts, $content = null ) {
+function pdd_download_price_shortcode( $atts, $content = null ) {
 	$atts = shortcode_atts( array(
 		'id' => NULL,
-	), $atts, 'edd_price' );
+	), $atts, 'pdd_price' );
 
 	if ( is_null( $atts['id'] ) ) {
 		$id = get_the_ID();
 	}
 
-	return edd_price( $atts['id'], false );
+	return pdd_price( $atts['id'], false );
 }
-add_shortcode( 'edd_price', 'edd_download_price_shortcode' );
+add_shortcode( 'pdd_price', 'pdd_download_price_shortcode' );
 
 /**
  * Receipt Shortcode
@@ -482,11 +482,11 @@ add_shortcode( 'edd_price', 'edd_download_price_shortcode' );
  * @param string $content
  * @return string
  */
-function edd_receipt_shortcode( $atts, $content = null ) {
-	global $edd_receipt_args;
+function pdd_receipt_shortcode( $atts, $content = null ) {
+	global $pdd_receipt_args;
 
-	$edd_receipt_args = shortcode_atts( array(
-		'error'           => __( 'Sorry, trouble retrieving payment receipt.', 'edd' ),
+	$pdd_receipt_args = shortcode_atts( array(
+		'error'           => __( 'Sorry, trouble retrieving payment receipt.', 'pdd' ),
 		'price'           => true,
 		'discount'        => true,
 		'products'        => true,
@@ -495,23 +495,23 @@ function edd_receipt_shortcode( $atts, $content = null ) {
 		'payment_key'     => false,
 		'payment_method'  => true,
 		'payment_id'      => true
-	), $atts, 'edd_receipt' );
+	), $atts, 'pdd_receipt' );
 
-	$session = edd_get_purchase_session();
+	$session = pdd_get_purchase_session();
 	if ( isset( $_GET[ 'payment_key' ] ) ) {
 		$payment_key = urldecode( $_GET[ 'payment_key' ] );
-	} elseif ( $edd_receipt_args['payment_key'] ) {
-		$payment_key = $edd_receipt_args['payment_key'];
+	} elseif ( $pdd_receipt_args['payment_key'] ) {
+		$payment_key = $pdd_receipt_args['payment_key'];
 	} else if ( $session ) {
 		$payment_key = $session[ 'purchase_key' ];
 	}
 
 	// No key found
 	if ( ! isset( $payment_key ) )
-		return $edd_receipt_args[ 'error' ];
+		return $pdd_receipt_args[ 'error' ];
 
-	$edd_receipt_args[ 'id' ] = edd_get_purchase_id_by_key( $payment_key );
-	$customer_id              = edd_get_payment_user_id( $edd_receipt_args[ 'id' ] );
+	$pdd_receipt_args[ 'id' ] = pdd_get_purchase_id_by_key( $payment_key );
+	$customer_id              = pdd_get_payment_user_id( $pdd_receipt_args[ 'id' ] );
 
 	/*
 	 * Check if the user has permission to view the receipt
@@ -524,31 +524,31 @@ function edd_receipt_shortcode( $atts, $content = null ) {
 	 *
 	 */
 
-	$user_can_view = ( is_user_logged_in() && $customer_id == get_current_user_id() ) || ( ( $customer_id == 0 || $customer_id == '-1' ) && ! is_user_logged_in() && edd_get_purchase_session() ) || current_user_can( 'view_shop_sensitive_data' );
+	$user_can_view = ( is_user_logged_in() && $customer_id == get_current_user_id() ) || ( ( $customer_id == 0 || $customer_id == '-1' ) && ! is_user_logged_in() && pdd_get_purchase_session() ) || current_user_can( 'view_shop_sensitive_data' );
 
-	if ( ! apply_filters( 'edd_user_can_view_receipt', $user_can_view, $edd_receipt_args ) ) {
-		return $edd_receipt_args[ 'error' ];
+	if ( ! apply_filters( 'pdd_user_can_view_receipt', $user_can_view, $pdd_receipt_args ) ) {
+		return $pdd_receipt_args[ 'error' ];
 	}
 
 	ob_start();
 
-	edd_get_template_part( 'shortcode', 'receipt' );
+	pdd_get_template_part( 'shortcode', 'receipt' );
 
 	$display = ob_get_clean();
 
 	return $display;
 }
-add_shortcode( 'edd_receipt', 'edd_receipt_shortcode' );
+add_shortcode( 'pdd_receipt', 'pdd_receipt_shortcode' );
 
 /**
  * Profile Editor Shortcode
  *
- * Outputs the EDD Profile Editor to allow users to amend their details from the
- * front-end. This function uses the EDD templating system allowing users to
+ * Outputs the PDD Profile Editor to allow users to amend their details from the
+ * front-end. This function uses the PDD templating system allowing users to
  * override the default profile editor template. The profile editor template is located
  * under templates/profile-editor.php, however, it can be altered by creating a
- * file called profile-editor.php in the edd_template directory in your active theme's
- * folder. Please visit the EDD Documentation for more information on how the
+ * file called profile-editor.php in the pdd_template directory in your active theme's
+ * folder. Please visit the PDD Documentation for more information on how the
  * templating system is used.
  *
  * @since 1.4
@@ -559,16 +559,16 @@ add_shortcode( 'edd_receipt', 'edd_receipt_shortcode' );
  * @param null $content
  * @return string Output generated from the profile editor
  */
-function edd_profile_editor_shortcode( $atts, $content = null ) {
+function pdd_profile_editor_shortcode( $atts, $content = null ) {
 	ob_start();
 
-	edd_get_template_part( 'shortcode', 'profile-editor' );
+	pdd_get_template_part( 'shortcode', 'profile-editor' );
 
 	$display = ob_get_clean();
 
 	return $display;
 }
-add_shortcode( 'edd_profile_editor', 'edd_profile_editor_shortcode' );
+add_shortcode( 'pdd_profile_editor', 'pdd_profile_editor_shortcode' );
 
 /**
  * Process Profile Updater Form
@@ -580,28 +580,28 @@ add_shortcode( 'edd_profile_editor', 'edd_profile_editor_shortcode' );
  * @param array $data Data sent from the profile editor
  * @return void
  */
-function edd_process_profile_editor_updates( $data ) {
+function pdd_process_profile_editor_updates( $data ) {
 	// Profile field change request
-	if ( empty( $_POST['edd_profile_editor_submit'] ) && !is_user_logged_in() )
+	if ( empty( $_POST['pdd_profile_editor_submit'] ) && !is_user_logged_in() )
 		return false;
 
 	// Nonce security
-	if ( ! wp_verify_nonce( $data['edd_profile_editor_nonce'], 'edd-profile-editor-nonce' ) )
+	if ( ! wp_verify_nonce( $data['pdd_profile_editor_nonce'], 'pdd-profile-editor-nonce' ) )
 		return false;
 
 	$user_id       = get_current_user_id();
 	$old_user_data = get_userdata( $user_id );
 
-	$display_name = sanitize_text_field( $data['edd_display_name'] );
-	$first_name   = sanitize_text_field( $data['edd_first_name'] );
-	$last_name    = sanitize_text_field( $data['edd_last_name'] );
-	$email        = sanitize_email( $data['edd_email'] );
-	$line1        = ( isset( $data['edd_address_line1'] ) ? sanitize_text_field( $data['edd_address_line1'] ) : '' );
-	$line2        = ( isset( $data['edd_address_line2'] ) ? sanitize_text_field( $data['edd_address_line2'] ) : '' );
-	$city         = ( isset( $data['edd_address_city'] ) ? sanitize_text_field( $data['edd_address_city'] ) : '' );
-	$state        = ( isset( $data['edd_address_state'] ) ? sanitize_text_field( $data['edd_address_state'] ) : '' );
-	$zip          = ( isset( $data['edd_address_zip'] ) ? sanitize_text_field( $data['edd_address_zip'] ) : '' );
-	$country      = ( isset( $data['edd_address_country'] ) ? sanitize_text_field( $data['edd_address_country'] ) : '' );
+	$display_name = sanitize_text_field( $data['pdd_display_name'] );
+	$first_name   = sanitize_text_field( $data['pdd_first_name'] );
+	$last_name    = sanitize_text_field( $data['pdd_last_name'] );
+	$email        = sanitize_email( $data['pdd_email'] );
+	$line1        = ( isset( $data['pdd_address_line1'] ) ? sanitize_text_field( $data['pdd_address_line1'] ) : '' );
+	$line2        = ( isset( $data['pdd_address_line2'] ) ? sanitize_text_field( $data['pdd_address_line2'] ) : '' );
+	$city         = ( isset( $data['pdd_address_city'] ) ? sanitize_text_field( $data['pdd_address_city'] ) : '' );
+	$state        = ( isset( $data['pdd_address_state'] ) ? sanitize_text_field( $data['pdd_address_state'] ) : '' );
+	$zip          = ( isset( $data['pdd_address_zip'] ) ? sanitize_text_field( $data['pdd_address_zip'] ) : '' );
+	$country      = ( isset( $data['pdd_address_country'] ) ? sanitize_text_field( $data['pdd_address_country'] ) : '' );
 
 	$userdata = array(
 		'ID'           => $user_id,
@@ -621,41 +621,41 @@ function edd_process_profile_editor_updates( $data ) {
 		'country'  => $country
 	);
 
-	do_action( 'edd_pre_update_user_profile', $user_id, $userdata );
+	do_action( 'pdd_pre_update_user_profile', $user_id, $userdata );
 
 	// New password
-	if ( ! empty( $data['edd_new_user_pass1'] ) ) {
-		if ( $data['edd_new_user_pass1'] !== $data['edd_new_user_pass2'] ) {
-			edd_set_error( 'password_mismatch', __( 'The passwords you entered do not match. Please try again.', 'edd' ) );
+	if ( ! empty( $data['pdd_new_user_pass1'] ) ) {
+		if ( $data['pdd_new_user_pass1'] !== $data['pdd_new_user_pass2'] ) {
+			pdd_set_error( 'password_mismatch', __( 'The passwords you entered do not match. Please try again.', 'pdd' ) );
 		} else {
-			$userdata['user_pass'] = $data['edd_new_user_pass1'];
+			$userdata['user_pass'] = $data['pdd_new_user_pass1'];
 		}
 	}
 
 	// Make sure the new email doesn't belong to another user
 	if( $email != $old_user_data->user_email ) {
 		if( email_exists( $email ) ) {
-			edd_set_error( 'email_exists', __( 'The email you entered belongs to another user. Please use another.', 'edd' ) );
+			pdd_set_error( 'email_exists', __( 'The email you entered belongs to another user. Please use another.', 'pdd' ) );
 		}
 	}
 
 	// Check for errors
-	$errors = edd_get_errors();
+	$errors = pdd_get_errors();
 
 	if( $errors ) {
 		// Send back to the profile editor if there are errors
-		wp_redirect( $data['edd_redirect'] );
-		edd_die();
+		wp_redirect( $data['pdd_redirect'] );
+		pdd_die();
 	}
 
 	// Update the user
-	$meta    = update_user_meta( $user_id, '_edd_user_address', $address );
+	$meta    = update_user_meta( $user_id, '_pdd_user_address', $address );
 	$updated = wp_update_user( $userdata );
 
 	if ( $updated ) {
-		do_action( 'edd_user_profile_updated', $user_id, $userdata );
-		wp_redirect( add_query_arg( 'updated', 'true', $data['edd_redirect'] ) );
-		edd_die();
+		do_action( 'pdd_user_profile_updated', $user_id, $userdata );
+		wp_redirect( add_query_arg( 'updated', 'true', $data['pdd_redirect'] ) );
+		pdd_die();
 	}
 }
-add_action( 'edd_edit_user_profile', 'edd_process_profile_editor_updates' );
+add_action( 'pdd_edit_user_profile', 'pdd_process_profile_editor_updates' );

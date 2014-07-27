@@ -2,7 +2,7 @@
 /**
  * Discount Actions
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Discounts
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -17,16 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * @since 1.0
  * @param array $data Discount code data
- * @uses edd_store_discount()
+ * @uses pdd_store_discount()
  * @return void
  */
-function edd_add_discount( $data ) {
-	if ( isset( $data['edd-discount-nonce'] ) && wp_verify_nonce( $data['edd-discount-nonce'], 'edd_discount_nonce' ) ) {
+function pdd_add_discount( $data ) {
+	if ( isset( $data['pdd-discount-nonce'] ) && wp_verify_nonce( $data['pdd-discount-nonce'], 'pdd_discount_nonce' ) ) {
 		// Setup the discount code details
 		$posted = array();
 
 		foreach ( $data as $key => $value ) {
-			if ( $key != 'edd-discount-nonce' && $key != 'edd-action' && $key != 'edd-redirect' ) {
+			if ( $key != 'pdd-discount-nonce' && $key != 'pdd-action' && $key != 'pdd-redirect' ) {
 				if ( is_string( $value ) || is_int( $value ) )
 					$posted[ $key ] = strip_tags( addslashes( $value ) );
 				elseif ( is_array( $value ) )
@@ -36,14 +36,14 @@ function edd_add_discount( $data ) {
 
 		// Set the discount code's default status to active
 		$posted['status'] = 'active';
-		if ( edd_store_discount( $posted ) ) {
-			wp_redirect( add_query_arg( 'edd-message', 'discount_added', $data['edd-redirect'] ) ); edd_die();
+		if ( pdd_store_discount( $posted ) ) {
+			wp_redirect( add_query_arg( 'pdd-message', 'discount_added', $data['pdd-redirect'] ) ); pdd_die();
 		} else {
-			wp_redirect( add_query_arg( 'edd-message', 'discount_add_failed', $data['edd-redirect'] ) ); edd_die();
+			wp_redirect( add_query_arg( 'pdd-message', 'discount_add_failed', $data['pdd-redirect'] ) ); pdd_die();
 		}		
 	}
 }
-add_action( 'edd_add_discount', 'edd_add_discount' );
+add_action( 'pdd_add_discount', 'pdd_add_discount' );
 
 /**
  * Saves an edited discount
@@ -52,13 +52,13 @@ add_action( 'edd_add_discount', 'edd_add_discount' );
  * @param array $data Discount code data
  * @return void
  */
-function edd_edit_discount( $data ) {
-	if ( isset( $data['edd-discount-nonce'] ) && wp_verify_nonce( $data['edd-discount-nonce'], 'edd_discount_nonce' ) ) {
+function pdd_edit_discount( $data ) {
+	if ( isset( $data['pdd-discount-nonce'] ) && wp_verify_nonce( $data['pdd-discount-nonce'], 'pdd_discount_nonce' ) ) {
 		// Setup the discount code details
 		$discount = array();
 
 		foreach ( $data as $key => $value ) {
-			if ( $key != 'edd-discount-nonce' && $key != 'edd-action' && $key != 'discount-id' && $key != 'edd-redirect' ) {
+			if ( $key != 'pdd-discount-nonce' && $key != 'pdd-action' && $key != 'discount-id' && $key != 'pdd-redirect' ) {
 				if ( is_string( $value ) || is_int( $value ) )
 					$discount[ $key ] = strip_tags( addslashes( $value ) );
 				elseif ( is_array( $value ) )
@@ -66,17 +66,17 @@ function edd_edit_discount( $data ) {
 			}
 		}
 
-		$old_discount = edd_get_discount_by( 'code', $data['code'] );
-		$discount['uses'] = edd_get_discount_uses( $old_discount->ID );
+		$old_discount = pdd_get_discount_by( 'code', $data['code'] );
+		$discount['uses'] = pdd_get_discount_uses( $old_discount->ID );
 
-		if ( edd_store_discount( $discount, $data['discount-id'] ) ) {
-			wp_redirect( add_query_arg( 'edd-message', 'discount_updated', $data['edd-redirect'] ) ); edd_die();
+		if ( pdd_store_discount( $discount, $data['discount-id'] ) ) {
+			wp_redirect( add_query_arg( 'pdd-message', 'discount_updated', $data['pdd-redirect'] ) ); pdd_die();
 		} else {
-			wp_redirect( add_query_arg( 'edd-message', 'discount_update_failed', $data['edd-redirect'] ) ); edd_die();
+			wp_redirect( add_query_arg( 'pdd-message', 'discount_update_failed', $data['pdd-redirect'] ) ); pdd_die();
 		}
 	}
 }
-add_action( 'edd_edit_discount', 'edd_edit_discount' );
+add_action( 'pdd_edit_discount', 'pdd_edit_discount' );
 
 /**
  * Listens for when a discount delete button is clicked and deletes the
@@ -84,17 +84,17 @@ add_action( 'edd_edit_discount', 'edd_edit_discount' );
  *
  * @since 1.0
  * @param array $data Discount code data
- * @uses edd_remove_discount()
+ * @uses pdd_remove_discount()
  * @return void
  */
-function edd_delete_discount( $data ) {
-	if ( ! isset( $data['_wpnonce'] ) || ! wp_verify_nonce( $data['_wpnonce'], 'edd_discount_nonce' ) )
-		wp_die( __( 'Trying to cheat or something?', 'edd' ), __( 'Error', 'edd' ) );
+function pdd_delete_discount( $data ) {
+	if ( ! isset( $data['_wpnonce'] ) || ! wp_verify_nonce( $data['_wpnonce'], 'pdd_discount_nonce' ) )
+		wp_die( __( 'Trying to cheat or something?', 'pdd' ), __( 'Error', 'pdd' ) );
 
 	$discount_id = $data['discount'];
-	edd_remove_discount( $discount_id );
+	pdd_remove_discount( $discount_id );
 }
-add_action( 'edd_delete_discount', 'edd_delete_discount' );
+add_action( 'pdd_delete_discount', 'pdd_delete_discount' );
 
 /**
  * Activates Discount Code
@@ -103,14 +103,14 @@ add_action( 'edd_delete_discount', 'edd_delete_discount' );
  *
  * @since 1.0
  * @param array $data Discount code data
- * @uses edd_update_discount_status()
+ * @uses pdd_update_discount_status()
  * @return void
  */
-function edd_activate_discount( $data ) {
+function pdd_activate_discount( $data ) {
 	$id = absint( $data['discount'] );
-	edd_update_discount_status( $id, 'active' );
+	pdd_update_discount_status( $id, 'active' );
 }
-add_action( 'edd_activate_discount', 'edd_activate_discount' );
+add_action( 'pdd_activate_discount', 'pdd_activate_discount' );
 
 /**
  * Deactivate Discount
@@ -119,11 +119,11 @@ add_action( 'edd_activate_discount', 'edd_activate_discount' );
  *
  * @since 1.0
  * @param array $data Discount code data
- * @uses edd_update_discount_status()
+ * @uses pdd_update_discount_status()
  * @return void
 */
-function edd_deactivate_discount( $data) {
+function pdd_deactivate_discount( $data) {
 	$id = absint( $data['discount'] );
-	edd_update_discount_status( $id, 'inactive' );
+	pdd_update_discount_status( $id, 'inactive' );
 }
-add_action( 'edd_deactivate_discount', 'edd_deactivate_discount' );
+add_action( 'pdd_deactivate_discount', 'pdd_deactivate_discount' );

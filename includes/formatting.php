@@ -2,7 +2,7 @@
 /**
  * Formatting functions for taking care of proper number formats and such
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Functions/Formatting
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -21,12 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @param string $amount Price amount to format
  * @return string $amount Newly sanitized amount
  */
-function edd_sanitize_amount( $amount ) {
-	global $edd_options;
+function pdd_sanitize_amount( $amount ) {
+	global $pdd_options;
 
 	$is_negative   = false;
-	$thousands_sep = edd_get_option( 'thousands_separator', ',' );
-	$decimal_sep   = edd_get_option( 'decimal_separator', '.' );
+	$thousands_sep = pdd_get_option( 'thousands_separator', ',' );
+	$decimal_sep   = pdd_get_option( 'decimal_separator', '.' );
 
 	// Sanitize the amount
 	if ( $decimal_sep == ',' && false !== ( $found = strpos( $amount, $decimal_sep ) ) ) {
@@ -46,14 +46,14 @@ function edd_sanitize_amount( $amount ) {
 	}
 
 	$amount   = preg_replace( '/[^0-9\.]/', '', $amount );
-	$decimals = apply_filters( 'edd_sanitize_amount_decimals', 2, $amount );
+	$decimals = apply_filters( 'pdd_sanitize_amount_decimals', 2, $amount );
 	$amount   = number_format( (double) $amount, $decimals, '.', '' );
 
 	if( $is_negative ) {
 		$amount *= -1;
 	}
 
-	return apply_filters( 'edd_sanitize_amount', $amount );
+	return apply_filters( 'pdd_sanitize_amount', $amount );
 }
 
 /**
@@ -66,11 +66,11 @@ function edd_sanitize_amount( $amount ) {
  * 
  * @return string $amount Newly formatted amount or Price Not Available
  */
-function edd_format_amount( $amount, $decimals = true ) {
-	global $edd_options;
+function pdd_format_amount( $amount, $decimals = true ) {
+	global $pdd_options;
 
-	$thousands_sep = edd_get_option( 'thousands_separator', ',' );
-	$decimal_sep   = edd_get_option( 'decimal_separator', '.' );
+	$thousands_sep = pdd_get_option( 'thousands_separator', ',' );
+	$decimal_sep   = pdd_get_option( 'decimal_separator', '.' );
 
 	// Format the amount
 	if ( $decimal_sep == ',' && false !== ( $sep_found = strpos( $amount, $decimal_sep ) ) ) {
@@ -93,10 +93,10 @@ function edd_format_amount( $amount, $decimals = true ) {
 		$amount = 0;
 	}
 	
-	$decimals  = apply_filters( 'edd_format_amount_decimals', $decimals ? 2 : 0, $amount );
+	$decimals  = apply_filters( 'pdd_format_amount_decimals', $decimals ? 2 : 0, $amount );
 	$formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
 
-	return apply_filters( 'edd_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
+	return apply_filters( 'pdd_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
 }
 
 
@@ -107,11 +107,11 @@ function edd_format_amount( $amount, $decimals = true ) {
  * @param string $price Price
  * @return array $currency Currencies displayed correctly
  */
-function edd_currency_filter( $price ) {
-	global $edd_options;
+function pdd_currency_filter( $price ) {
+	global $pdd_options;
 
-	$currency = edd_get_currency();
-	$position = isset( $edd_options['currency_position'] ) ? $edd_options['currency_position'] : 'before';
+	$currency = pdd_get_currency();
+	$position = isset( $pdd_options['currency_position'] ) ? $pdd_options['currency_position'] : 'before';
 
 	$negative = $price < 0;
 
@@ -146,7 +146,7 @@ function edd_currency_filter( $price ) {
 			    $formatted = $currency . ' ' . $price;
 				break;
 		endswitch;
-		$formatted = apply_filters( 'edd_' . strtolower( $currency ) . '_currency_filter_before', $formatted, $currency, $price );
+		$formatted = apply_filters( 'pdd_' . strtolower( $currency ) . '_currency_filter_before', $formatted, $currency, $price );
 	else :
 		switch ( $currency ) :
 			case "GBP" :
@@ -173,7 +173,7 @@ function edd_currency_filter( $price ) {
 			    $formatted = $price . ' ' . $currency;
 				break;
 		endswitch;
-		$formatted = apply_filters( 'edd_' . strtolower( $currency ) . '_currency_filter_after', $formatted, $currency, $price );
+		$formatted = apply_filters( 'pdd_' . strtolower( $currency ) . '_currency_filter_after', $formatted, $currency, $price );
 	endif;
 
 	if( $negative ) {
@@ -191,10 +191,10 @@ function edd_currency_filter( $price ) {
  * @param int $decimals Number of decimal places
  * @return int $decimals
 */
-function edd_currency_decimal_filter( $decimals = 2 ) {
-	global $edd_options;
+function pdd_currency_decimal_filter( $decimals = 2 ) {
+	global $pdd_options;
 
-	$currency = edd_get_currency();
+	$currency = pdd_get_currency();
 
 	switch ( $currency ) {
 		case 'RIAL' :
@@ -207,5 +207,5 @@ function edd_currency_decimal_filter( $decimals = 2 ) {
 
 	return $decimals;
 }
-add_filter( 'edd_sanitize_amount_decimals', 'edd_currency_decimal_filter' );
-add_filter( 'edd_format_amount_decimals', 'edd_currency_decimal_filter' );
+add_filter( 'pdd_sanitize_amount_decimals', 'pdd_currency_decimal_filter' );
+add_filter( 'pdd_format_amount_decimals', 'pdd_currency_decimal_filter' );

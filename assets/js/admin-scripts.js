@@ -3,7 +3,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Download Configuration Metabox
 	 */
-	var EDD_Download_Configuration = {
+	var PDD_Download_Configuration = {
 		init : function() {
 			this.add();
 			this.move();
@@ -24,7 +24,7 @@ jQuery(document).ready(function ($) {
 
 			var count  = row.parent().find( 'tr' ).length - 1;
 
-			clone.removeClass( 'edd_add_blank' );
+			clone.removeClass( 'pdd_add_blank' );
 
 			clone.find( 'td input, td select' ).val( '' );
 			clone.find( 'input, select' ).each(function() {
@@ -39,11 +39,11 @@ jQuery(document).ready(function ($) {
 		},
 
 		add : function() {
-			$( 'body' ).on( 'click', '.submit .edd_add_repeatable', function(e) {
+			$( 'body' ).on( 'click', '.submit .pdd_add_repeatable', function(e) {
 				e.preventDefault();
 				var button = $( this ),
 				row = button.parent().parent().prev( 'tr' ),
-				clone = EDD_Download_Configuration.clone_repeatable(row);
+				clone = PDD_Download_Configuration.clone_repeatable(row);
 				clone.insertAfter( row );
 			});
 		},
@@ -51,11 +51,11 @@ jQuery(document).ready(function ($) {
 		move : function() {
 			/*
 			* Disabled until we can work out a way to solve the issues raised here: https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues/1066
-			if( ! $('.edd_repeatable_table').length )
+			if( ! $('.pdd_repeatable_table').length )
 				return;
 
-			$(".edd_repeatable_table tbody").sortable({
-				handle: '.edd_draghandle', items: '.edd_repeatable_row', opacity: 0.6, cursor: 'move', axis: 'y', update: function() {
+			$(".pdd_repeatable_table tbody").sortable({
+				handle: '.pdd_draghandle', items: '.pdd_repeatable_row', opacity: 0.6, cursor: 'move', axis: 'y', update: function() {
 					var count  = 0;
 					$(this).find( 'tr' ).each(function() {
 						$(this).find( 'input, select' ).each(function() {
@@ -71,16 +71,16 @@ jQuery(document).ready(function ($) {
 		},
 
 		remove : function() {
-			$( 'body' ).on( 'click', '.edd_remove_repeatable', function(e) {
+			$( 'body' ).on( 'click', '.pdd_remove_repeatable', function(e) {
 				e.preventDefault();
 
 				var row   = $(this).parent().parent( 'tr' ),
 					count = row.parent().find( 'tr' ).length - 1,
 					type  = $(this).data('type'),
-					repeatable = 'tr.edd_repeatable_' + type + 's';
+					repeatable = 'tr.pdd_repeatable_' + type + 's';
 
 				/** remove from price condition */
-			    $( '.edd_repeatable_condition_field option[value=' + row.index() + ']' ).remove();
+			    $( '.pdd_repeatable_condition_field option[value=' + row.index() + ']' ).remove();
 
 				if( count > 1 ) {
 					$( 'input, select', row ).val( '' );
@@ -88,13 +88,13 @@ jQuery(document).ready(function ($) {
 				} else {
 					switch( type ) {
 						case 'price' :
-							alert( edd_vars.one_price_min );
+							alert( pdd_vars.one_price_min );
 							break;
 						case 'file' :
-							alert( edd_vars.one_file_min );
+							alert( pdd_vars.one_file_min );
 							break;
 						default:
-							alert( edd_vars.one_field_min );
+							alert( pdd_vars.one_field_min );
 							break;
 					}
 				}
@@ -112,16 +112,16 @@ jQuery(document).ready(function ($) {
 
 		type : function() {
 
-			$( 'body' ).on( 'change', '#_edd_product_type', function(e) {
+			$( 'body' ).on( 'change', '#_pdd_product_type', function(e) {
 
 				if ( 'bundle' === $( this ).val() ) {
-					$( '#edd_products' ).show();
-					$( '#edd_download_files' ).hide();
-					$( '#edd_download_limit_wrap' ).hide();
+					$( '#pdd_products' ).show();
+					$( '#pdd_download_files' ).hide();
+					$( '#pdd_download_limit_wrap' ).hide();
 				} else {
-					$( '#edd_products' ).hide();
-					$( '#edd_download_files' ).show();
-					$( '#edd_download_limit_wrap' ).show();
+					$( '#pdd_products' ).hide();
+					$( '#pdd_download_files' ).show();
+					$( '#pdd_download_limit_wrap' ).show();
 				}
 
 			});
@@ -129,34 +129,34 @@ jQuery(document).ready(function ($) {
 		},
 
 		prices : function() {
-			$( 'body' ).on( 'change', '#edd_variable_pricing', function( e ) {
-				$( '.edd_pricing_fields, .edd_repeatable_table .pricing' ).toggle();
+			$( 'body' ).on( 'change', '#pdd_variable_pricing', function( e ) {
+				$( '.pdd_pricing_fields, .pdd_repeatable_table .pricing' ).toggle();
 			} )
 			
-				.on( 'change', '#edd_custom_amount', function( e ) {
-					$( '#edd_custom_price_fields' ).toggle();
+				.on( 'change', '#pdd_custom_amount', function( e ) {
+					$( '#pdd_custom_price_fields' ).toggle();
 				} );
 		},
 
 		files : function() {
-			if( typeof wp === "undefined" || '1' !== edd_vars.new_media_ui ){
+			if( typeof wp === "undefined" || '1' !== pdd_vars.new_media_ui ){
 				//Old Thickbox uploader
-				if ( $( '.edd_upload_file_button' ).length > 0 ) {
+				if ( $( '.pdd_upload_file_button' ).length > 0 ) {
 					window.formfield = '';
 
-					$('body').on('click', '.edd_upload_file_button', function(e) {
+					$('body').on('click', '.pdd_upload_file_button', function(e) {
 						e.preventDefault();
 						window.formfield = $(this).parent().prev();
 						window.tbframe_interval = setInterval(function() {
-							jQuery('#TB_iframeContent').contents().find('.savesend .button').val(edd_vars.use_this_file).end().find('#insert-gallery, .wp-post-thumbnail').hide();
+							jQuery('#TB_iframeContent').contents().find('.savesend .button').val(pdd_vars.use_this_file).end().find('#insert-gallery, .wp-post-thumbnail').hide();
 						}, 2000);
-						if (edd_vars.post_id != null ) {
-							var post_id = 'post_id=' + edd_vars.post_id + '&';
+						if (pdd_vars.post_id != null ) {
+							var post_id = 'post_id=' + pdd_vars.post_id + '&';
 						}
-						tb_show(edd_vars.add_new_download, 'media-upload.php?' + post_id +'TB_iframe=true');
+						tb_show(pdd_vars.add_new_download, 'media-upload.php?' + post_id +'TB_iframe=true');
 					});
 
-					window.edd_send_to_editor = window.send_to_editor;
+					window.pdd_send_to_editor = window.send_to_editor;
 					window.send_to_editor = function (html) {
 						if (window.formfield) {
 							imgurl = $('a', '<div>' + html + '</div>').attr('href');
@@ -164,9 +164,9 @@ jQuery(document).ready(function ($) {
 							window.clearInterval(window.tbframe_interval);
 							tb_remove();
 						} else {
-							window.edd_send_to_editor(html);
+							window.pdd_send_to_editor(html);
 						}
-						window.send_to_editor = window.edd_send_to_editor;
+						window.send_to_editor = window.pdd_send_to_editor;
 						window.formfield = '';
 						window.imagefield = false;
 					};
@@ -176,13 +176,13 @@ jQuery(document).ready(function ($) {
 				var file_frame;
 				window.formfield = '';
 
-				$('body').on('click', '.edd_upload_file_button', function(e) {
+				$('body').on('click', '.pdd_upload_file_button', function(e) {
 
 					e.preventDefault();
 
 					var button = $(this);
 
-					window.formfield = $(this).closest('.edd_repeatable_upload_wrapper');
+					window.formfield = $(this).closest('.pdd_repeatable_upload_wrapper');
 
 					// If the media frame already exists, reopen it.
 					if ( file_frame ) {
@@ -224,20 +224,20 @@ jQuery(document).ready(function ($) {
 							attachment = attachment.toJSON();
 							if ( 0 === index ) {
 								// place first attachment in field
-								window.formfield.find( '.edd_repeatable_attachment_id_field' ).val( attachment.id );
-								window.formfield.find( '.edd_repeatable_upload_field' ).val( attachment.url );
-								window.formfield.find( '.edd_repeatable_name_field' ).val( attachment.title );
+								window.formfield.find( '.pdd_repeatable_attachment_id_field' ).val( attachment.id );
+								window.formfield.find( '.pdd_repeatable_upload_field' ).val( attachment.url );
+								window.formfield.find( '.pdd_repeatable_name_field' ).val( attachment.title );
 							} else {
 								// Create a new row for all additional attachments
 								var row = window.formfield,
-									clone = EDD_Download_Configuration.clone_repeatable( row );
+									clone = PDD_Download_Configuration.clone_repeatable( row );
 
-								clone.find( '.edd_repeatable_attachment_id_field' ).val( attachment.id );
-								clone.find( '.edd_repeatable_upload_field' ).val( attachment.url );
+								clone.find( '.pdd_repeatable_attachment_id_field' ).val( attachment.id );
+								clone.find( '.pdd_repeatable_upload_field' ).val( attachment.url );
 								if ( attachment.title.length > 0 ) {
-									clone.find( '.edd_repeatable_name_field' ).val( attachment.title );
+									clone.find( '.pdd_repeatable_name_field' ).val( attachment.title );
 								} else {
-									clone.find( '.edd_repeatable_name_field' ).val( attachment.filename );
+									clone.find( '.pdd_repeatable_name_field' ).val( attachment.filename );
 								}
 								clone.insertAfter( row );
 							}
@@ -257,16 +257,16 @@ jQuery(document).ready(function ($) {
 		},
 
 		updatePrices: function() {
-			$( '#edd_price_fields' ).on( 'keyup', '.edd_variable_prices_name', function() {
+			$( '#pdd_price_fields' ).on( 'keyup', '.pdd_variable_prices_name', function() {
 
 				var key = $( this ).parents( 'tr' ).index(),
 					name = $( this ).val(),
-					field_option = $( '.edd_repeatable_condition_field option[value=' + key + ']' );
+					field_option = $( '.pdd_repeatable_condition_field option[value=' + key + ']' );
 
 				if ( field_option.length > 0 ) {
 					field_option.text( name );
 				} else {
-					$( '.edd_repeatable_condition_field' ).append(
+					$( '.pdd_repeatable_condition_field' ).append(
 						$( '<option></option>' )
 							.attr( 'value', key )
 							.text( name )
@@ -277,14 +277,14 @@ jQuery(document).ready(function ($) {
 
 	};
 
-	EDD_Download_Configuration.init();
+	PDD_Download_Configuration.init();
 
 	//$('#edit-slug-box').remove();
 
 	// Date picker
-	if ( $( '.edd_datepicker' ).length > 0 ) {
+	if ( $( '.pdd_datepicker' ).length > 0 ) {
 		var dateFormat = 'mm/dd/yy';
-		$( '.edd_datepicker' ).datepicker( {
+		$( '.pdd_datepicker' ).datepicker( {
 			dateFormat: dateFormat
 		} );
 	}
@@ -292,7 +292,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Edit payment screen JS
 	 */
-	var EDD_Edit_Payment = {
+	var PDD_Edit_Payment = {
 
 		init : function() {
 			this.edit_address();
@@ -310,18 +310,18 @@ jQuery(document).ready(function ($) {
 		edit_address : function() {
 
 			// Update base state field based on selected base country
-			$('select[name="edd-payment-address[0][country]"]').change(function() {
+			$('select[name="pdd-payment-address[0][country]"]').change(function() {
 				var $this = $(this);
 				data = {
-					action: 'edd_get_shop_states',
+					action: 'pdd_get_shop_states',
 					country: $this.val(),
-					field_name: 'edd-payment-address[0][state]'
+					field_name: 'pdd-payment-address[0][state]'
 				};
 				$.post(ajaxurl, data, function (response) {
 					if( 'nostates' == response ) {
-						$('#edd-order-address-state-wrap select, #edd-order-address-state-wrap input').replaceWith( '<input type="text" name="edd-payment-address[0][state]" value="" class="edd-edit-toggles medium-text"/>' );
+						$('#pdd-order-address-state-wrap select, #pdd-order-address-state-wrap input').replaceWith( '<input type="text" name="pdd-payment-address[0][state]" value="" class="pdd-edit-toggles medium-text"/>' );
 					} else {
-						$('#edd-order-address-state-wrap select, #edd-order-address-state-wrap input').replaceWith( response );
+						$('#pdd-order-address-state-wrap select, #pdd-order-address-state-wrap input').replaceWith( response );
 					}
 				});
 
@@ -333,12 +333,12 @@ jQuery(document).ready(function ($) {
 		remove_download : function() {
 
 			// Remove a download from a purchase
-			$('#edd-purchased-files').on('click', '.edd-order-remove-download', function() {
-				if( confirm( edd_vars.delete_payment_download ) ) {
+			$('#pdd-purchased-files').on('click', '.pdd-order-remove-download', function() {
+				if( confirm( pdd_vars.delete_payment_download ) ) {
 					$(this).parent().parent().parent().remove();
 					// Flag the Downloads section as changed
-					$('#edd-payment-downloads-changed').val(1);
-					$('.edd-order-payment-recalc-totals').show();
+					$('#pdd-payment-downloads-changed').val(1);
+					$('.pdd-order-payment-recalc-totals').show();
 				}
 				return false;
 			});
@@ -349,16 +349,16 @@ jQuery(document).ready(function ($) {
 		add_download : function() {
 
 			// Add a New Download from the Add Downloads to Purchase Box
-			$('#edd-purchased-files').on('click', '#edd-order-add-download', function(e) {
+			$('#pdd-purchased-files').on('click', '#pdd-order-add-download', function(e) {
 
 				e.preventDefault();
 
-				var download_id    = $('#edd_order_download_select').val();
+				var download_id    = $('#pdd_order_download_select').val();
 				var download_title = $('.chosen-single span').text();
-				var amount         = $('#edd-order-download-amount').val();
-				var price_id       = $('.edd_price_options_select option:selected').val();
-				var price_name     = $('.edd_price_options_select option:selected').text();
-				var quantity       = $('#edd-order-download-quantity').val();
+				var amount         = $('#pdd-order-download-amount').val();
+				var price_id       = $('.pdd_price_options_select option:selected').val();
+				var price_name     = $('.pdd_price_options_select option:selected').text();
+				var quantity       = $('#pdd-order-download-quantity').val();
 
 				if( download_id < 1 ) {
 					return false;
@@ -368,26 +368,26 @@ jQuery(document).ready(function ($) {
 					amount = '0.00';
 				}
 
-				var formatted_amount = amount + edd_vars.currency_sign;
-				if ( 'before' === edd_vars.currency_pos ) {
-					formatted_amount = edd_vars.currency_sign + amount;
+				var formatted_amount = amount + pdd_vars.currency_sign;
+				if ( 'before' === pdd_vars.currency_pos ) {
+					formatted_amount = pdd_vars.currency_sign + amount;
 				}
 
 				if( price_name ) {
 					download_title = download_title + ' - ' + price_name;
 				}
 
-				var count = $('#edd-purchased-files div.row').length;
-				var clone = $('#edd-purchased-files div.row:last').clone();
+				var count = $('#pdd-purchased-files div.row').length;
+				var clone = $('#pdd-purchased-files div.row:last').clone();
 
 				clone.find( '.download span' ).html( '<a href="post.php?post=' + download_id + '&action=edit"></a>' );
 				clone.find( '.download span a' ).text( download_title );
 				clone.find( '.price' ).text( formatted_amount );
 				clone.find( '.quantity span' ).text( quantity );
-				clone.find( 'input.edd-payment-details-download-id' ).val( download_id );
-				clone.find( 'input.edd-payment-details-download-price-id' ).val( price_id );
-				clone.find( 'input.edd-payment-details-download-amount' ).val( amount );
-				clone.find( 'input.edd-payment-details-download-quantity' ).val( quantity );
+				clone.find( 'input.pdd-payment-details-download-id' ).val( download_id );
+				clone.find( 'input.pdd-payment-details-download-price-id' ).val( price_id );
+				clone.find( 'input.pdd-payment-details-download-amount' ).val( amount );
+				clone.find( 'input.pdd-payment-details-download-quantity' ).val( quantity );
 
 				// Replace the name / id attributes
 				clone.find( 'input' ).each(function() {
@@ -399,10 +399,10 @@ jQuery(document).ready(function ($) {
 				});
 
 				// Flag the Downloads section as changed
-				$('#edd-payment-downloads-changed').val(1);
+				$('#pdd-payment-downloads-changed').val(1);
 
-				$(clone).insertAfter( '#edd-purchased-files div.row:last' );
-				$('.edd-order-payment-recalc-totals').show();
+				$(clone).insertAfter( '#pdd-purchased-files div.row:last' );
+				$('.pdd-order-payment-recalc-totals').show();
 
 			});
 		},
@@ -410,11 +410,11 @@ jQuery(document).ready(function ($) {
 		recalculate_total : function() {
 
 			// Remove a download from a purchase
-			$('#edd-order-recalc-total').on('click', function(e) {
+			$('#pdd-order-recalc-total').on('click', function(e) {
 				e.preventDefault();
 				var total = 0;
-				if( $('#edd-purchased-files .row .edd-payment-details-download-amount').length ) {
-					$('#edd-purchased-files .row .edd-payment-details-download-amount').each(function() {
+				if( $('#pdd-purchased-files .row .pdd-payment-details-download-amount').length ) {
+					$('#pdd-purchased-files .row .pdd-payment-details-download-amount').each(function() {
 						var quantity = $(this).next().val();
 						if( quantity ) {
 							total += ( parseFloat( $(this).val() ) * parseInt( quantity ) );
@@ -423,12 +423,12 @@ jQuery(document).ready(function ($) {
 						}
 					});
 				}
-				if( $('.edd-payment-fees').length ) {
-					$('.edd-payment-fees span.fee-amount').each(function() {
+				if( $('.pdd-payment-fees').length ) {
+					$('.pdd-payment-fees span.fee-amount').each(function() {
 						total += parseFloat( $(this).data('fee') );
 					});
 				}
-				$('input[name=edd-payment-total]').val( total );
+				$('input[name=pdd-payment-total]').val( total );
 			});
 
 		},
@@ -436,13 +436,13 @@ jQuery(document).ready(function ($) {
 		variable_prices_check : function() {
 
 			// On Download Select, Check if Variable Prices Exist
-			$('#edd-purchased-files').on('change', 'select#edd_order_download_select', function() {
+			$('#pdd-purchased-files').on('change', 'select#pdd_order_download_select', function() {
 
 				var $this = $(this), download_id = $this.val();
 
 				if(parseInt(download_id) > 0) {
 					var postData = {
-						action : 'edd_check_for_download_price_variations',
+						action : 'pdd_check_for_download_price_variations',
 						download_id: download_id
 					};
 
@@ -451,7 +451,7 @@ jQuery(document).ready(function ($) {
 						data: postData,
 						url: ajaxurl,
 						success: function (response) {
-							$('.edd_price_options_select').remove();
+							$('.pdd_price_options_select').remove();
 							$(response).insertAfter( $this.next() );
 						}
 					}).fail(function (data) {
@@ -467,12 +467,12 @@ jQuery(document).ready(function ($) {
 
 		add_note : function() {
 
-			$('#edd-add-payment-note').on('click', function(e) {
+			$('#pdd-add-payment-note').on('click', function(e) {
 				e.preventDefault();
 				var postData = {
-					action : 'edd_insert_payment_note',
+					action : 'pdd_insert_payment_note',
 					payment_id : $(this).data('payment-id'),
-					note : $('#edd-payment-note').val()
+					note : $('#pdd-payment-note').val()
 				};
 
 				if( postData.note ) {
@@ -482,9 +482,9 @@ jQuery(document).ready(function ($) {
 						data: postData,
 						url: ajaxurl,
 						success: function (response) {
-							$('#edd-payment-notes-inner').append( response );
-							$('.edd-no-payment-notes').hide();
-							$('#edd-payment-note').val('');
+							$('#pdd-payment-notes-inner').append( response );
+							$('.pdd-no-payment-notes').hide();
+							$('#pdd-payment-note').val('');
 						}
 					}).fail(function (data) {
 						if ( window.console && window.console.log ) {
@@ -493,10 +493,10 @@ jQuery(document).ready(function ($) {
 					});
 
 				} else {
-					var border_color = $('#edd-payment-note').css('border-color');
-					$('#edd-payment-note').css('border-color', 'red');
+					var border_color = $('#pdd-payment-note').css('border-color');
+					$('#pdd-payment-note').css('border-color', 'red');
 					setTimeout( function() {
-						$('#edd-payment-note').css('border-color', border_color );
+						$('#pdd-payment-note').css('border-color', border_color );
 					}, 500 );
 				}
 
@@ -506,14 +506,14 @@ jQuery(document).ready(function ($) {
 
 		remove_note : function() {
 
-			$('body').on('click', '.edd-delete-payment-note', function(e) {
+			$('body').on('click', '.pdd-delete-payment-note', function(e) {
 
 				e.preventDefault();
 
-				if( confirm( edd_vars.delete_payment_note) ) {
+				if( confirm( pdd_vars.delete_payment_note) ) {
 
 					var postData = {
-						action : 'edd_delete_payment_note',
+						action : 'pdd_delete_payment_note',
 						payment_id : $(this).data('payment-id'),
 						note_id : $(this).data('note-id')
 					};
@@ -523,9 +523,9 @@ jQuery(document).ready(function ($) {
 						data: postData,
 						url: ajaxurl,
 						success: function (response) {
-							$('#edd-payment-note-' + postData.note_id ).remove();
-							if( ! $('.edd-payment-note').length ) {
-								$('.edd-no-payment-notes').show();
+							$('#pdd-payment-note-' + postData.note_id ).remove();
+							if( ! $('.pdd-payment-note').length ) {
+								$('.pdd-no-payment-notes').show();
 							}
 							return false;
 						}
@@ -542,18 +542,18 @@ jQuery(document).ready(function ($) {
 		},
 
 		resend_receipt : function() {
-			$( 'body' ).on( 'click', '#edd-resend-receipt', function( e ) {
-				return confirm( edd_vars.resend_receipt );
+			$( 'body' ).on( 'click', '#pdd-resend-receipt', function( e ) {
+				return confirm( pdd_vars.resend_receipt );
 			} );
 		},
 
 		copy_download_link : function() {
-			$( 'body' ).on( 'click', '.edd-copy-download-link', function( e ) {
+			$( 'body' ).on( 'click', '.pdd-copy-download-link', function( e ) {
 				e.preventDefault();
 				var $this    = $(this);
 				var postData = {
-					action      : 'edd_get_file_download_link',
-					payment_id  : $('input[name="edd_payment_id"]').val(),
+					action      : 'pdd_get_file_download_link',
+					payment_id  : $('input[name="pdd_payment_id"]').val(),
 					download_id : $this.data('download-id'),
 					price_id    : $this.data('price-id')
 				};
@@ -563,10 +563,10 @@ jQuery(document).ready(function ($) {
 					data: postData,
 					url: ajaxurl,
 					success: function (link) {
-						$( "#edd-download-link" ).dialog({
+						$( "#pdd-download-link" ).dialog({
 							width: 400
-						}).html( '<textarea rows="10" cols="40" id="edd-download-link-textarea">' + link + '</textarea>' );
-						$( "#edd-download-link-textarea" ).focus().select();
+						}).html( '<textarea rows="10" cols="40" id="pdd-download-link-textarea">' + link + '</textarea>' );
+						$( "#pdd-download-link-textarea" ).focus().select();
 						return false;
 					}
 				}).fail(function (data) {
@@ -579,13 +579,13 @@ jQuery(document).ready(function ($) {
 		}
 
 	};
-	EDD_Edit_Payment.init();
+	PDD_Edit_Payment.init();
 
 
 	/**
 	 * Discount add / edit screen JS
 	 */
-	var EDD_Discount = {
+	var PDD_Discount = {
 
 		init : function() {
 			this.type_select();
@@ -594,9 +594,9 @@ jQuery(document).ready(function ($) {
 
 		type_select : function() {
 
-			$('#edd-edit-discount #edd-type, #edd-add-discount #edd-type').change(function() {
+			$('#pdd-edit-discount #pdd-type, #pdd-add-discount #pdd-type').change(function() {
 
-				$('.edd-amount-description').toggle();
+				$('.pdd-amount-description').toggle();
 
 			});
 
@@ -608,11 +608,11 @@ jQuery(document).ready(function ($) {
 
 				if( $(this).val() ) {
 
-					$('#edd-discount-product-conditions').show();
+					$('#pdd-discount-product-conditions').show();
 
 				} else {
 
-					$('#edd-discount-product-conditions').hide();
+					$('#pdd-discount-product-conditions').hide();
 					
 				}
 
@@ -621,13 +621,13 @@ jQuery(document).ready(function ($) {
 		},
 
 	};
-	EDD_Discount.init();
+	PDD_Discount.init();
 
 
 	/**
 	 * Reports / Exports screen JS
 	 */
-	var EDD_Reports = {
+	var PDD_Reports = {
 
 		init : function() {
 			this.date_options();
@@ -637,12 +637,12 @@ jQuery(document).ready(function ($) {
 		date_options : function() {
 
 			// Show hide extended date options
-			$( '#edd-graphs-date-options' ).change( function() {
+			$( '#pdd-graphs-date-options' ).change( function() {
 				var $this = $(this);
 				if ( 'other' === $this.val() ) {
-					$( '#edd-date-range-options' ).show();
+					$( '#pdd-date-range-options' ).show();
 				} else {
-					$( '#edd-date-range-options' ).hide();
+					$( '#pdd-date-range-options' ).hide();
 				}
 			});
 
@@ -652,41 +652,41 @@ jQuery(document).ready(function ($) {
 
 			// Show / hide Download option when exporting customers
 
-			$( '#edd_customer_export_download' ).change( function() {
+			$( '#pdd_customer_export_download' ).change( function() {
 
 				var $this = $(this), download_id = $('option:selected', $this).val();
 
 				if ( '0' === $this.val() ) {
-					$( '#edd_customer_export_option' ).show();
+					$( '#pdd_customer_export_option' ).show();
 				} else {
-					$( '#edd_customer_export_option' ).hide();
+					$( '#pdd_customer_export_option' ).hide();
 				}
 
 				// On Download Select, Check if Variable Prices Exist
 				if ( parseInt( download_id ) != 0 ) {
 					var data = {
-						action : 'edd_check_for_download_price_variations',
+						action : 'pdd_check_for_download_price_variations',
 						download_id: download_id
 					};
 					$.post(ajaxurl, data, function(response) {
-						$('.edd_price_options_select').remove();
+						$('.pdd_price_options_select').remove();
 						$this.after( response );
 					});
 				} else {
-					$('.edd_price_options_select').remove();
+					$('.pdd_price_options_select').remove();
 				}
 			});
 
 		}
 
 	};
-	EDD_Reports.init();
+	PDD_Reports.init();
 
 
 	/**
 	 * Settings screen JS
 	 */
-	var EDD_Settings = {
+	var PDD_Settings = {
 
 		init : function() {
 			this.general();
@@ -697,26 +697,26 @@ jQuery(document).ready(function ($) {
 
 		general : function() {
 
-			if( $('.edd-color-picker').length ) {
-				$('.edd-color-picker').wpColorPicker();
+			if( $('.pdd-color-picker').length ) {
+				$('.pdd-color-picker').wpColorPicker();
 			}
 
 			// Settings Upload field JS
-			if ( typeof wp === "undefined" || '1' !== edd_vars.new_media_ui ) {
+			if ( typeof wp === "undefined" || '1' !== pdd_vars.new_media_ui ) {
 				//Old Thickbox uploader
-				if ( $( '.edd_settings_upload_button' ).length > 0 ) {
+				if ( $( '.pdd_settings_upload_button' ).length > 0 ) {
 					window.formfield = '';
 
-					$('body').on('click', '.edd_settings_upload_button', function(e) {
+					$('body').on('click', '.pdd_settings_upload_button', function(e) {
 						e.preventDefault();
 						window.formfield = $(this).parent().prev();
 						window.tbframe_interval = setInterval(function() {
-							jQuery('#TB_iframeContent').contents().find('.savesend .button').val(edd_vars.use_this_file).end().find('#insert-gallery, .wp-post-thumbnail').hide();
+							jQuery('#TB_iframeContent').contents().find('.savesend .button').val(pdd_vars.use_this_file).end().find('#insert-gallery, .wp-post-thumbnail').hide();
 						}, 2000);
-						tb_show( edd_vars.add_new_download, 'media-upload.php?TB_iframe=true' );
+						tb_show( pdd_vars.add_new_download, 'media-upload.php?TB_iframe=true' );
 					});
 
-					window.edd_send_to_editor = window.send_to_editor;
+					window.pdd_send_to_editor = window.send_to_editor;
 					window.send_to_editor = function (html) {
 						if (window.formfield) {
 							imgurl = $('a', '<div>' + html + '</div>').attr('href');
@@ -724,9 +724,9 @@ jQuery(document).ready(function ($) {
 							window.clearInterval(window.tbframe_interval);
 							tb_remove();
 						} else {
-							window.edd_send_to_editor(html);
+							window.pdd_send_to_editor(html);
 						}
-						window.send_to_editor = window.edd_send_to_editor;
+						window.send_to_editor = window.pdd_send_to_editor;
 						window.formfield = '';
 						window.imagefield = false;
 					};
@@ -736,7 +736,7 @@ jQuery(document).ready(function ($) {
 				var file_frame;
 				window.formfield = '';
 
-				$('body').on('click', '.edd_settings_upload_button', function(e) {
+				$('body').on('click', '.pdd_settings_upload_button', function(e) {
 
 					e.preventDefault();
 
@@ -800,17 +800,17 @@ jQuery(document).ready(function ($) {
 
 		taxes : function() {
 
-			if( $('select.edd-no-states').length ) {
-				$('select.edd-no-states').closest('tr').hide();
+			if( $('select.pdd-no-states').length ) {
+				$('select.pdd-no-states').closest('tr').hide();
 			}
 
 			// Update base state field based on selected base country
-			$('select[name="edd_settings[base_country]"]').change(function() {
+			$('select[name="pdd_settings[base_country]"]').change(function() {
 				var $this = $(this), $tr = $this.closest('tr');
 				data = {
-					action: 'edd_get_shop_states',
+					action: 'pdd_get_shop_states',
 					country: $(this).val(),
-					field_name: 'edd_settings[base_state]'
+					field_name: 'pdd_settings[base_state]'
 				};
 				$.post(ajaxurl, data, function (response) {
 					if( 'nostates' == response ) {
@@ -825,10 +825,10 @@ jQuery(document).ready(function ($) {
 			});
 
 			// Update tax rate state field based on selected rate country
-			$('body').on('change', '#edd_tax_rates select.edd-tax-country', function() {
+			$('body').on('change', '#pdd_tax_rates select.pdd-tax-country', function() {
 				var $this = $(this);
 				data = {
-					action: 'edd_get_shop_states',
+					action: 'pdd_get_shop_states',
 					country: $(this).val(),
 					field_name: $this.attr('name').replace('country', 'state')
 				};
@@ -846,8 +846,8 @@ jQuery(document).ready(function ($) {
 			});
 
 			// Insert new tax rate row
-			$('#edd_add_tax_rate').on('click', function() {
-				var row = $('#edd_tax_rates tr:last');
+			$('#pdd_add_tax_rate').on('click', function() {
+				var row = $('#pdd_tax_rates tr:last');
 				var clone = row.clone();
 				var count = row.parent().find( 'tr' ).length;
 				clone.find( 'td input' ).val( '' );
@@ -861,8 +861,8 @@ jQuery(document).ready(function ($) {
 			});
 
 			// Remove tax row
-			$('body').on('click', '#edd_tax_rates .edd_remove_tax_rate', function() {
-				if( confirm( edd_vars.delete_tax_rate ) )
+			$('body').on('click', '#pdd_tax_rates .pdd_remove_tax_rate', function() {
+				if( confirm( pdd_vars.delete_tax_rate ) )
 					$(this).closest('tr').remove();
 				return false;
 			});
@@ -887,12 +887,12 @@ jQuery(document).ready(function ($) {
 		misc : function() {
 
 			// Hide Symlink option if Download Method is set to Direct
-			if( $('select[name="edd_settings[download_method]"]:selected').val() != 'direct' ) {
-				$('select[name="edd_settings[download_method]"]').parent().parent().next().hide();
-				$('select[name="edd_settings[download_method]"]').parent().parent().next().find('input').attr('checked', false);
+			if( $('select[name="pdd_settings[download_method]"]:selected').val() != 'direct' ) {
+				$('select[name="pdd_settings[download_method]"]').parent().parent().next().hide();
+				$('select[name="pdd_settings[download_method]"]').parent().parent().next().find('input').attr('checked', false);
 			}
 			// Toggle download method option
-			$('select[name="edd_settings[download_method]"]').on('change', function() {
+			$('select[name="pdd_settings[download_method]"]').on('change', function() {
 				var symlink = $(this).parent().parent().next();
 				if( $(this).val() == 'direct' ) {
 					symlink.hide();
@@ -905,11 +905,11 @@ jQuery(document).ready(function ($) {
 		}
 
 	}
-	EDD_Settings.init();
+	PDD_Settings.init();
 
 
-	$('.download_page_edd-payment-history .row-actions .delete a').on('click', function() {
-		if( confirm( edd_vars.delete_payment ) ) {
+	$('.download_page_pdd-payment-history .row-actions .delete a').on('click', function() {
+		if( confirm( pdd_vars.delete_payment ) ) {
 			return true;
 		}
 		return false;
@@ -923,15 +923,15 @@ jQuery(document).ready(function ($) {
 
 		post_id = post_id.replace("post-", "");
 
-		var $edd_inline_data = $('#post-' + post_id);
+		var $pdd_inline_data = $('#post-' + post_id);
 
-		var regprice = $edd_inline_data.find('.column-price .downloadprice-' + post_id).val();
+		var regprice = $pdd_inline_data.find('.column-price .downloadprice-' + post_id).val();
 
 		// If variable priced product disable editing, otherwise allow price changes
 		if ( regprice != $('#post-' + post_id + '.column-price .downloadprice-' + post_id).val() ) {
-			$('.regprice', '#edd-download-data').val(regprice).attr('disabled', false);
+			$('.regprice', '#pdd-download-data').val(regprice).attr('disabled', false);
 		} else {
-			$('.regprice', '#edd-download-data').val( edd_vars.quick_edit_warning ).attr('disabled', 'disabled');
+			$('.regprice', '#pdd-download-data').val( pdd_vars.quick_edit_warning ).attr('disabled', 'disabled');
 		}
 	});
 
@@ -949,11 +949,11 @@ jQuery(document).ready(function ($) {
 		});
 
 		// get the stock and price values to save for all the product ID's
-		var $price = $( '#edd-download-data input[name="_edd_regprice"]' ).val();
+		var $price = $( '#pdd-download-data input[name="_pdd_regprice"]' ).val();
 
 		var data = {
-			action: 		'edd_save_bulk_edit',
-			edd_bulk_nonce:	$post_ids,
+			action: 		'pdd_save_bulk_edit',
+			pdd_bulk_nonce:	$post_ids,
 			post_ids:		$post_ids,
 			price:			$price
 		};
@@ -964,10 +964,10 @@ jQuery(document).ready(function ($) {
 	});
 
     // Setup Chosen menus
-    $('.edd-select-chosen').chosen({
+    $('.pdd-select-chosen').chosen({
     	inherit_select_classes: true,
-    	placeholder_text_single: edd_vars.one_option,
-    	placeholder_text_multiple: edd_vars.one_or_more_option,
+    	placeholder_text_single: pdd_vars.one_option,
+    	placeholder_text_multiple: pdd_vars.one_or_more_option,
     });
 
 	// Variables for setting up the typing timer
@@ -975,9 +975,9 @@ jQuery(document).ready(function ($) {
 	var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms
 
     // Replace options with search results
-	$('.edd-select.chosen-container .chosen-search input, .edd-select.chosen-container .search-field input').keyup(function(e) {
+	$('.pdd-select.chosen-container .chosen-search input, .pdd-select.chosen-container .search-field input').keyup(function(e) {
 
-		var val = $(this).val(), container = $(this).closest( '.edd-select-chosen' );
+		var val = $(this).val(), container = $(this).closest( '.pdd-select-chosen' );
 		var menu_id = container.attr('id').replace( '_chosen', '' );
 		var lastKey = e.which;
 
@@ -1005,7 +1005,7 @@ jQuery(document).ready(function ($) {
 					type: 'GET',
 					url: ajaxurl,
 					data: {
-						action: 'edd_download_search',
+						action: 'pdd_download_search',
 						s: val,
 					},
 					dataType: "json",
@@ -1023,7 +1023,7 @@ jQuery(document).ready(function ($) {
 							}
 						});
 						 // Update the options
-						$('.edd-select-chosen').trigger('chosen:updated');
+						$('.pdd-select-chosen').trigger('chosen:updated');
 						$('#' + menu_id).next().find('input').val(val);
 					}
 				}).fail(function (response) {
@@ -1039,14 +1039,14 @@ jQuery(document).ready(function ($) {
 	});
 
 	// This fixes the Chosen box being 0px wide when the thickbox is opened
-	$( '#post' ).on( 'click', '.edd-thickbox', function() {
-		$( '.edd-select-chosen', '#choose-download' ).css( 'width', '100%' );
+	$( '#post' ).on( 'click', '.pdd-thickbox', function() {
+		$( '.pdd-select-chosen', '#choose-download' ).css( 'width', '100%' );
 	});
 
 	/**
 	 * Tools screen JS
 	 */
-	var EDD_Tools = {
+	var PDD_Tools = {
 
 		init : function() {
 			this.revoke_api_key();
@@ -1054,24 +1054,24 @@ jQuery(document).ready(function ($) {
 		},
 
 		revoke_api_key : function() {
-			$( 'body' ).on( 'click', '.edd-revoke-api-key', function( e ) {
-				return confirm( edd_vars.revoke_api_key );
+			$( 'body' ).on( 'click', '.pdd-revoke-api-key', function( e ) {
+				return confirm( pdd_vars.revoke_api_key );
 			} );
 		},
 		regenerate_api_key : function() {
-			$( 'body' ).on( 'click', '.edd-regenerate-api-key', function( e ) {
-				return confirm( edd_vars.regenerate_api_key );
+			$( 'body' ).on( 'click', '.pdd-regenerate-api-key', function( e ) {
+				return confirm( pdd_vars.regenerate_api_key );
 			} );
 		},
 	};
-	EDD_Tools.init();
+	PDD_Tools.init();
 
 	// Ajax user search
-	$('.edd-ajax-user-search').keyup(function() {
+	$('.pdd-ajax-user-search').keyup(function() {
 		var user_search = $(this).val();
-		$('.edd-ajax').show();
+		$('.pdd-ajax').show();
 		data = {
-			action: 'edd_search_users',
+			action: 'pdd_search_users',
 			user_name: user_search
 		};
 		
@@ -1084,18 +1084,18 @@ jQuery(document).ready(function ($) {
 			url: ajaxurl,
 			success: function (search_response) {
 
-				$('.edd-ajax').hide();
-				$('.edd_user_search_results').html('');
-				$(search_response.results).appendTo('.edd_user_search_results');
+				$('.pdd-ajax').hide();
+				$('.pdd_user_search_results').html('');
+				$(search_response.results).appendTo('.pdd_user_search_results');
 				document.body.style.cursor = 'default';
 			}
 		});
 	});
-	$('body').on('click.eddSelectUser', '.edd_user_search_results a', function(e) {
+	$('body').on('click.pddSelectUser', '.pdd_user_search_results a', function(e) {
 		e.preventDefault();
 		var login = $(this).data('login');
-		$('.edd-ajax-user-search').val(login);
-		$('.edd_user_search_results').html('');
+		$('.pdd-ajax-user-search').val(login);
+		$('.pdd_user_search_results').html('');
 	});
 
 });

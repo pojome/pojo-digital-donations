@@ -4,7 +4,7 @@
  *
  * These functions register the front-end query vars
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Functions
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -22,29 +22,29 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since 1.2.2
  * @return void
  */
-function edd_block_attachments() {
+function pdd_block_attachments() {
 	if ( ! is_attachment() )
 		return;
 
 	$parent   = get_post_field( 'post_parent', get_the_ID() );
 	$uri      = wp_get_attachment_url( get_the_ID() );
-	$edd_file = strpos( $uri, '/edd/' );
+	$pdd_file = strpos( $uri, '/pdd/' );
 
-	if ( ! $parent && false === $edd_file ) {
+	if ( ! $parent && false === $pdd_file ) {
 		return;
 	}
 
-	if ( 'download' != get_post_type( $parent ) && false === $edd_file ) {
+	if ( 'download' != get_post_type( $parent ) && false === $pdd_file ) {
 		return;
 	}
 
-	$files      = edd_get_download_files( $parent );
+	$files      = pdd_get_download_files( $parent );
 	$restricted = wp_list_pluck( $files, 'file' );
 
 	if ( ! in_array( $uri, $restricted ) ) {
 		return;
 	}
 
-	wp_die( __( 'You do not have permission to view this file.', 'edd' ), __( 'Error', 'edd' ) );
+	wp_die( __( 'You do not have permission to view this file.', 'pdd' ), __( 'Error', 'pdd' ) );
 }
-add_action( 'template_redirect', 'edd_block_attachments' );
+add_action( 'template_redirect', 'pdd_block_attachments' );

@@ -4,7 +4,7 @@
  *
  * This is the base class for all export methods. Each data export type (customers, payments, etc) extend this class
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -15,11 +15,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * EDD_Export Class
+ * PDD_Export Class
  *
  * @since 1.4.4
  */
-class EDD_Export {
+class PDD_Export {
 	/**
 	 * Our export type. Used for export-type specific filters/actions
 	 * @var string
@@ -35,7 +35,7 @@ class EDD_Export {
 	 * @return bool Whether we can export or not
 	 */
 	public function can_export() {
-		return (bool) apply_filters( 'edd_export_capability', current_user_can( 'manage_options' ) );
+		return (bool) apply_filters( 'pdd_export_capability', current_user_can( 'manage_options' ) );
 	}
 
 	/**
@@ -48,12 +48,12 @@ class EDD_Export {
 	public function headers() {
 		ignore_user_abort( true );
 
-		if ( ! edd_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) )
+		if ( ! pdd_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) )
 			set_time_limit( 0 );
 
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=edd-export-' . $this->export_type . '-' . date( 'm-d-Y' ) . '.csv' );
+		header( 'Content-Disposition: attachment; filename=pdd-export-' . $this->export_type . '-' . date( 'm-d-Y' ) . '.csv' );
 		header( "Expires: 0" );
 	}
 
@@ -66,8 +66,8 @@ class EDD_Export {
 	 */
 	public function csv_cols() {
 		$cols = array(
-			'id'   => __( 'ID',   'edd' ),
-			'date' => __( 'Date', 'edd' )
+			'id'   => __( 'ID',   'pdd' ),
+			'date' => __( 'Date', 'pdd' )
 		);
 		return $cols;
 	}
@@ -81,7 +81,7 @@ class EDD_Export {
 	 */
 	public function get_csv_cols() {
 		$cols = $this->csv_cols();
-		return apply_filters( 'edd_export_csv_cols_' . $this->export_type, $cols );
+		return apply_filters( 'pdd_export_csv_cols_' . $this->export_type, $cols );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class EDD_Export {
 	 *
 	 * @access public
 	 * @since 1.4.4
-	 * @uses EDD_Export::get_csv_cols()
+	 * @uses PDD_Export::get_csv_cols()
 	 * @return void
 	 */
 	public function csv_cols_out() {
@@ -123,8 +123,8 @@ class EDD_Export {
 			)
 		);
 
-		$data = apply_filters( 'edd_export_get_data', $data );
-		$data = apply_filters( 'edd_export_get_data_' . $this->export_type, $data );
+		$data = apply_filters( 'pdd_export_get_data', $data );
+		$data = apply_filters( 'pdd_export_get_data_' . $this->export_type, $data );
 
 		return $data;
 	}
@@ -162,15 +162,15 @@ class EDD_Export {
 	 *
 	 * @access public
 	 * @since 1.4.4
-	 * @uses EDD_Export::can_export()
-	 * @uses EDD_Export::headers()
-	 * @uses EDD_Export::csv_cols_out()
-	 * @uses EDD_Export::csv_rows_out()
+	 * @uses PDD_Export::can_export()
+	 * @uses PDD_Export::headers()
+	 * @uses PDD_Export::csv_cols_out()
+	 * @uses PDD_Export::csv_rows_out()
 	 * @return void
 	 */
 	public function export() {
 		if ( ! $this->can_export() )
-			wp_die( __( 'You do not have permission to export data.', 'edd' ), __( 'Error', 'edd' ) );
+			wp_die( __( 'You do not have permission to export data.', 'pdd' ), __( 'Error', 'pdd' ) );
 
 		// Set headers
 		$this->headers();
@@ -181,6 +181,6 @@ class EDD_Export {
 		// Output CSV rows
 		$this->csv_rows_out();
 
-		edd_die();
+		pdd_die();
 	}
 }

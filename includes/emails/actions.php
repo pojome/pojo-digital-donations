@@ -2,7 +2,7 @@
 /**
  * Email Actions
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Emails
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -19,15 +19,15 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @param int $payment_id Payment ID
  * @return void
  */
-function edd_trigger_purchase_receipt( $payment_id ) {
+function pdd_trigger_purchase_receipt( $payment_id ) {
 	// Make sure we don't send a purchase receipt while editing a payment
-	if ( isset( $_POST['edd-action'] ) && 'edit_payment' == $_POST['edd-action'] )
+	if ( isset( $_POST['pdd-action'] ) && 'edit_payment' == $_POST['pdd-action'] )
 		return;
 
 	// Send email with secure download link
-	edd_email_purchase_receipt( $payment_id );
+	pdd_email_purchase_receipt( $payment_id );
 }
-add_action( 'edd_complete_purchase', 'edd_trigger_purchase_receipt', 999, 1 );
+add_action( 'pdd_complete_purchase', 'pdd_trigger_purchase_receipt', 999, 1 );
 
 /**
  * Resend the Email Purchase Receipt. (This can be done from the Payment History page)
@@ -36,27 +36,27 @@ add_action( 'edd_complete_purchase', 'edd_trigger_purchase_receipt', 999, 1 );
  * @param array $data Payment Data
  * @return void
  */
-function edd_resend_purchase_receipt( $data ) {
+function pdd_resend_purchase_receipt( $data ) {
 	$purchase_id = $data['purchase_id'];
-	edd_email_purchase_receipt( $purchase_id, false );
+	pdd_email_purchase_receipt( $purchase_id, false );
 
 	// Grab all downloads of the purchase and update their file download limits, if needed
 	// This allows admins to resend purchase receipts to grant additional file downloads
-	$downloads = edd_get_payment_meta_downloads( $purchase_id );
+	$downloads = pdd_get_payment_meta_downloads( $purchase_id );
 
 	if ( is_array( $downloads ) ) {
 		foreach ( $downloads as $download ) {
-			$limit = edd_get_file_download_limit( $download['id'] );
+			$limit = pdd_get_file_download_limit( $download['id'] );
 			if ( ! empty( $limit ) ) {
-				edd_set_file_download_limit_override( $download['id'], $purchase_id );
+				pdd_set_file_download_limit_override( $download['id'], $purchase_id );
 			}
 		}
 	}
 
-	wp_redirect( add_query_arg( array( 'edd-message' => 'email_sent', 'edd-action' => false, 'purchase_id' => false ) ) );
+	wp_redirect( add_query_arg( array( 'pdd-message' => 'email_sent', 'pdd-action' => false, 'purchase_id' => false ) ) );
 	exit;
 }
-add_action( 'edd_email_links', 'edd_resend_purchase_receipt' );
+add_action( 'pdd_email_links', 'pdd_resend_purchase_receipt' );
 
 /**
  * Trigger the sending of a Test Email
@@ -65,14 +65,14 @@ add_action( 'edd_email_links', 'edd_resend_purchase_receipt' );
  * @param array $data Parameters sent from Settings page
  * @return void
  */
-function edd_send_test_email( $data ) {
-	if ( ! wp_verify_nonce( $data['_wpnonce'], 'edd-test-email' ) )
+function pdd_send_test_email( $data ) {
+	if ( ! wp_verify_nonce( $data['_wpnonce'], 'pdd-test-email' ) )
 		return;
 
 	// Send a test email
-    edd_email_test_purchase_receipt();
+    pdd_email_test_purchase_receipt();
 
     // Remove the test email query arg
-    wp_redirect( remove_query_arg( 'edd_action' ) ); exit;
+    wp_redirect( remove_query_arg( 'pdd_action' ) ); exit;
 }
-add_action( 'edd_send_test_email', 'edd_send_test_email' );
+add_action( 'pdd_send_test_email', 'pdd_send_test_email' );

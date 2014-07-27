@@ -2,7 +2,7 @@
 /**
  * Admin / Heartbeat
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin
  * @copyright   Copyright (c) 2012, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -11,7 +11,7 @@
 
 
 /**
- * EDD_Heartbeart Class
+ * PDD_Heartbeart Class
  *
  * Hooks into the WP heartbeat API to update various parts of the dashboard as new sales are made
  *
@@ -20,7 +20,7 @@
  *
  * @since 1.8
  */
-class EDD_Heartbeat {
+class PDD_Heartbeat {
 
 	/**
 	 * Get things started
@@ -31,8 +31,8 @@ class EDD_Heartbeat {
 	 */
 	public static function init() {
 
-		add_filter( 'heartbeat_received', array( 'EDD_Heartbeat', 'heartbeat_received' ), 10, 2 );
-		add_action( 'admin_enqueue_scripts', array( 'EDD_Heartbeat', 'enqueue_scripts' ) );
+		add_filter( 'heartbeat_received', array( 'PDD_Heartbeat', 'heartbeat_received' ), 10, 2 );
+		add_action( 'admin_enqueue_scripts', array( 'PDD_Heartbeat', 'enqueue_scripts' ) );
 	}
 
 	/**
@@ -48,21 +48,21 @@ class EDD_Heartbeat {
 			return $response; // Only modify heartbeat if current user can view show reports
 		}
 
-		// Make sure we only run our query if the edd_heartbeat key is present
-		if( ( isset( $data['edd_heartbeat'] ) ) && ( $data['edd_heartbeat'] == 'dashboard_summary' ) ) {
+		// Make sure we only run our query if the pdd_heartbeat key is present
+		if( ( isset( $data['pdd_heartbeat'] ) ) && ( $data['pdd_heartbeat'] == 'dashboard_summary' ) ) {
 
 			// Instantiate the stats class
-			$stats = new EDD_Payment_Stats;
+			$stats = new PDD_Payment_Stats;
 
-			$earnings = edd_get_total_earnings();
+			$earnings = pdd_get_total_earnings();
 
 			// Send back the number of complete payments
-			$response['edd-total-payments'] = edd_format_amount( edd_get_total_sales(), false );
-			$response['edd-total-earnings'] = html_entity_decode( edd_currency_filter( edd_format_amount( $earnings ) ), ENT_COMPAT, 'UTF-8' );
-			$response['edd-payments-month'] = edd_format_amount( $stats->get_sales( 0, 'this_month', false, array( 'publish', 'revoked' ) ), false );
-			$response['edd-earnings-month'] = html_entity_decode( edd_currency_filter( edd_format_amount( $stats->get_earnings( 0, 'this_month' ) ) ), ENT_COMPAT, 'UTF-8' );
-			$response['edd-payments-today'] = edd_format_amount( $stats->get_sales( 0, 'today', false, array( 'publish', 'revoked' ) ), false );
-			$response['edd-earnings-today'] = html_entity_decode( edd_currency_filter( edd_format_amount( $stats->get_earnings( 0, 'today' ) ) ), ENT_COMPAT, 'UTF-8' );
+			$response['pdd-total-payments'] = pdd_format_amount( pdd_get_total_sales(), false );
+			$response['pdd-total-earnings'] = html_entity_decode( pdd_currency_filter( pdd_format_amount( $earnings ) ), ENT_COMPAT, 'UTF-8' );
+			$response['pdd-payments-month'] = pdd_format_amount( $stats->get_sales( 0, 'this_month', false, array( 'publish', 'revoked' ) ), false );
+			$response['pdd-earnings-month'] = html_entity_decode( pdd_currency_filter( pdd_format_amount( $stats->get_earnings( 0, 'this_month' ) ) ), ENT_COMPAT, 'UTF-8' );
+			$response['pdd-payments-today'] = pdd_format_amount( $stats->get_sales( 0, 'today', false, array( 'publish', 'revoked' ) ), false );
+			$response['pdd-earnings-today'] = html_entity_decode( pdd_currency_filter( pdd_format_amount( $stats->get_earnings( 0, 'today' ) ) ), ENT_COMPAT, 'UTF-8' );
 
 		}
 
@@ -85,7 +85,7 @@ class EDD_Heartbeat {
 
 		// Make sure the JS part of the Heartbeat API is loaded.
 		wp_enqueue_script( 'heartbeat' );
-		add_action( 'admin_print_footer_scripts', array( 'EDD_Heartbeat', 'footer_js' ), 20 );
+		add_action( 'admin_print_footer_scripts', array( 'PDD_Heartbeat', 'footer_js' ), 20 );
 	}
 
 	/**
@@ -113,28 +113,28 @@ class EDD_Heartbeat {
 
 			// Hook into the heartbeat-send
 			$(document).on('heartbeat-send', function(e, data) {
-				data['edd_heartbeat'] = 'dashboard_summary';
+				data['pdd_heartbeat'] = 'dashboard_summary';
 			});
 
 			// Listen for the custom event "heartbeat-tick" on $(document).
 			$(document).on( 'heartbeat-tick', function(e, data) {
 
-				// Only proceed if our EDD data is present
-				if ( ! data['edd-total-payments'] )
+				// Only proceed if our PDD data is present
+				if ( ! data['pdd-total-payments'] )
 					return;
 				console.log('tick');
 				// Update sale count and bold it to provide a highlight
-				$('.edd_dashboard_widget .table_totals .b.b-earnings').text( data['edd-total-earnings'] ).css( 'font-weight', 'bold' );
-				$('.edd_dashboard_widget .table_totals .b.b-sales').text( data['edd-total-payments'] ).css( 'font-weight', 'bold' );
-				$('.edd_dashboard_widget .table_today .b.b-earnings').text( data['edd-earnings-today'] ).css( 'font-weight', 'bold' );
-				$('.edd_dashboard_widget .table_today .b.b-sales').text( data['edd-payments-today'] ).css( 'font-weight', 'bold' );
-				$('.edd_dashboard_widget .table_current_month .b-earnings').text( data['edd-earnings-month'] ).css( 'font-weight', 'bold' );
-				$('.edd_dashboard_widget .table_current_month .b-sales').text( data['edd-payments-month'] ).css( 'font-weight', 'bold' );
+				$('.pdd_dashboard_widget .table_totals .b.b-earnings').text( data['pdd-total-earnings'] ).css( 'font-weight', 'bold' );
+				$('.pdd_dashboard_widget .table_totals .b.b-sales').text( data['pdd-total-payments'] ).css( 'font-weight', 'bold' );
+				$('.pdd_dashboard_widget .table_today .b.b-earnings').text( data['pdd-earnings-today'] ).css( 'font-weight', 'bold' );
+				$('.pdd_dashboard_widget .table_today .b.b-sales').text( data['pdd-payments-today'] ).css( 'font-weight', 'bold' );
+				$('.pdd_dashboard_widget .table_current_month .b-earnings').text( data['pdd-earnings-month'] ).css( 'font-weight', 'bold' );
+				$('.pdd_dashboard_widget .table_current_month .b-sales').text( data['pdd-payments-month'] ).css( 'font-weight', 'bold' );
 
 				// Return font-weight to normal after 2 seconds
 				setTimeout(function(){
-					$('.edd_dashboard_widget .b.b-sales,.edd_dashboard_widget .b.b-earnings').css( 'font-weight', 'normal' );
-					$('.edd_dashboard_widget .table_current_month .b.b-earnings,.edd_dashboard_widget .table_current_month .b.b-sales').css( 'font-weight', 'normal' );
+					$('.pdd_dashboard_widget .b.b-sales,.pdd_dashboard_widget .b.b-earnings').css( 'font-weight', 'normal' );
+					$('.pdd_dashboard_widget .table_current_month .b.b-earnings,.pdd_dashboard_widget .table_current_month .b.b-sales').css( 'font-weight', 'normal' );
 				}, 2000);
 
 			});
@@ -143,4 +143,4 @@ class EDD_Heartbeat {
 		<?php
 	}
 }
-add_action( 'plugins_loaded', array( 'EDD_Heartbeat', 'init' ) );
+add_action( 'plugins_loaded', array( 'PDD_Heartbeat', 'init' ) );

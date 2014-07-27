@@ -2,7 +2,7 @@
 /**
  * Roles and Capabilities
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Classes/Roles
  * @copyright   Copyright (c) 2012, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -10,16 +10,16 @@
 */
 
 /**
- * EDD_Roles Class
+ * PDD_Roles Class
  *
  * This class handles the role creation and assignment of capabilities for those roles.
  *
  * These roles let us have Shop Accountants, Shop Workers, etc, each of whom can do
- * certain things within the EDD store
+ * certain things within the PDD store
  *
  * @since 1.4.4
  */
-class EDD_Roles {
+class PDD_Roles {
 
 	/**
 	 * Get things going
@@ -39,7 +39,7 @@ class EDD_Roles {
 	 * @return void
 	 */
 	public function add_roles() {
-		add_role( 'shop_manager', __( 'Shop Manager', 'edd' ), array(
+		add_role( 'shop_manager', __( 'Shop Manager', 'pdd' ), array(
 			'read'                   => true,
 			'edit_posts'             => true,
 			'delete_posts'           => true,
@@ -70,20 +70,20 @@ class EDD_Roles {
 			'read_private_posts'     => true
 		) );
 
-		add_role( 'shop_accountant', __( 'Shop Accountant', 'edd' ), array(
+		add_role( 'shop_accountant', __( 'Shop Accountant', 'pdd' ), array(
 		    'read'                   => true,
 		    'edit_posts'             => false,
 		    'delete_posts'           => false
 		) );
 
-		add_role( 'shop_worker', __( 'Shop Worker', 'edd' ), array(
+		add_role( 'shop_worker', __( 'Shop Worker', 'pdd' ), array(
 			'read'                   => true,
 			'edit_posts'             => false,
 			'upload_files'           => true,
 			'delete_posts'           => false
 		) );
 
-		add_role( 'shop_vendor', __( 'Shop Vendor', 'edd' ), array(
+		add_role( 'shop_vendor', __( 'Shop Vendor', 'pdd' ), array(
 			'read'                   => true,
 			'edit_posts'             => false,
 			'upload_files'           => true,

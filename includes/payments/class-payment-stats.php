@@ -2,7 +2,7 @@
 /**
  * Earnings / Sales Stats
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Classes/Stats
  * @copyright   Copyright (c) 2012, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -11,7 +11,7 @@
 
 
 /**
- * EDD_Stats Class
+ * PDD_Stats Class
  *
  * This class is for retrieving stats for earnings and sales
  *
@@ -19,7 +19,7 @@
  *
  * @since 1.8
  */
-class EDD_Payment_Stats extends EDD_Stats {
+class PDD_Payment_Stats extends PDD_Stats {
 
 
 	/**
@@ -48,27 +48,27 @@ class EDD_Payment_Stats extends EDD_Stats {
 		if( empty( $download_id ) ) {
 
 			// Global sale stats
-			add_filter( 'edd_count_payments_where', array( $this, 'count_where' ) );
+			add_filter( 'pdd_count_payments_where', array( $this, 'count_where' ) );
 
 			if( is_array( $status ) ) {
 				$count = 0;
 				foreach( $status as $payment_status ) {
-					$count += edd_count_payments()->$payment_status;
+					$count += pdd_count_payments()->$payment_status;
 				}
 			} else {
-				$count = edd_count_payments()->$status;
+				$count = pdd_count_payments()->$status;
 			}
 
-			remove_filter( 'edd_count_payments_where', array( $this, 'count_where' ) );
+			remove_filter( 'pdd_count_payments_where', array( $this, 'count_where' ) );
 
 		} else {
 
 			// Product specific stats
-			global $edd_logs;
+			global $pdd_logs;
 
 			add_filter( 'posts_where', array( $this, 'payments_where' ) );
 
-			$count = $edd_logs->get_log_count( $download_id, 'sale' );
+			$count = $pdd_logs->get_log_count( $download_id, 'sale' );
 
 			remove_filter( 'posts_where', array( $this, 'payments_where' ) );
 
@@ -112,7 +112,7 @@ class EDD_Payment_Stats extends EDD_Stats {
 			// Global earning stats
 
 			$args = array(
-				'post_type'              => 'edd_payment',
+				'post_type'              => 'pdd_payment',
 				'nopaging'               => true,
 				'post_status'            => array( 'publish', 'revoked' ),
 				'fields'                 => 'ids',
@@ -120,10 +120,10 @@ class EDD_Payment_Stats extends EDD_Stats {
 				'suppress_filters'       => false,
 				'start_date'             => $this->start_date, // These dates are not valid query args, but they are used for cache keys
 				'end_date'               => $this->end_date,
-				'edd_transient_type'     => 'edd_earnings', // This is not a valid query arg, but is used for cache keying
+				'pdd_transient_type'     => 'pdd_earnings', // This is not a valid query arg, but is used for cache keying
 			);
 
-			$args     = apply_filters( 'edd_stats_earnings_args', $args );
+			$args     = apply_filters( 'pdd_stats_earnings_args', $args );
 			$key      = md5( serialize( $args ) );
 
 			$earnings = get_transient( $key );
@@ -132,7 +132,7 @@ class EDD_Payment_Stats extends EDD_Stats {
 				$earnings = 0;
 				if ( $sales ) {
 					$sales = implode( ',', $sales );
-					$earnings += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_edd_payment_total' AND post_id IN({$sales})" );
+					$earnings += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_pdd_payment_total' AND post_id IN({$sales})" );
 				}
 				// Cache the results for one hour
 				set_transient( $key, $earnings, 60*60 );
@@ -142,7 +142,7 @@ class EDD_Payment_Stats extends EDD_Stats {
 
 			// Download specific earning stats
 
-			global $edd_logs, $wpdb;
+			global $pdd_logs, $wpdb;
 
 			$args = array(
 				'post_parent'        => $download_id,
@@ -152,24 +152,24 @@ class EDD_Payment_Stats extends EDD_Stats {
 				'suppress_filters'   => false,
 				'start_date'         => $this->start_date, // These dates are not valid query args, but they are used for cache keys
 				'end_date'           => $this->end_date,
-				'edd_transient_type' => 'edd_earnings', // This is not a valid query arg, but is used for cache keying
+				'pdd_transient_type' => 'pdd_earnings', // This is not a valid query arg, but is used for cache keying
 			);
 
-			$args     = apply_filters( 'edd_stats_earnings_args', $args );
+			$args     = apply_filters( 'pdd_stats_earnings_args', $args );
 			$key      = md5( serialize( $args ) );
 
 			$earnings = get_transient( $key );
 			if( false === $earnings ) {
 
-				$log_ids  = $edd_logs->get_connected_logs( $args, 'sale' );
+				$log_ids  = $pdd_logs->get_connected_logs( $args, 'sale' );
 				$earnings = 0;
 
 				if( $log_ids ) {
 					$log_ids     = implode( ',', $log_ids );
-					$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_edd_log_payment_id' AND post_id IN ($log_ids);" );
+					$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_pdd_log_payment_id' AND post_id IN ($log_ids);" );
 
 					foreach( $payment_ids as $payment_id ) {
-						$items = edd_get_payment_meta_cart_details( $payment_id );
+						$items = pdd_get_payment_meta_cart_details( $payment_id );
 						foreach( $items as $item ) {
 							if( $item['id'] != $download_id )
 								continue;
@@ -204,7 +204,7 @@ class EDD_Payment_Stats extends EDD_Stats {
 
 		$downloads = $wpdb->get_results( $wpdb->prepare(
 			"SELECT post_id as download_id, max(meta_value) as sales
-				FROM $wpdb->postmeta WHERE meta_key='_edd_download_sales' AND meta_value > 0
+				FROM $wpdb->postmeta WHERE meta_key='_pdd_download_sales' AND meta_value > 0
 				GROUP BY meta_value+0
 				DESC LIMIT %d;", $number
 		) );

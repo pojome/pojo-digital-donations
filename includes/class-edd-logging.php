@@ -2,7 +2,7 @@
 /**
  * Class for logging events and errors
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Logging
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -13,16 +13,16 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * EDD_Logging Class
+ * PDD_Logging Class
  *
  * A general use class for logging events and errors.
  *
  * @since 1.3.1
  */
-class EDD_Logging {
+class PDD_Logging {
 
 	/**
-	 * Set up the EDD Logging Class
+	 * Set up the PDD Logging Class
 	 *
 	 * @since 1.3.1
 	 */
@@ -36,7 +36,7 @@ class EDD_Logging {
 	}
 
 	/**
-	 * Registers the edd_log Post Type
+	 * Registers the pdd_log Post Type
 	 *
 	 * @access public
 	 * @since 1.3.1
@@ -45,7 +45,7 @@ class EDD_Logging {
 	public function register_post_type() {
 		/* Logs post type */
 		$log_args = array(
-			'labels'			  => array( 'name' => __( 'Logs', 'edd' ) ),
+			'labels'			  => array( 'name' => __( 'Logs', 'pdd' ) ),
 			'public'			  => false,
 			'exclude_from_search' => true,
 			'publicly_queryable'  => false,
@@ -57,7 +57,7 @@ class EDD_Logging {
 			'can_export'		  => true
 		);
 
-		register_post_type( 'edd_log', $log_args );
+		register_post_type( 'pdd_log', $log_args );
 	}
 
 	/**
@@ -70,7 +70,7 @@ class EDD_Logging {
 	 * @return void
 	*/
 	public function register_taxonomy() {
-		register_taxonomy( 'edd_log_type', 'edd_log', array( 'public' => false ) );
+		register_taxonomy( 'pdd_log_type', 'pdd_log', array( 'public' => false ) );
 	}
 
 	/**
@@ -87,7 +87,7 @@ class EDD_Logging {
 			'sale', 'file_download', 'gateway_error', 'api_request'
 		);
 
-		return apply_filters( 'edd_log_types', $terms );
+		return apply_filters( 'pdd_log_types', $terms );
 	}
 
 	/**
@@ -97,7 +97,7 @@ class EDD_Logging {
 	 *
 	 * @access public
 	 * @since 1.3.1
-	 * @uses EDD_Logging::log_types()
+	 * @uses PDD_Logging::log_types()
 	 * @param string $type Log type
 	 * @return bool Whether log type is valid
 	 */
@@ -113,7 +113,7 @@ class EDD_Logging {
 	 *
 	 * @access public
 	 * @since 1.3.1
-	 * @uses EDD_Logging::insert_log()
+	 * @uses PDD_Logging::insert_log()
 	 * @param string $title Log entry title
 	 * @param string $message Log entry message
 	 * @param int $parent Log entry parent
@@ -136,7 +136,7 @@ class EDD_Logging {
 	 *
 	 * @access public
 	 * @since 1.3.1
-	 * @uses EDD_Logging::get_connected_logs()
+	 * @uses PDD_Logging::get_connected_logs()
 	 * @param int $object_id (default: 0)
 	 * @param string $type Log type (default: null)
 	 * @param int $paged Page number (default: null)
@@ -151,14 +151,14 @@ class EDD_Logging {
 	 *
 	 * @access public
 	 * @since 1.3.1
-	 * @uses EDD_Logging::valid_type()
+	 * @uses PDD_Logging::valid_type()
 	 * @param array $log_data Log entry data
 	 * @param array $log_meta Log entry meta
 	 * @return int The ID of the newly created log item
 	 */
 	function insert_log( $log_data = array(), $log_meta = array() ) {
 		$defaults = array(
-			'post_type' 	=> 'edd_log',
+			'post_type' 	=> 'pdd_log',
 			'post_status'	=> 'publish',
 			'post_parent'	=> 0,
 			'post_content'	=> '',
@@ -167,24 +167,24 @@ class EDD_Logging {
 
 		$args = wp_parse_args( $log_data, $defaults );
 
-		do_action( 'edd_pre_insert_log', $log_data, $log_meta );
+		do_action( 'pdd_pre_insert_log', $log_data, $log_meta );
 
 		// Store the log entry
 		$log_id = wp_insert_post( $args );
 
 		// Set the log type, if any
 		if ( $log_data['log_type'] && $this->valid_type( $log_data['log_type'] ) ) {
-			wp_set_object_terms( $log_id, $log_data['log_type'], 'edd_log_type', false );
+			wp_set_object_terms( $log_id, $log_data['log_type'], 'pdd_log_type', false );
 		}
 
 		// Set log meta, if any
 		if ( $log_id && ! empty( $log_meta ) ) {
 			foreach ( (array) $log_meta as $key => $meta ) {
-				update_post_meta( $log_id, '_edd_log_' . sanitize_key( $key ), $meta );
+				update_post_meta( $log_id, '_pdd_log_' . sanitize_key( $key ), $meta );
 			}
 		}
 
-		do_action( 'edd_post_insert_log', $log_id, $log_data, $log_meta );
+		do_action( 'pdd_post_insert_log', $log_id, $log_data, $log_meta );
 
 		return $log_id;
 	}
@@ -200,10 +200,10 @@ class EDD_Logging {
 	 */
 	public function update_log( $log_data = array(), $log_meta = array() ) {
 
-		do_action( 'edd_pre_update_log', $log_data, $log_meta );
+		do_action( 'pdd_pre_update_log', $log_data, $log_meta );
 
 		$defaults = array(
-			'post_type' 	=> 'edd_log',
+			'post_type' 	=> 'pdd_log',
 			'post_status'	=> 'publish',
 			'post_parent'	=> 0
 		);
@@ -216,11 +216,11 @@ class EDD_Logging {
 		if ( $log_id && ! empty( $log_meta ) ) {
 			foreach ( (array) $log_meta as $key => $meta ) {
 				if ( ! empty( $meta ) )
-					update_post_meta( $log_id, '_edd_log_' . sanitize_key( $key ), $meta );
+					update_post_meta( $log_id, '_pdd_log_' . sanitize_key( $key ), $meta );
 			}
 		}
 
-		do_action( 'edd_post_update_log', $log_id, $log_data, $log_meta );
+		do_action( 'pdd_post_update_log', $log_id, $log_data, $log_meta );
 	}
 
 	/**
@@ -235,7 +235,7 @@ class EDD_Logging {
 	 */
 	public function get_connected_logs( $args = array() ) {
 		$defaults = array(
-			'post_type'      => 'edd_log',
+			'post_type'      => 'pdd_log',
 			'posts_per_page' => 20,
 			'post_status'    => 'publish',
 			'paged'          => get_query_var( 'paged' ),
@@ -247,7 +247,7 @@ class EDD_Logging {
 		if ( $query_args['log_type'] && $this->valid_type( $query_args['log_type'] ) ) {
 			$query_args['tax_query'] = array(
 				array(
-					'taxonomy' 	=> 'edd_log_type',
+					'taxonomy' 	=> 'pdd_log_type',
 					'field'		=> 'slug',
 					'terms'		=> $query_args['log_type']
 				)
@@ -280,7 +280,7 @@ class EDD_Logging {
 
 		$query_args = array(
 			'post_parent' 	   => $object_id,
-			'post_type'		   => 'edd_log',
+			'post_type'		   => 'pdd_log',
 			'posts_per_page'   => -1,
 			'post_status'	   => 'publish',
 			'fields'           => 'ids',
@@ -289,7 +289,7 @@ class EDD_Logging {
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
 			$query_args['tax_query'] = array(
 				array(
-					'taxonomy' 	=> 'edd_log_type',
+					'taxonomy' 	=> 'pdd_log_type',
 					'field'		=> 'slug',
 					'terms'		=> $type
 				)
@@ -314,7 +314,7 @@ class EDD_Logging {
 	 *
 	 * @access public
 	 * @since 1.3.1
-	 * @uses EDD_Logging::valid_type
+	 * @uses PDD_Logging::valid_type
 	 * @param int $object_id (default: 0)
 	 * @param string $type Log type (default: null)
 	 * @param array $meta_query Log meta query (default: null)
@@ -323,7 +323,7 @@ class EDD_Logging {
 	public function delete_logs( $object_id = 0, $type = null, $meta_query = null  ) {
 		$query_args = array(
 			'post_parent' 	=> $object_id,
-			'post_type'		=> 'edd_log',
+			'post_type'		=> 'pdd_log',
 			'posts_per_page'=> -1,
 			'post_status'	=> 'publish',
 			'fields'        => 'ids'
@@ -332,7 +332,7 @@ class EDD_Logging {
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
 			$query_args['tax_query'] = array(
 				array(
-					'taxonomy' 	=> 'edd_log_type',
+					'taxonomy' 	=> 'pdd_log_type',
 					'field'		=> 'slug',
 					'terms'		=> $type,
 				)
@@ -355,7 +355,7 @@ class EDD_Logging {
 }
 
 // Initiate the logging system
-$GLOBALS['edd_logs'] = new EDD_Logging();
+$GLOBALS['pdd_logs'] = new PDD_Logging();
 
 /**
  * Record a log entry
@@ -369,14 +369,14 @@ $GLOBALS['edd_logs'] = new EDD_Logging();
  * @param int    $parent
  * @param null   $type
  *
- * @global $edd_logs EDD Logs Object
+ * @global $pdd_logs PDD Logs Object
  *
- * @uses EDD_Logging::add()
+ * @uses PDD_Logging::add()
  *
  * @return mixed ID of the new log entry
  */
-function edd_record_log( $title = '', $message = '', $parent = 0, $type = null ) {
-	global $edd_logs;
-	$log = $edd_logs->add( $title, $message, $parent, $type );
+function pdd_record_log( $title = '', $message = '', $parent = 0, $type = null ) {
+	global $pdd_logs;
+	$log = $pdd_logs->add( $title, $message, $parent, $type );
 	return $log;
 }

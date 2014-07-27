@@ -9,7 +9,7 @@
  * @author Pippin Williamson
  * @version 1.2
  */
-class EDD_SL_Plugin_Updater {
+class PDD_SL_Plugin_Updater {
 
 	private $api_url  = '';
 	private $api_data = array();
@@ -27,7 +27,7 @@ class EDD_SL_Plugin_Updater {
 	 * @param string $_api_url The URL pointing to the custom API endpoint.
 	 * @param string $_plugin_file Path to the plugin file.
 	 * @param array $_api_data Optional data to send with API calls.
-	 * @return EDD_SL_Plugin_Updater
+	 * @return PDD_SL_Plugin_Updater
 	 */
 	function __construct( $_api_url, $_plugin_file, $_api_data = null ) {
 		$this->api_url  = trailingslashit( $_api_url );
@@ -123,7 +123,7 @@ class EDD_SL_Plugin_Updater {
 	 */
 	function http_request_args( $args, $url ) {
 		// If it is an https request and we are performing a package download, disable ssl verification
-		if( strpos( $url, 'https://' ) !== false && strpos( $url, 'edd_action=package_download' ) ) {
+		if( strpos( $url, 'https://' ) !== false && strpos( $url, 'pdd_action=package_download' ) ) {
 			$args['sslverify'] = false;
 		}
 		return $args;
@@ -156,7 +156,7 @@ class EDD_SL_Plugin_Updater {
 		}
 
 		$api_params = array(
-			'edd_action' 	=> 'get_version',
+			'pdd_action' 	=> 'get_version',
 			'license' 		=> $data['license'],
 			'name' 			=> $data['item_name'],
 			'slug' 			=> $this->slug,

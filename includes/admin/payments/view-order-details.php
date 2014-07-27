@@ -2,7 +2,7 @@
 /**
  * View Order Details
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Payments
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -19,319 +19,319 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return void
 */
 if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-	wp_die( __( 'Payment ID not supplied. Please try again', 'edd' ), __( 'Error', 'edd' ) );
+	wp_die( __( 'Payment ID not supplied. Please try again', 'pdd' ), __( 'Error', 'pdd' ) );
 }
 
 // Setup the variables
 $payment_id   = absint( $_GET['id'] );
-$number       = edd_get_payment_number( $payment_id );
+$number       = pdd_get_payment_number( $payment_id );
 $item         = get_post( $payment_id );
 
 // Sanity check... fail if purchase ID is invalid
-if ( !is_object( $item ) || $item->post_type != 'edd_payment' ) {
-    wp_die( __( 'The specified ID does not belong to a payment. Please try again', 'edd' ), __( 'Error', 'edd' ) );
+if ( !is_object( $item ) || $item->post_type != 'pdd_payment' ) {
+    wp_die( __( 'The specified ID does not belong to a payment. Please try again', 'pdd' ), __( 'Error', 'pdd' ) );
 }
 
-$payment_meta = edd_get_payment_meta( $payment_id );
-$cart_items   = edd_get_payment_meta_cart_details( $payment_id );
-$user_id      = edd_get_payment_user_id( $payment_id );
+$payment_meta = pdd_get_payment_meta( $payment_id );
+$cart_items   = pdd_get_payment_meta_cart_details( $payment_id );
+$user_id      = pdd_get_payment_user_id( $payment_id );
 $payment_date = strtotime( $item->post_date );
-$unlimited    = edd_payment_has_unlimited_downloads( $payment_id );
-$user_info    = edd_get_payment_meta_user_info( $payment_id );
+$unlimited    = pdd_payment_has_unlimited_downloads( $payment_id );
+$user_info    = pdd_get_payment_meta_user_info( $payment_id );
 $address      = ! empty( $user_info['address'] ) ? $user_info['address'] : array( 'line1' => '', 'line2' => '', 'city' => '', 'country' => '', 'state' => '', 'zip' => '' );
 ?>
-<div class="wrap edd-wrap">
-	<h2><?php printf( __( 'Payment %s', 'edd' ), $number ); ?></h2>
-	<?php do_action( 'edd_view_order_details_before', $payment_id ); ?>
-	<form id="edd-edit-order-form" method="post">
-		<?php do_action( 'edd_view_order_details_form_top', $payment_id ); ?>
+<div class="wrap pdd-wrap">
+	<h2><?php printf( __( 'Payment %s', 'pdd' ), $number ); ?></h2>
+	<?php do_action( 'pdd_view_order_details_before', $payment_id ); ?>
+	<form id="pdd-edit-order-form" method="post">
+		<?php do_action( 'pdd_view_order_details_form_top', $payment_id ); ?>
 		<div id="poststuff">
-			<div id="edd-dashboard-widgets-wrap">
+			<div id="pdd-dashboard-widgets-wrap">
 				<div id="post-body" class="metabox-holder columns-2">
 					<div id="postbox-container-1" class="postbox-container">
 						<div id="side-sortables" class="meta-box-sortables ui-sortable">
-							<?php do_action( 'edd_view_order_details_sidebar_before', $payment_id ); ?>
+							<?php do_action( 'pdd_view_order_details_sidebar_before', $payment_id ); ?>
 							
-							<div id="edd-order-totals" class="postbox">
+							<div id="pdd-order-totals" class="postbox">
 								<h3 class="hndle">
-									<span><?php _e( 'Payment Totals', 'edd' ); ?></span>
+									<span><?php _e( 'Payment Totals', 'pdd' ); ?></span>
 								</h3>
 								<div class="inside">
-									<div class="edd-order-totals-box edd-admin-box">
-										<?php do_action( 'edd_view_order_details_totals_before', $payment_id ); ?>
-										<div class="edd-order-discount edd-admin-box-inside">
+									<div class="pdd-order-totals-box pdd-admin-box">
+										<?php do_action( 'pdd_view_order_details_totals_before', $payment_id ); ?>
+										<div class="pdd-order-discount pdd-admin-box-inside">
 											<p>
-												<span class="label"><?php _e( 'Discount Code', 'edd' ); ?>:</span>&nbsp;
-												<span class="right"><?php if ( isset( $user_info['discount'] ) && $user_info['discount'] !== 'none' ) { echo '<code>' . $user_info['discount'] . '</code>'; } else { _e( 'None', 'edd' ); } ?></span>
+												<span class="label"><?php _e( 'Discount Code', 'pdd' ); ?>:</span>&nbsp;
+												<span class="right"><?php if ( isset( $user_info['discount'] ) && $user_info['discount'] !== 'none' ) { echo '<code>' . $user_info['discount'] . '</code>'; } else { _e( 'None', 'pdd' ); } ?></span>
 											</p>
 										</div>
-										<?php if ( edd_use_taxes() ) : ?>
-										<div class="edd-order-taxes edd-admin-box-inside">
+										<?php if ( pdd_use_taxes() ) : ?>
+										<div class="pdd-order-taxes pdd-admin-box-inside">
 											<p>
-												<span class="label"><?php _e( 'Tax', 'edd' ); ?>:</span>&nbsp;
-												<input name="edd-payment-tax" type="number" step="0.01" class="small-text right " value="<?php echo esc_attr( edd_get_payment_tax( $payment_id ) ); ?>"/>
+												<span class="label"><?php _e( 'Tax', 'pdd' ); ?>:</span>&nbsp;
+												<input name="pdd-payment-tax" type="number" step="0.01" class="small-text right " value="<?php echo esc_attr( pdd_get_payment_tax( $payment_id ) ); ?>"/>
 											</p>
 										</div>
 										<?php endif; ?>
 										<?php
-										$fees = edd_get_payment_fees( $payment_id );
+										$fees = pdd_get_payment_fees( $payment_id );
 										if ( ! empty( $fees ) ) : ?>
-										<div class="edd-order-fees edd-admin-box-inside">
-											<p class="strong"><?php _e( 'Fees', 'edd' ); ?>:</p>
-											<ul class="edd-payment-fees">
+										<div class="pdd-order-fees pdd-admin-box-inside">
+											<p class="strong"><?php _e( 'Fees', 'pdd' ); ?>:</p>
+											<ul class="pdd-payment-fees">
 												<?php foreach( $fees as $fee ) : ?>
-												<li><span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="right fee-amount" data-fee="' . esc_attr( $fee['amount'] ) . '">' . edd_currency_filter( $fee['amount'] ); ?></span></li>
+												<li><span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="right fee-amount" data-fee="' . esc_attr( $fee['amount'] ) . '">' . pdd_currency_filter( $fee['amount'] ); ?></span></li>
 												<?php endforeach; ?>
 											</ul>
 										</div>
 										<?php endif; ?>
-										<div class="edd-order-payment edd-admin-box-inside">
+										<div class="pdd-order-payment pdd-admin-box-inside">
 											<p>
-												<span class="label"><?php _e( 'Total Price', 'edd' ); ?>:</span>&nbsp;
-												<input name="edd-payment-total" type="number" step="0.01" class="small-text right" value="<?php echo esc_attr( edd_get_payment_amount( $payment_id ) ); ?>"/>
+												<span class="label"><?php _e( 'Total Price', 'pdd' ); ?>:</span>&nbsp;
+												<input name="pdd-payment-total" type="number" step="0.01" class="small-text right" value="<?php echo esc_attr( pdd_get_payment_amount( $payment_id ) ); ?>"/>
 											</p>
 										</div>
-										<div class="edd-order-payment-recalc-totals edd-admin-box-inside" style="display:none">
+										<div class="pdd-order-payment-recalc-totals pdd-admin-box-inside" style="display:none">
 											<p>
-												<span class="label"><?php _e( 'Recalculate Totals', 'edd' ); ?>:</span>&nbsp;
-												<a href="" id="edd-order-recalc-total" class="button button-secondary right"><?php _e( 'Recalculate', 'edd' ); ?></a>
+												<span class="label"><?php _e( 'Recalculate Totals', 'pdd' ); ?>:</span>&nbsp;
+												<a href="" id="pdd-order-recalc-total" class="button button-secondary right"><?php _e( 'Recalculate', 'pdd' ); ?></a>
 											</p>
 										</div>
-										<?php do_action( 'edd_view_order_details_totals_after', $payment_id ); ?>
-									</div><!-- /.edd-order-totals-box -->
+										<?php do_action( 'pdd_view_order_details_totals_after', $payment_id ); ?>
+									</div><!-- /.pdd-order-totals-box -->
 								</div><!-- /.inside -->
-							</div><!-- /#edd-order-totals -->
+							</div><!-- /#pdd-order-totals -->
 	
-							<div id="edd-order-update" class="postbox edd-order-data">
+							<div id="pdd-order-update" class="postbox pdd-order-data">
 								
 								<h3 class="hndle">
-									<span><?php _e( 'Update Payment', 'edd' ); ?></span>
+									<span><?php _e( 'Update Payment', 'pdd' ); ?></span>
 								</h3>
 								<div class="inside">
-									<div class="edd-admin-box">
+									<div class="pdd-admin-box">
 	
-										<div class="edd-admin-box-inside">
+										<div class="pdd-admin-box-inside">
 	
 											<?php
-											$gateway = edd_get_payment_gateway( $payment_id );
+											$gateway = pdd_get_payment_gateway( $payment_id );
 											if ( $gateway ) { ?>
 											<p>
-												<strong><?php _e( 'Gateway:', 'edd' ); ?></strong>&nbsp;
-												<span><?php echo edd_get_gateway_admin_label( $gateway ); ?></span>
+												<strong><?php _e( 'Gateway:', 'pdd' ); ?></strong>&nbsp;
+												<span><?php echo pdd_get_gateway_admin_label( $gateway ); ?></span>
 											</p>
 											<?php } ?>
 	
 											<p>
-												<strong><?php _e( 'Key:', 'edd' ); ?></strong>&nbsp;
-												<span><?php echo edd_get_payment_key( $payment_id ); ?></span>
+												<strong><?php _e( 'Key:', 'pdd' ); ?></strong>&nbsp;
+												<span><?php echo pdd_get_payment_key( $payment_id ); ?></span>
 											</p>
 	
 											<p>
-												<strong><?php _e( 'IP:', 'edd' ); ?></strong>&nbsp;
-												<span><?php esc_attr_e( edd_get_payment_user_ip( $payment_id )); ?></span>
+												<strong><?php _e( 'IP:', 'pdd' ); ?></strong>&nbsp;
+												<span><?php esc_attr_e( pdd_get_payment_user_ip( $payment_id )); ?></span>
 											</p>
 	
 										</div>
 	
-										<div class="edd-admin-box-inside">
+										<div class="pdd-admin-box-inside">
 											<p>
-												<span class="label"><?php _e( 'Status:', 'edd' ); ?></span>&nbsp;
-												<select name="edd-payment-status" class="medium-text">
-													<?php foreach( edd_get_payment_statuses() as $key => $status ) : ?>
-														<option value="<?php esc_attr_e( $key ); ?>"<?php selected( edd_get_payment_status( $item, true ), $status ); ?>><?php esc_html_e( $status ); ?></option>
+												<span class="label"><?php _e( 'Status:', 'pdd' ); ?></span>&nbsp;
+												<select name="pdd-payment-status" class="medium-text">
+													<?php foreach( pdd_get_payment_statuses() as $key => $status ) : ?>
+														<option value="<?php esc_attr_e( $key ); ?>"<?php selected( pdd_get_payment_status( $item, true ), $status ); ?>><?php esc_html_e( $status ); ?></option>
 													<?php endforeach; ?>
 												</select>
 											</p>
 										</div>
 										
-										<div class="edd-admin-box-inside">
+										<div class="pdd-admin-box-inside">
 											<p>
-												<span class="label"><?php _e( 'Date:', 'edd' ); ?></span>&nbsp;
-												<input type="text" name="edd-payment-date" value="<?php esc_attr_e( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text edd_datepicker"/>
+												<span class="label"><?php _e( 'Date:', 'pdd' ); ?></span>&nbsp;
+												<input type="text" name="pdd-payment-date" value="<?php esc_attr_e( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text pdd_datepicker"/>
 											</p>
 										</div>
 	
-										<div class="edd-admin-box-inside">
+										<div class="pdd-admin-box-inside">
 											<p>
-												<span class="label"><?php _e( 'Time:', 'edd' ); ?></span>&nbsp;
-												<input type="number" step="1" max="24" name="edd-payment-time-hour" value="<?php esc_attr_e( date_i18n( 'H', $payment_date ) ); ?>" class="small-text edd-payment-time-hour"/>&nbsp;:&nbsp;
-												<input type="number" step="1" max="59" name="edd-payment-time-min" value="<?php esc_attr_e( date( 'i', $payment_date ) ); ?>" class="small-text edd-payment-time-min"/>
+												<span class="label"><?php _e( 'Time:', 'pdd' ); ?></span>&nbsp;
+												<input type="number" step="1" max="24" name="pdd-payment-time-hour" value="<?php esc_attr_e( date_i18n( 'H', $payment_date ) ); ?>" class="small-text pdd-payment-time-hour"/>&nbsp;:&nbsp;
+												<input type="number" step="1" max="59" name="pdd-payment-time-min" value="<?php esc_attr_e( date( 'i', $payment_date ) ); ?>" class="small-text pdd-payment-time-min"/>
 											</p>
 										</div>
 	
-										<div class="edd-admin-box-inside edd-unlimited-downloads">
+										<div class="pdd-admin-box-inside pdd-unlimited-downloads">
 											<p>
-												<span class="label" title="<?php _e( 'Grants the customer unlimited file downloads for this purchase, regardless of other limits set.', 'edd' ); ?>"><i data-code="f316" class="dashicons dashicons-download"></i></span>&nbsp;
-												<input type="checkbox" name="edd-unlimited-downloads" id="edd_unlimited_downloads" value="1"<?php checked( true, $unlimited, true ); ?>/>
-												<label class="description" for="edd_unlimited_downloads"><?php _e( 'Unlimited file downloads', 'edd' ); ?></label>
+												<span class="label" title="<?php _e( 'Grants the customer unlimited file downloads for this purchase, regardless of other limits set.', 'pdd' ); ?>"><i data-code="f316" class="dashicons dashicons-download"></i></span>&nbsp;
+												<input type="checkbox" name="pdd-unlimited-downloads" id="pdd_unlimited_downloads" value="1"<?php checked( true, $unlimited, true ); ?>/>
+												<label class="description" for="pdd_unlimited_downloads"><?php _e( 'Unlimited file downloads', 'pdd' ); ?></label>
 											</p>
 										</div>
 
-										<?php do_action( 'edd_view_order_details_update_inner', $payment_id ); ?>
+										<?php do_action( 'pdd_view_order_details_update_inner', $payment_id ); ?>
 	
 									</div><!-- /.column-container -->
 	
 								</div><!-- /.inside -->
 	
-								<div class="edd-order-update-box edd-admin-box">
-									<?php do_action( 'edd_view_order_details_update_before', $payment_id ); ?>
+								<div class="pdd-order-update-box pdd-admin-box">
+									<?php do_action( 'pdd_view_order_details_update_before', $payment_id ); ?>
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
-											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'edd' ); ?>"/>
-											<?php if( edd_is_payment_complete( $payment_id ) ) : ?>
-												<a href="<?php echo add_query_arg( array( 'edd-action' => 'email_links', 'purchase_id' => $payment_id ) ); ?>" id="edd-resend-receipt" class="button-secondary right"><?php _e( 'Resend Receipt', 'edd' ); ?></a>
+											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'pdd' ); ?>"/>
+											<?php if( pdd_is_payment_complete( $payment_id ) ) : ?>
+												<a href="<?php echo add_query_arg( array( 'pdd-action' => 'email_links', 'purchase_id' => $payment_id ) ); ?>" id="pdd-resend-receipt" class="button-secondary right"><?php _e( 'Resend Receipt', 'pdd' ); ?></a>
 											<?php endif; ?>
 										</div>
 										<div class="clear"></div>
 									</div>
-									<?php do_action( 'edd_view_order_details_update_after', $payment_id ); ?>
-								</div><!-- /.edd-order-update-box -->
+									<?php do_action( 'pdd_view_order_details_update_after', $payment_id ); ?>
+								</div><!-- /.pdd-order-update-box -->
 	
-							</div><!-- /#edd-order-data -->
+							</div><!-- /#pdd-order-data -->
 
-							<div id="edd-order-logs" class="postbox edd-order-logs">
+							<div id="pdd-order-logs" class="postbox pdd-order-logs">
 								
 								<h3 class="hndle">
-									<span><?php _e( 'Logs', 'edd' ); ?></span>
+									<span><?php _e( 'Logs', 'pdd' ); ?></span>
 								</h3>
 								<div class="inside">
-									<div class="edd-admin-box">
+									<div class="pdd-admin-box">
 	
-										<div class="edd-admin-box-inside">
+										<div class="pdd-admin-box-inside">
 
-											<p><a href="<?php echo admin_url( '/edit.php?post_type=download&page=edd-reports&tab=logs&payment=' . $payment_id ); ?>"><?php _e( 'View file download log for purchase', 'edd' ); ?></a></p>
+											<p><a href="<?php echo admin_url( '/edit.php?post_type=download&page=pdd-reports&tab=logs&payment=' . $payment_id ); ?>"><?php _e( 'View file download log for purchase', 'pdd' ); ?></a></p>
 	
 										</div>
 
-										<?php do_action( 'edd_view_order_details_logs_inner', $payment_id ); ?>
+										<?php do_action( 'pdd_view_order_details_logs_inner', $payment_id ); ?>
 	
 									</div><!-- /.column-container -->
 	
 								</div><!-- /.inside -->
 
 	
-							</div><!-- /#edd-order-logs -->
+							</div><!-- /#pdd-order-logs -->
 	
-							<?php do_action( 'edd_view_order_details_sidebar_after', $payment_id ); ?>
+							<?php do_action( 'pdd_view_order_details_sidebar_after', $payment_id ); ?>
 						</div><!-- /#side-sortables -->
 					</div><!-- /#postbox-container-1 -->
 	
 					<div id="postbox-container-2" class="postbox-container">
 						<div id="normal-sortables" class="meta-box-sortables ui-sortable">
 	
-							<?php do_action( 'edd_view_order_details_main_before', $payment_id ); ?>
+							<?php do_action( 'pdd_view_order_details_main_before', $payment_id ); ?>
 	
-							<div id="edd-customer-details" class="postbox">
+							<div id="pdd-customer-details" class="postbox">
 								<h3 class="hndle">
-									<span><?php _e( 'Customer Details', 'edd' ); ?></span>
+									<span><?php _e( 'Customer Details', 'pdd' ); ?></span>
 								</h3>
-								<div class="inside edd-clearfix">
+								<div class="inside pdd-clearfix">
 	
 									<div class="column-container">
 										<div class="column">
-											<strong><?php _e( 'Name:', 'edd' ); ?></strong>&nbsp;
-											<input type="text" name="edd-payment-user-name" value="<?php esc_attr_e( $user_info['first_name'] . ' ' . $user_info['last_name'] ); ?>" class="medium-text"/>
+											<strong><?php _e( 'Name:', 'pdd' ); ?></strong>&nbsp;
+											<input type="text" name="pdd-payment-user-name" value="<?php esc_attr_e( $user_info['first_name'] . ' ' . $user_info['last_name'] ); ?>" class="medium-text"/>
 										</div>
 										<div class="column">
-											<strong><?php _e( 'Email:', 'edd' ); ?></strong>&nbsp;
-											<input type="email" name="edd-payment-user-email" value="<?php esc_attr_e( edd_get_payment_user_email( $payment_id ) ); ?>" class="medium-text"/>
+											<strong><?php _e( 'Email:', 'pdd' ); ?></strong>&nbsp;
+											<input type="email" name="pdd-payment-user-email" value="<?php esc_attr_e( pdd_get_payment_user_email( $payment_id ) ); ?>" class="medium-text"/>
 										</div>
 										<div class="column">
-											<strong><?php _e( 'User ID:', 'edd' ); ?></strong>&nbsp;
-											<input type="number" step="1" min="-1" name="edd-payment-user-id" value="<?php esc_attr_e( $user_id ); ?>" class="small-text"/>
+											<strong><?php _e( 'User ID:', 'pdd' ); ?></strong>&nbsp;
+											<input type="number" step="1" min="-1" name="pdd-payment-user-id" value="<?php esc_attr_e( $user_id ); ?>" class="small-text"/>
 										</div>
 									</div>
 	
 									<?php 
-									// The edd_payment_personal_details_list hook is left here for backwards compatibility
-									do_action( 'edd_payment_personal_details_list', $payment_meta, $user_info );
-									do_action( 'edd_payment_view_details', $payment_id );
+									// The pdd_payment_personal_details_list hook is left here for backwards compatibility
+									do_action( 'pdd_payment_personal_details_list', $payment_meta, $user_info );
+									do_action( 'pdd_payment_view_details', $payment_id );
 									?>
 	
 								</div><!-- /.inside -->
-							</div><!-- /#edd-customer-details -->
+							</div><!-- /#pdd-customer-details -->
 	
-							<?php do_action( 'edd_view_order_details_billing_before', $payment_id ); ?>
+							<?php do_action( 'pdd_view_order_details_billing_before', $payment_id ); ?>
 	
-							<div id="edd-billing-details" class="postbox">
+							<div id="pdd-billing-details" class="postbox">
 								<h3 class="hndle">
-									<span><?php _e( 'Billing Address', 'edd' ); ?></span>
+									<span><?php _e( 'Billing Address', 'pdd' ); ?></span>
 								</h3>
-								<div class="inside edd-clearfix">
+								<div class="inside pdd-clearfix">
 	
-									<div id="edd-order-address">
+									<div id="pdd-order-address">
 	
 										<div class="order-data-address">
 											<div class="data column-container">
 												<div class="column">
 													<p>
-														<strong class="order-data-address-line"><?php _e( 'Street Address Line 1:', 'edd' ); ?></strong><br/>
-														<input type="text" name="edd-payment-address[0][line1]" value="<?php esc_attr_e( $address['line1'] ); ?>" class="medium-text" />
+														<strong class="order-data-address-line"><?php _e( 'Street Address Line 1:', 'pdd' ); ?></strong><br/>
+														<input type="text" name="pdd-payment-address[0][line1]" value="<?php esc_attr_e( $address['line1'] ); ?>" class="medium-text" />
 													</p>
 													<p>
-														<strong class="order-data-address-line"><?php _e( 'Street Address Line 2:', 'edd' ); ?></strong><br/>
-														<input type="text" name="edd-payment-address[0][line2]" value="<?php esc_attr_e( $address['line2'] ); ?>" class="medium-text" />
+														<strong class="order-data-address-line"><?php _e( 'Street Address Line 2:', 'pdd' ); ?></strong><br/>
+														<input type="text" name="pdd-payment-address[0][line2]" value="<?php esc_attr_e( $address['line2'] ); ?>" class="medium-text" />
 													</p>
 														
 												</div>
 												<div class="column">
 													<p>
-														<strong class="order-data-address-line"><?php echo _x( 'City:', 'Address City', 'edd' ); ?></strong><br/>
-														<input type="text" name="edd-payment-address[0][city]" value="<?php esc_attr_e( $address['city'] ); ?>" class="medium-text"/>
+														<strong class="order-data-address-line"><?php echo _x( 'City:', 'Address City', 'pdd' ); ?></strong><br/>
+														<input type="text" name="pdd-payment-address[0][city]" value="<?php esc_attr_e( $address['city'] ); ?>" class="medium-text"/>
 														
 													</p>
 													<p>
-														<strong class="order-data-address-line"><?php echo _x( 'Zip / Postal Code:', 'Zip / Postal code of address', 'edd' ); ?></strong><br/>
-														<input type="text" name="edd-payment-address[0][zip]" value="<?php esc_attr_e( $address['zip'] ); ?>" class="medium-text"/>
+														<strong class="order-data-address-line"><?php echo _x( 'Zip / Postal Code:', 'Zip / Postal code of address', 'pdd' ); ?></strong><br/>
+														<input type="text" name="pdd-payment-address[0][zip]" value="<?php esc_attr_e( $address['zip'] ); ?>" class="medium-text"/>
 														
 													</p>
 												</div>
 												<div class="column">
-													<p id="edd-order-address-country-wrap">
-														<strong class="order-data-address-line"><?php echo _x( 'Country:', 'Address country', 'edd' ); ?></strong><br/>
+													<p id="pdd-order-address-country-wrap">
+														<strong class="order-data-address-line"><?php echo _x( 'Country:', 'Address country', 'pdd' ); ?></strong><br/>
 														<?php
-														echo EDD()->html->select( array(
-															'options'          => edd_get_country_list(),
-															'name'             => 'edd-payment-address[0][country]',
+														echo PDD()->html->select( array(
+															'options'          => pdd_get_country_list(),
+															'name'             => 'pdd-payment-address[0][country]',
 															'selected'         => $address['country'],
 															'show_option_all'  => false,
 															'show_option_none' => false
 														) );
 														?>
 													</p>
-													<p id="edd-order-address-state-wrap">
-														<strong class="order-data-address-line"><?php echo _x( 'State / Province:', 'State / province of address', 'edd' ); ?></strong><br/>
+													<p id="pdd-order-address-state-wrap">
+														<strong class="order-data-address-line"><?php echo _x( 'State / Province:', 'State / province of address', 'pdd' ); ?></strong><br/>
 														<?php
-														$states = edd_get_shop_states( $address['country'] );
+														$states = pdd_get_shop_states( $address['country'] );
 														if( ! empty( $states ) ) {
-															echo EDD()->html->select( array(
+															echo PDD()->html->select( array(
 																'options'          => $states,
-																'name'             => 'edd-payment-address[0][state]',
+																'name'             => 'pdd-payment-address[0][state]',
 																'selected'         => $address['state'],
 																'show_option_all'  => false,
 																'show_option_none' => false
 															) );
 														} else { ?>
-															<input type="text" name="edd-payment-address[0][state]" value="<?php esc_attr_e( $address['state'] ); ?>" class="medium-text"/>
+															<input type="text" name="pdd-payment-address[0][state]" value="<?php esc_attr_e( $address['state'] ); ?>" class="medium-text"/>
 															<?php
 														} ?>
 													</p>
 												</div>
 											</div>
 										</div>
-									</div><!-- /#edd-order-address -->
+									</div><!-- /#pdd-order-address -->
 	
-									<?php do_action( 'edd_payment_billing_details', $payment_id ); ?>
+									<?php do_action( 'pdd_payment_billing_details', $payment_id ); ?>
 	
 								</div><!-- /.inside -->
-							</div><!-- /#edd-billing-details -->
+							</div><!-- /#pdd-billing-details -->
 	
-							<?php do_action( 'edd_view_order_details_billing_after', $payment_id ); ?>
+							<?php do_action( 'pdd_view_order_details_billing_after', $payment_id ); ?>
 	
-							<?php $column_count = edd_item_quantities_enabled() ? 'columns-4' : 'columns-3'; ?>
-							<div id="edd-purchased-files" class="postbox <?php echo $column_count; ?>">
+							<?php $column_count = pdd_item_quantities_enabled() ? 'columns-4' : 'columns-3'; ?>
+							<div id="pdd-purchased-files" class="postbox <?php echo $column_count; ?>">
 								<h3 class="hndle">
-									<span><?php printf( __( 'Purchased %s', 'edd' ), edd_get_label_plural() ); ?></span>
+									<span><?php printf( __( 'Purchased %s', 'pdd' ), pdd_get_label_plural() ); ?></span>
 								</h3>
 								
 								<?php if ( $cart_items ) :
@@ -348,7 +348,7 @@ $address      = ! empty( $user_info['address'] ) ? $user_info['address'] : array
 	
 											if( ! $price ) {
 												// This function is only used on payments with near 1.0 cart data structure
-												$price = edd_get_download_final_price( $item_id, $user_info, null );
+												$price = pdd_get_download_final_price( $item_id, $user_info, null );
 											}
 											?>
 	
@@ -361,34 +361,34 @@ $address      = ! empty( $user_info['address'] ) ? $user_info['address'] : array
 															$price_options = $cart_items[ $key ]['item_number']['options'];
 
 															if ( isset( $price_id ) ) {
-																echo ' - ' . edd_get_price_option_name( $item_id, $price_id, $payment_id );
+																echo ' - ' . pdd_get_price_option_name( $item_id, $price_id, $payment_id );
 															}
 														}
 														?>
 													</a>
 												</span>
-												<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][id]" class="edd-payment-details-download-id" value="<?php echo esc_attr( $item_id ); ?>"/>
-												<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][price_id]" class="edd-payment-details-download-price-id" value="<?php echo esc_attr( $price_id ); ?>"/>
-												<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][amount]" class="edd-payment-details-download-amount" value="<?php echo esc_attr( $price ); ?>"/>
-												<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][quantity]" class="edd-payment-details-download-quantity" value="<?php echo esc_attr( $quantity ); ?>"/>
+												<input type="hidden" name="pdd-payment-details-downloads[<?php echo $key; ?>][id]" class="pdd-payment-details-download-id" value="<?php echo esc_attr( $item_id ); ?>"/>
+												<input type="hidden" name="pdd-payment-details-downloads[<?php echo $key; ?>][price_id]" class="pdd-payment-details-download-price-id" value="<?php echo esc_attr( $price_id ); ?>"/>
+												<input type="hidden" name="pdd-payment-details-downloads[<?php echo $key; ?>][amount]" class="pdd-payment-details-download-amount" value="<?php echo esc_attr( $price ); ?>"/>
+												<input type="hidden" name="pdd-payment-details-downloads[<?php echo $key; ?>][quantity]" class="pdd-payment-details-download-quantity" value="<?php echo esc_attr( $quantity ); ?>"/>
 												
 											</li>
 	
-											<?php if( edd_item_quantities_enabled() ) : ?>
+											<?php if( pdd_item_quantities_enabled() ) : ?>
 											<li class="quantity">
-												<?php echo __( 'Quantity:', 'edd' ) . '&nbsp;<span>' . $quantity . '</span>'; ?>
+												<?php echo __( 'Quantity:', 'pdd' ) . '&nbsp;<span>' . $quantity . '</span>'; ?>
 											</li>
 											<?php endif; ?>
 	
 											<li class="price">
-												<?php echo edd_currency_filter( edd_format_amount( $price ) ); ?>
+												<?php echo pdd_currency_filter( pdd_format_amount( $price ) ); ?>
 											</li>
 	
 											<li class="actions">
-												<?php if( edd_get_download_files( $item_id, $price_id ) ) : ?>
-													<a href="" class="edd-copy-download-link" data-download-id="<?php echo esc_attr( $item_id ); ?>" data-price-id="<?php echo esc_attr( $price_id ); ?>"><?php _e( 'Copy Download Link(s)', 'edd' ); ?></a> | 
+												<?php if( pdd_get_download_files( $item_id, $price_id ) ) : ?>
+													<a href="" class="pdd-copy-download-link" data-download-id="<?php echo esc_attr( $item_id ); ?>" data-price-id="<?php echo esc_attr( $price_id ); ?>"><?php _e( 'Copy Download Link(s)', 'pdd' ); ?></a> | 
 												<?php endif; ?>
-												<a href="" class="edd-order-remove-download edd-delete" data-key="<?php echo esc_attr( $key ); ?>"><?php _e( 'Remove', 'edd' ); ?></a>
+												<a href="" class="pdd-order-remove-download pdd-delete" data-key="<?php echo esc_attr( $key ); ?>"><?php _e( 'Remove', 'pdd' ); ?></a>
 											</li>
 										</ul>
 									</div>
@@ -398,88 +398,88 @@ $address      = ! empty( $user_info['address'] ) ? $user_info['address'] : array
 									<div class="inside">
 										<ul>
 											<li class="download">
-												<?php echo EDD()->html->product_dropdown( array(
-													'name'   => 'edd-order-download-select',
-													'id'     => 'edd-order-download-select',
+												<?php echo PDD()->html->product_dropdown( array(
+													'name'   => 'pdd-order-download-select',
+													'id'     => 'pdd-order-download-select',
 													'chosen' => true
 												) ); ?>
 											</li>
 		
-											<?php if( edd_item_quantities_enabled() ) : ?>
+											<?php if( pdd_item_quantities_enabled() ) : ?>
 											<li class="quantity">
-												<span><?php _e( 'Quantity', 'edd' ); ?>:&nbsp;</span>
-												<input type="number" id="edd-order-download-quantity" class="small-text" min="1" step="1" value="1" />
+												<span><?php _e( 'Quantity', 'pdd' ); ?>:&nbsp;</span>
+												<input type="number" id="pdd-order-download-quantity" class="small-text" min="1" step="1" value="1" />
 											</li>
 											<?php endif; ?>
 		
 											<li class="price">
 												<?php
-												echo EDD()->html->text( array( 'name' => 'edd-order-download-amount',
-													'label' => __( 'Amount: ', 'edd' ),
-													'class' => 'small-text edd-order-download-price' 
+												echo PDD()->html->text( array( 'name' => 'pdd-order-download-amount',
+													'label' => __( 'Amount: ', 'pdd' ),
+													'class' => 'small-text pdd-order-download-price' 
 												) );
 												?>
 											</li>
 		
 											<li class="actions">
-												<a href="" id="edd-order-add-download" class="button button-secondary"><?php printf( __( 'Add %s to Payment', 'edd' ), edd_get_label_singular() ); ?></a>
+												<a href="" id="pdd-order-add-download" class="button button-secondary"><?php printf( __( 'Add %s to Payment', 'pdd' ), pdd_get_label_singular() ); ?></a>
 											</li>
 		
 										</ul>
 									
-										<input type="hidden" name="edd-payment-downloads-changed" id="edd-payment-downloads-changed" value=""/>
+										<input type="hidden" name="pdd-payment-downloads-changed" id="pdd-payment-downloads-changed" value=""/>
 		
 									</div><!-- /.inside -->
 								<?php else : $key = 0; ?>
 								<div class="row">
-									<p><?php printf( __( 'No %s included with this purchase', 'edd' ), edd_get_label_plural() ); ?></p>
+									<p><?php printf( __( 'No %s included with this purchase', 'pdd' ), pdd_get_label_plural() ); ?></p>
 								</div>
 								<?php endif; ?>
-							</div><!-- /#edd-purchased-files -->
+							</div><!-- /#pdd-purchased-files -->
 	
-							<?php do_action( 'edd_view_order_details_files_after', $payment_id ); ?>
+							<?php do_action( 'pdd_view_order_details_files_after', $payment_id ); ?>
 	
-							<div id="edd-payment-notes" class="postbox">
-								<h3 class="hndle"><span><?php _e( 'Payment Notes', 'edd' ); ?></span></h3>
+							<div id="pdd-payment-notes" class="postbox">
+								<h3 class="hndle"><span><?php _e( 'Payment Notes', 'pdd' ); ?></span></h3>
 								<div class="inside">
-									<div id="edd-payment-notes-inner">
+									<div id="pdd-payment-notes-inner">
 										<?php
-										$notes = edd_get_payment_notes( $payment_id );
+										$notes = pdd_get_payment_notes( $payment_id );
 										if ( ! empty( $notes ) ) :
 											$no_notes_display = ' style="display:none;"';
 											foreach ( $notes as $note ) :
 												
-												echo edd_get_payment_note_html( $note, $payment_id );
+												echo pdd_get_payment_note_html( $note, $payment_id );
 	
 											endforeach;
 										else :
 											$no_notes_display = '';
 										endif;
-										echo '<p class="edd-no-payment-notes"' . $no_notes_display . '>'. __( 'No payment notes', 'edd' ) . '</p>';
+										echo '<p class="pdd-no-payment-notes"' . $no_notes_display . '>'. __( 'No payment notes', 'pdd' ) . '</p>';
 										?>
 									</div>
-									<textarea name="edd-payment-note" id="edd-payment-note" class="large-text"></textarea>
+									<textarea name="pdd-payment-note" id="pdd-payment-note" class="large-text"></textarea>
 									
 									<p>
-										<button id="edd-add-payment-note" class="button button-secondary right" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'edd' ); ?></button>
+										<button id="pdd-add-payment-note" class="button button-secondary right" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'pdd' ); ?></button>
 									</p>
 									
 									<div class="clear"></div>
 								</div><!-- /.inside -->
-							</div><!-- /#edd-payment-notes -->
+							</div><!-- /#pdd-payment-notes -->
 	
-							<?php do_action( 'edd_view_order_details_main_after', $payment_id ); ?>
+							<?php do_action( 'pdd_view_order_details_main_after', $payment_id ); ?>
 						</div><!-- /#normal-sortables -->
 					</div><!-- #postbox-container-2 -->
 				</div><!-- /#post-body -->
-			</div><!-- #edd-dashboard-widgets-wrap -->
+			</div><!-- #pdd-dashboard-widgets-wrap -->
 		</div><!-- /#post-stuff -->
-		<?php do_action( 'edd_view_order_details_form_bottom', $payment_id ); ?>
-		<?php wp_nonce_field( 'edd_update_payment_details_nonce' ); ?>
-		<input type="hidden" name="edd_payment_id" value="<?php echo esc_attr( $payment_id ); ?>"/>
-		<input type="hidden" name="edd_action" value="update_payment_details"/>
+		<?php do_action( 'pdd_view_order_details_form_bottom', $payment_id ); ?>
+		<?php wp_nonce_field( 'pdd_update_payment_details_nonce' ); ?>
+		<input type="hidden" name="pdd_payment_id" value="<?php echo esc_attr( $payment_id ); ?>"/>
+		<input type="hidden" name="pdd_action" value="update_payment_details"/>
 	</form>
-	<?php do_action( 'edd_view_order_details_after', $payment_id ); ?>
+	<?php do_action( 'pdd_view_order_details_after', $payment_id ); ?>
 </div><!-- /.wrap -->
 
-<div id="edd-download-link" title="<?php _e( 'Copy Download Link(s)', 'edd' ); ?>"></div>
+<div id="pdd-download-link" title="<?php _e( 'Copy Download Link(s)', 'pdd' ); ?>"></div>

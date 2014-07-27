@@ -2,7 +2,7 @@
 /**
  * Payments Query
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Classes/Stats
  * @copyright   Copyright (c) 2012, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -11,7 +11,7 @@
 
 
 /**
- * EDD_Payments_Query Class
+ * PDD_Payments_Query Class
  *
  * This class is for retrieving payments data
  *
@@ -19,10 +19,10 @@
  *
  * @since 1.8
  */
-class EDD_Payments_Query extends EDD_Stats {
+class PDD_Payments_Query extends PDD_Stats {
 
 	/**
-	 * The args to pass to the edd_get_payments() query
+	 * The args to pass to the pdd_get_payments() query
 	 *
 	 * @var array
 	 * @access public
@@ -52,7 +52,7 @@ class EDD_Payments_Query extends EDD_Stats {
 	public function __construct( $args = array() ) {
 		$defaults = array(
 			'output'          => 'payments', // Use 'posts' to get standard post objects
-			'post_type'       => array( 'edd_payment' ),
+			'post_type'       => array( 'pdd_payment' ),
 			'start_date'      => false,
 			'end_date'        => false,
 			'number'          => 20,
@@ -109,19 +109,19 @@ class EDD_Payments_Query extends EDD_Stats {
 	 */
 	public function init() {
 
-		add_action( 'edd_pre_get_payments', array( $this, 'date_filter_pre' ) );
-		add_action( 'edd_post_get_payments', array( $this, 'date_filter_post' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'date_filter_pre' ) );
+		add_action( 'pdd_post_get_payments', array( $this, 'date_filter_post' ) );
 
-		add_action( 'edd_pre_get_payments', array( $this, 'orderby' ) );
-		add_action( 'edd_pre_get_payments', array( $this, 'status' ) );
-		add_action( 'edd_pre_get_payments', array( $this, 'month' ) );
-		add_action( 'edd_pre_get_payments', array( $this, 'per_page' ) );
-		add_action( 'edd_pre_get_payments', array( $this, 'page' ) );
-		add_action( 'edd_pre_get_payments', array( $this, 'user' ) );
-		add_action( 'edd_pre_get_payments', array( $this, 'search' ) );
-		add_action( 'edd_pre_get_payments', array( $this, 'mode' ) );
-		add_action( 'edd_pre_get_payments', array( $this, 'children' ) );
-		add_action( 'edd_pre_get_payments', array( $this, 'download' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'orderby' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'status' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'month' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'per_page' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'page' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'user' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'search' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'mode' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'children' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'download' ) );
 	}
 
 	/**
@@ -137,7 +137,7 @@ class EDD_Payments_Query extends EDD_Stats {
 	 */
 	public function get_payments() {
 
-		do_action( 'edd_pre_get_payments', $this );
+		do_action( 'pdd_pre_get_payments', $this );
 
 		$query = new WP_Query( $this->args );
 
@@ -156,26 +156,26 @@ class EDD_Payments_Query extends EDD_Stats {
 				$details->ID           = $payment_id;
 				$details->date         = get_post()->post_date;
 				$details->post_status  = get_post()->post_status;
-				$details->total        = edd_get_payment_amount( $payment_id );
-				$details->subtotal     = edd_get_payment_subtotal( $payment_id );
-				$details->tax          = edd_get_payment_tax( $payment_id );
-				$details->fees         = edd_get_payment_fees( $payment_id );
-				$details->key          = edd_get_payment_key( $payment_id );
-				$details->gateway      = edd_get_payment_gateway( $payment_id );
-				$details->user_info    = edd_get_payment_meta_user_info( $payment_id );
-				$details->cart_details = edd_get_payment_meta_cart_details( $payment_id, true );
+				$details->total        = pdd_get_payment_amount( $payment_id );
+				$details->subtotal     = pdd_get_payment_subtotal( $payment_id );
+				$details->tax          = pdd_get_payment_tax( $payment_id );
+				$details->fees         = pdd_get_payment_fees( $payment_id );
+				$details->key          = pdd_get_payment_key( $payment_id );
+				$details->gateway      = pdd_get_payment_gateway( $payment_id );
+				$details->user_info    = pdd_get_payment_meta_user_info( $payment_id );
+				$details->cart_details = pdd_get_payment_meta_cart_details( $payment_id, true );
 
-				if( edd_get_option( 'enable_sequential' ) ) {
-					$details->payment_number = edd_get_payment_number( $payment_id );
+				if( pdd_get_option( 'enable_sequential' ) ) {
+					$details->payment_number = pdd_get_payment_number( $payment_id );
 				}
 
-				$this->payments[] = apply_filters( 'edd_payment', $details, $payment_id, $this );
+				$this->payments[] = apply_filters( 'pdd_payment', $details, $payment_id, $this );
 			}
 
 			wp_reset_postdata();
 		}
 
-		do_action( 'edd_post_get_payments', $this );
+		do_action( 'pdd_post_get_payments', $this );
 
 		return $this->payments;
 	}
@@ -295,7 +295,7 @@ class EDD_Payments_Query extends EDD_Stats {
 		switch ( $this->args[ 'orderby' ] ) {
 			case 'amount' :
 				$this->__set( 'orderby', 'meta_value_num' );
-				$this->__set( 'meta_key', '_edd_payment_total' );
+				$this->__set( 'meta_key', '_pdd_payment_total' );
 			break;
 			default :
 				$this->__set( 'orderby', $this->args[ 'orderby' ] );
@@ -316,9 +316,9 @@ class EDD_Payments_Query extends EDD_Stats {
 		}
 
 		if ( is_numeric( $this->args[ 'user' ] ) ) {
-			$user_key = '_edd_payment_user_id';
+			$user_key = '_pdd_payment_user_id';
 		} else {
-			$user_key = '_edd_payment_user_email';
+			$user_key = '_pdd_payment_user_email';
 		}
 
 		$this->__set( 'meta_query', array(
@@ -351,7 +351,7 @@ class EDD_Payments_Query extends EDD_Stats {
 
 		if ( ! empty( $this->args[ 'search_in_notes' ] ) ) {
 
-			$notes = edd_get_payment_notes( 0, $search );
+			$notes = pdd_get_payment_notes( 0, $search );
 
 			if( ! empty( $notes ) ) {
 
@@ -364,7 +364,7 @@ class EDD_Payments_Query extends EDD_Stats {
 
 		} elseif ( $is_email || strlen( $search ) == 32 ) {
 
-			$key = $is_email ? '_edd_payment_user_email' : '_edd_payment_purchase_key';
+			$key = $is_email ? '_pdd_payment_user_email' : '_pdd_payment_purchase_key';
 			$search_meta = array(
 				'key'     => $key,
 				'value'   => $search,
@@ -377,16 +377,16 @@ class EDD_Payments_Query extends EDD_Stats {
 		} elseif ( $is_user ) {
 
 			$search_meta = array(
-				'key'   => '_edd_payment_user_id',
+				'key'   => '_pdd_payment_user_id',
 				'value' => trim( str_replace( 'user:', '', strtolower( $search ) ) )
 			);
 
 			$this->__set( 'meta_query', $search_meta );
 
-			if( edd_get_option( 'enable_sequential' ) ) {
+			if( pdd_get_option( 'enable_sequential' ) ) {
 
 				$search_meta = array(
-					'key'     => '_edd_payment_number',
+					'key'     => '_pdd_payment_number',
 					'value'   => $search,
 					'compare' => 'LIKE'
 				);
@@ -400,15 +400,15 @@ class EDD_Payments_Query extends EDD_Stats {
 			$this->__unset( 's' );
 
 		} elseif ( 
-			edd_get_option( 'enable_sequential' ) && 
+			pdd_get_option( 'enable_sequential' ) && 
 			(
-				false !== strpos( $search, edd_get_option( 'sequential_prefix' ) ) ||
-				false !== strpos( $search, edd_get_option( 'sequential_postfix' ) ) 
+				false !== strpos( $search, pdd_get_option( 'sequential_prefix' ) ) ||
+				false !== strpos( $search, pdd_get_option( 'sequential_postfix' ) ) 
 			)
 		) {
 
 			$search_meta = array(
-				'key'     => '_edd_payment_number',
+				'key'     => '_pdd_payment_number',
 				'value'   => $search,
 				'compare' => 'LIKE'
 			);
@@ -420,7 +420,7 @@ class EDD_Payments_Query extends EDD_Stats {
 
 			$post = get_post( $search );
 
-			if( is_object( $post ) && $post->post_type == 'edd_payment' ) {
+			if( is_object( $post ) && $post->post_type == 'pdd_payment' ) {
 				
 				$arr   = array();
 				$arr[] = $search;
@@ -454,7 +454,7 @@ class EDD_Payments_Query extends EDD_Stats {
 		}
 
 		$this->__set( 'meta_query', array(
-			'key'   => '_edd_payment_mode',
+			'key'   => '_pdd_payment_mode',
 			'value' => $this->args[ 'mode' ]
 		) );
 	}
@@ -485,7 +485,7 @@ class EDD_Payments_Query extends EDD_Stats {
 		if ( empty( $this->args[ 'download' ] ) )
 			return;
 
-		global $edd_logs;
+		global $pdd_logs;
 
 		$args = array(
 			'post_parent'            => $this->args[ 'download' ],
@@ -504,14 +504,14 @@ class EDD_Payments_Query extends EDD_Stats {
 			$args[ 'post_parent__in' ] = $this->args[ 'download' ];
 		}
 
-		$sales = $edd_logs->get_connected_logs( $args );
+		$sales = $pdd_logs->get_connected_logs( $args );
 
 		if ( ! empty( $sales ) ) {
 
 			$payments = array();
 
 			foreach ( $sales as $sale ) {
-				$payments[] = get_post_meta( $sale, '_edd_log_payment_id', true );
+				$payments[] = get_post_meta( $sale, '_pdd_log_payment_id', true );
 			}
 
 			$this->__set( 'post__in', $payments );

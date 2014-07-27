@@ -4,7 +4,7 @@
  *
  * This class handles earnings export
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -15,11 +15,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * EDD_Earnings_Export Class
+ * PDD_Earnings_Export Class
  *
  * @since 2.0
  */
-class EDD_Earnings_Export extends EDD_Export {
+class PDD_Earnings_Export extends PDD_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
@@ -38,13 +38,13 @@ class EDD_Earnings_Export extends EDD_Export {
 	public function headers() {
 		ignore_user_abort( true );
 
-		if ( ! edd_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		if ( ! pdd_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 			set_time_limit( 0 );
 		}
 
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'edd_earnings_export_filename', 'edd-export-' . $this->export_type . '-' . date( 'n' ) . '-' . date( 'Y' ) ) . '.csv' );
+		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'pdd_earnings_export_filename', 'pdd-export-' . $this->export_type . '-' . date( 'n' ) . '-' . date( 'Y' ) ) . '.csv' );
 		header( "Expires: 0" );
 
 	}
@@ -59,9 +59,9 @@ class EDD_Earnings_Export extends EDD_Export {
 	public function csv_cols() {
 
 		$cols = array(
-			'date'     => __( 'Date',   'edd' ),
-			'sales'    => __( 'Sales',   'edd' ),
-			'earnings' => __( 'Earnings', 'edd' ) . ' (' . html_entity_decode( edd_currency_filter( '' ) ) . ')'
+			'date'     => __( 'Date',   'pdd' ),
+			'sales'    => __( 'Sales',   'pdd' ),
+			'earnings' => __( 'Earnings', 'pdd' ) . ' (' . html_entity_decode( pdd_currency_filter( '' ) ) . ')'
 		);
 
 		return $cols;
@@ -83,7 +83,7 @@ class EDD_Earnings_Export extends EDD_Export {
 
 		$data  = array();
 		$year  = $start_year;
-		$stats = new EDD_Payment_Stats;
+		$stats = new PDD_Payment_Stats;
 
 		while( $year <= $end_year ) {
 
@@ -117,7 +117,7 @@ class EDD_Earnings_Export extends EDD_Export {
 				$data[] = array(
 					'date'     => date_i18n( 'F Y', $date1 ),
 					'sales'    => $stats->get_sales( 0, $date1, $date2, array( 'publish', 'revoked' ) ),
-					'earnings' => edd_format_amount( $stats->get_earnings( 0, $date1, $date2 ) ),
+					'earnings' => pdd_format_amount( $stats->get_earnings( 0, $date1, $date2 ) ),
 				);
 
 				$m1++;
@@ -129,8 +129,8 @@ class EDD_Earnings_Export extends EDD_Export {
 
 		}
 
-		$data = apply_filters( 'edd_export_get_data', $data );
-		$data = apply_filters( 'edd_export_get_data_' . $this->export_type, $data );
+		$data = apply_filters( 'pdd_export_get_data', $data );
+		$data = apply_filters( 'pdd_export_get_data_' . $this->export_type, $data );
 
 		return $data;
 	}

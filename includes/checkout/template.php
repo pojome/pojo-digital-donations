@@ -2,7 +2,7 @@
 /**
  * Checkout Template
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Checkout
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -16,45 +16,45 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Get Checkout Form
  *
  * @since 1.0
- * @global $edd_options Array of all the EDD options
+ * @global $pdd_options Array of all the PDD options
  * @global $user_ID ID of current logged in user
  * @global $post Current Post Object
  * @return string
  */
-function edd_checkout_form() {
-	global $edd_options, $user_ID, $post;
+function pdd_checkout_form() {
+	global $pdd_options, $user_ID, $post;
 
-	$payment_mode = edd_get_chosen_gateway();
-	$form_action  = esc_url( edd_get_checkout_uri( 'payment-mode=' . $payment_mode ) );
+	$payment_mode = pdd_get_chosen_gateway();
+	$form_action  = esc_url( pdd_get_checkout_uri( 'payment-mode=' . $payment_mode ) );
 
 	ob_start();
-		echo '<div id="edd_checkout_wrap">';
-		if ( edd_get_cart_contents() || edd_get_cart_fees() ) :
+		echo '<div id="pdd_checkout_wrap">';
+		if ( pdd_get_cart_contents() || pdd_get_cart_fees() ) :
 
-			edd_checkout_cart();
+			pdd_checkout_cart();
 ?>
-			<div id="edd_checkout_form_wrap" class="edd_clearfix">
-				<?php do_action( 'edd_before_purchase_form' ); ?>
-				<form id="edd_purchase_form" class="edd_form" action="<?php echo $form_action; ?>" method="POST">
+			<div id="pdd_checkout_form_wrap" class="pdd_clearfix">
+				<?php do_action( 'pdd_before_purchase_form' ); ?>
+				<form id="pdd_purchase_form" class="pdd_form" action="<?php echo $form_action; ?>" method="POST">
 					<?php
-					do_action( 'edd_checkout_form_top' );
+					do_action( 'pdd_checkout_form_top' );
 
-					if ( edd_show_gateways() ) {
-						do_action( 'edd_payment_mode_select'  );
+					if ( pdd_show_gateways() ) {
+						do_action( 'pdd_payment_mode_select'  );
 					} else {
-						do_action( 'edd_purchase_form' );
+						do_action( 'pdd_purchase_form' );
 					}
 
-					do_action( 'edd_checkout_form_bottom' )
+					do_action( 'pdd_checkout_form_bottom' )
 					?>
 				</form>
-				<?php do_action( 'edd_after_purchase_form' ); ?>
-			</div><!--end #edd_checkout_form_wrap-->
+				<?php do_action( 'pdd_after_purchase_form' ); ?>
+			</div><!--end #pdd_checkout_form_wrap-->
 		<?php
 		else:
-			do_action( 'edd_cart_empty' );
+			do_action( 'pdd_cart_empty' );
 		endif;
-		echo '</div><!--end #edd_checkout_wrap-->';
+		echo '</div><!--end #pdd_checkout_wrap-->';
 	return ob_get_clean();
 }
 
@@ -65,58 +65,58 @@ function edd_checkout_form() {
  * if credit cards are enabled
  *
  * @since 1.4
- * @global $edd_options Array of all the EDD options
+ * @global $pdd_options Array of all the PDD options
  * @return string
  */
-function edd_show_purchase_form() {
-	global $edd_options;
+function pdd_show_purchase_form() {
+	global $pdd_options;
 
-	$payment_mode = edd_get_chosen_gateway();
+	$payment_mode = pdd_get_chosen_gateway();
 
-	do_action( 'edd_purchase_form_top' );
+	do_action( 'pdd_purchase_form_top' );
 
-	if ( edd_can_checkout() ) {
+	if ( pdd_can_checkout() ) {
 
-		do_action( 'edd_purchase_form_before_register_login' );
+		do_action( 'pdd_purchase_form_before_register_login' );
 
-		$show_register_form = edd_get_option( 'show_register_form', 'none' ) ;
+		$show_register_form = pdd_get_option( 'show_register_form', 'none' ) ;
 		if( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
-			<div id="edd_checkout_login_register">
-				<?php do_action( 'edd_purchase_form_register_fields' ); ?>
+			<div id="pdd_checkout_login_register">
+				<?php do_action( 'pdd_purchase_form_register_fields' ); ?>
 			</div>
 		<?php elseif( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
-			<div id="edd_checkout_login_register">
-				<?php do_action( 'edd_purchase_form_login_fields' ); ?>
+			<div id="pdd_checkout_login_register">
+				<?php do_action( 'pdd_purchase_form_login_fields' ); ?>
 			</div>
 		<?php endif; ?>
 
-		<?php if( ( !isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $edd_options['show_register_form'] ) || 'none' === $show_register_form ) {
-			do_action( 'edd_purchase_form_after_user_info' );
+		<?php if( ( !isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $pdd_options['show_register_form'] ) || 'none' === $show_register_form ) {
+			do_action( 'pdd_purchase_form_after_user_info' );
 		}
 
-		do_action( 'edd_purchase_form_before_cc_form' );
+		do_action( 'pdd_purchase_form_before_cc_form' );
 
-		if( edd_get_cart_total() > 0 ) {
+		if( pdd_get_cart_total() > 0 ) {
 
 			// Load the credit card form and allow gateways to load their own if they wish
-			if ( has_action( 'edd_' . $payment_mode . '_cc_form' ) ) {
-				do_action( 'edd_' . $payment_mode . '_cc_form' );
+			if ( has_action( 'pdd_' . $payment_mode . '_cc_form' ) ) {
+				do_action( 'pdd_' . $payment_mode . '_cc_form' );
 			} else {
-				do_action( 'edd_cc_form' );
+				do_action( 'pdd_cc_form' );
 			}
 
 		}
 
-		do_action( 'edd_purchase_form_after_cc_form' );
+		do_action( 'pdd_purchase_form_after_cc_form' );
 
 	} else {
 		// Can't checkout
-		do_action( 'edd_purchase_form_no_access' );
+		do_action( 'pdd_purchase_form_no_access' );
 	}
 
-	do_action( 'edd_purchase_form_bottom' );
+	do_action( 'pdd_purchase_form_bottom' );
 }
-add_action( 'edd_purchase_form', 'edd_show_purchase_form' );
+add_action( 'pdd_purchase_form', 'pdd_show_purchase_form' );
 
 /**
  * Shows the User Info fields in the Personal Info box, more fields can be added
@@ -125,51 +125,51 @@ add_action( 'edd_purchase_form', 'edd_show_purchase_form' );
  * @since 1.3.3
  * @return void
  */
-function edd_user_info_fields() {
+function pdd_user_info_fields() {
 	if ( is_user_logged_in() ) :
 		$user_data = get_userdata( get_current_user_id() );
 	endif;
 	?>
-	<fieldset id="edd_checkout_user_info">
-		<span><legend><?php echo apply_filters( 'edd_checkout_personal_info_text', __( 'Personal Info', 'edd' ) ); ?></legend></span>
-		<?php do_action( 'edd_purchase_form_before_email' ); ?>
-		<p id="edd-email-wrap">
-			<label class="edd-label" for="edd-email">
-				<?php _e( 'Email Address', 'edd' ); ?>
-				<?php if( edd_field_is_required( 'edd_email' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
+	<fieldset id="pdd_checkout_user_info">
+		<span><legend><?php echo apply_filters( 'pdd_checkout_personal_info_text', __( 'Personal Info', 'pdd' ) ); ?></legend></span>
+		<?php do_action( 'pdd_purchase_form_before_email' ); ?>
+		<p id="pdd-email-wrap">
+			<label class="pdd-label" for="pdd-email">
+				<?php _e( 'Email Address', 'pdd' ); ?>
+				<?php if( pdd_field_is_required( 'pdd_email' ) ) { ?>
+					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="edd-description"><?php _e( 'We will send the purchase receipt to this address.', 'edd' ); ?></span>
-			<input class="edd-input required" type="email" name="edd_email" placeholder="<?php _e( 'Email address', 'edd' ); ?>" id="edd-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"/>
+			<span class="pdd-description"><?php _e( 'We will send the purchase receipt to this address.', 'pdd' ); ?></span>
+			<input class="pdd-input required" type="email" name="pdd_email" placeholder="<?php _e( 'Email address', 'pdd' ); ?>" id="pdd-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"/>
 		</p>
-		<?php do_action( 'edd_purchase_form_after_email' ); ?>
-		<p id="edd-first-name-wrap">
-			<label class="edd-label" for="edd-first">
-				<?php _e( 'First Name', 'edd' ); ?>
-				<?php if( edd_field_is_required( 'edd_first' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
+		<?php do_action( 'pdd_purchase_form_after_email' ); ?>
+		<p id="pdd-first-name-wrap">
+			<label class="pdd-label" for="pdd-first">
+				<?php _e( 'First Name', 'pdd' ); ?>
+				<?php if( pdd_field_is_required( 'pdd_first' ) ) { ?>
+					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="edd-description"><?php _e( 'We will use this to personalize your account experience.', 'edd' ); ?></span>
-			<input class="edd-input required" type="text" name="edd_first" placeholder="<?php _e( 'First name', 'edd' ); ?>" id="edd-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"/>
+			<span class="pdd-description"><?php _e( 'We will use this to personalize your account experience.', 'pdd' ); ?></span>
+			<input class="pdd-input required" type="text" name="pdd_first" placeholder="<?php _e( 'First name', 'pdd' ); ?>" id="pdd-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"/>
 		</p>
-		<p id="edd-last-name-wrap">
-			<label class="edd-label" for="edd-last">
-				<?php _e( 'Last Name', 'edd' ); ?>
-				<?php if( edd_field_is_required( 'edd_last' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
+		<p id="pdd-last-name-wrap">
+			<label class="pdd-label" for="pdd-last">
+				<?php _e( 'Last Name', 'pdd' ); ?>
+				<?php if( pdd_field_is_required( 'pdd_last' ) ) { ?>
+					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="edd-description"><?php _e( 'We will use this as well to personalize your account experience.', 'edd' ); ?></span>
-			<input class="edd-input<?php if( edd_field_is_required( 'edd_last' ) ) { echo ' required'; } ?>" type="text" name="edd_last" id="edd-last" placeholder="<?php _e( 'Last name', 'edd' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"/>
+			<span class="pdd-description"><?php _e( 'We will use this as well to personalize your account experience.', 'pdd' ); ?></span>
+			<input class="pdd-input<?php if( pdd_field_is_required( 'pdd_last' ) ) { echo ' required'; } ?>" type="text" name="pdd_last" id="pdd-last" placeholder="<?php _e( 'Last name', 'pdd' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"/>
 		</p>
-		<?php do_action( 'edd_purchase_form_user_info' ); ?>
+		<?php do_action( 'pdd_purchase_form_user_info' ); ?>
 	</fieldset>
 	<?php
 }
-add_action( 'edd_purchase_form_after_user_info', 'edd_user_info_fields' );
-add_action( 'edd_register_fields_before', 'edd_user_info_fields' );
+add_action( 'pdd_purchase_form_after_user_info', 'pdd_user_info_fields' );
+add_action( 'pdd_register_fields_before', 'pdd_user_info_fields' );
 
 /**
  * Renders the credit card info form.
@@ -177,68 +177,68 @@ add_action( 'edd_register_fields_before', 'edd_user_info_fields' );
  * @since 1.0
  * @return void
  */
-function edd_get_cc_form() {
+function pdd_get_cc_form() {
 	ob_start(); ?>
 
-	<?php do_action( 'edd_before_cc_fields' ); ?>
+	<?php do_action( 'pdd_before_cc_fields' ); ?>
 
-	<fieldset id="edd_cc_fields" class="edd-do-validate">
-		<span><legend><?php _e( 'Credit Card Info', 'edd' ); ?></legend></span>
+	<fieldset id="pdd_cc_fields" class="pdd-do-validate">
+		<span><legend><?php _e( 'Credit Card Info', 'pdd' ); ?></legend></span>
 		<?php if( is_ssl() ) : ?>
-			<div id="edd_secure_site_wrapper">
+			<div id="pdd_secure_site_wrapper">
 				<span class="padlock"></span>
-				<span><?php _e( 'This is a secure SSL encrypted payment.', 'edd' ); ?></span>
+				<span><?php _e( 'This is a secure SSL encrypted payment.', 'pdd' ); ?></span>
 			</div>
 		<?php endif; ?>
-		<p id="edd-card-number-wrap">
-			<label for="card_number" class="edd-label">
-				<?php _e( 'Card Number', 'edd' ); ?>
-				<span class="edd-required-indicator">*</span>
+		<p id="pdd-card-number-wrap">
+			<label for="card_number" class="pdd-label">
+				<?php _e( 'Card Number', 'pdd' ); ?>
+				<span class="pdd-required-indicator">*</span>
 				<span class="card-type"></span>
 			</label>
-			<span class="edd-description"><?php _e( 'The (typically) 16 digits on the front of your credit card.', 'edd' ); ?></span>
-			<input type="text" autocomplete="off" name="card_number" id="card_number" class="card-number edd-input required" placeholder="<?php _e( 'Card number', 'edd' ); ?>" />
+			<span class="pdd-description"><?php _e( 'The (typically) 16 digits on the front of your credit card.', 'pdd' ); ?></span>
+			<input type="text" autocomplete="off" name="card_number" id="card_number" class="card-number pdd-input required" placeholder="<?php _e( 'Card number', 'pdd' ); ?>" />
 		</p>
-		<p id="edd-card-cvc-wrap">
-			<label for="card_cvc" class="edd-label">
-				<?php _e( 'CVC', 'edd' ); ?>
-				<span class="edd-required-indicator">*</span>
+		<p id="pdd-card-cvc-wrap">
+			<label for="card_cvc" class="pdd-label">
+				<?php _e( 'CVC', 'pdd' ); ?>
+				<span class="pdd-required-indicator">*</span>
 			</label>
-			<span class="edd-description"><?php _e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'edd' ); ?></span>
-			<input type="text" size="4" autocomplete="off" name="card_cvc" id="card_cvc" class="card-cvc edd-input required" placeholder="<?php _e( 'Security code', 'edd' ); ?>" />
+			<span class="pdd-description"><?php _e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'pdd' ); ?></span>
+			<input type="text" size="4" autocomplete="off" name="card_cvc" id="card_cvc" class="card-cvc pdd-input required" placeholder="<?php _e( 'Security code', 'pdd' ); ?>" />
 		</p>
-		<p id="edd-card-name-wrap">
-			<label for="card_name" class="edd-label">
-				<?php _e( 'Name on the Card', 'edd' ); ?>
-				<span class="edd-required-indicator">*</span>
+		<p id="pdd-card-name-wrap">
+			<label for="card_name" class="pdd-label">
+				<?php _e( 'Name on the Card', 'pdd' ); ?>
+				<span class="pdd-required-indicator">*</span>
 			</label>
-			<span class="edd-description"><?php _e( 'The name printed on the front of your credit card.', 'edd' ); ?></span>
-			<input type="text" autocomplete="off" name="card_name" id="card_name" class="card-name edd-input required" placeholder="<?php _e( 'Card name', 'edd' ); ?>" />
+			<span class="pdd-description"><?php _e( 'The name printed on the front of your credit card.', 'pdd' ); ?></span>
+			<input type="text" autocomplete="off" name="card_name" id="card_name" class="card-name pdd-input required" placeholder="<?php _e( 'Card name', 'pdd' ); ?>" />
 		</p>
-		<?php do_action( 'edd_before_cc_expiration' ); ?>
+		<?php do_action( 'pdd_before_cc_expiration' ); ?>
 		<p class="card-expiration">
-			<label for="card_exp_month" class="edd-label">
-				<?php _e( 'Expiration (MM/YY)', 'edd' ); ?>
-				<span class="edd-required-indicator">*</span>
+			<label for="card_exp_month" class="pdd-label">
+				<?php _e( 'Expiration (MM/YY)', 'pdd' ); ?>
+				<span class="pdd-required-indicator">*</span>
 			</label>
-			<span class="edd-description"><?php _e( 'The date your credit card expires, typically on the front of the card.', 'edd' ); ?></span>
-			<select id="card_exp_month" name="card_exp_month" class="card-expiry-month edd-select edd-select-small required">
+			<span class="pdd-description"><?php _e( 'The date your credit card expires, typically on the front of the card.', 'pdd' ); ?></span>
+			<select id="card_exp_month" name="card_exp_month" class="card-expiry-month pdd-select pdd-select-small required">
 				<?php for( $i = 1; $i <= 12; $i++ ) { echo '<option value="' . $i . '">' . sprintf ('%02d', $i ) . '</option>'; } ?>
 			</select>
 			<span class="exp-divider"> / </span>
-			<select id="card_exp_year" name="card_exp_year" class="card-expiry-year edd-select edd-select-small required">
+			<select id="card_exp_year" name="card_exp_year" class="card-expiry-year pdd-select pdd-select-small required">
 				<?php for( $i = date('Y'); $i <= date('Y') + 10; $i++ ) { echo '<option value="' . $i . '">' . substr( $i, 2 ) . '</option>'; } ?>
 			</select>
 		</p>
-		<?php do_action( 'edd_after_cc_expiration' ); ?>
+		<?php do_action( 'pdd_after_cc_expiration' ); ?>
 
 	</fieldset>
 	<?php
-	do_action( 'edd_after_cc_fields' );
+	do_action( 'pdd_after_cc_fields' );
 
 	echo ob_get_clean();
 }
-add_action( 'edd_cc_form', 'edd_get_cc_form' );
+add_action( 'pdd_cc_form', 'pdd_get_cc_form' );
 
 /**
  * Outputs the default credit card address fields
@@ -246,103 +246,103 @@ add_action( 'edd_cc_form', 'edd_get_cc_form' );
  * @since 1.0
  * @return void
  */
-function edd_default_cc_address_fields() {
+function pdd_default_cc_address_fields() {
 
 	$logged_in = is_user_logged_in();
 
 	if( $logged_in ) {
-		$user_address = get_user_meta( get_current_user_id(), '_edd_user_address', true );
+		$user_address = get_user_meta( get_current_user_id(), '_pdd_user_address', true );
 	}
 	$line1 = $logged_in && ! empty( $user_address['line1'] ) ? $user_address['line1'] : '';
 	$line2 = $logged_in && ! empty( $user_address['line2'] ) ? $user_address['line2'] : '';
 	$city  = $logged_in && ! empty( $user_address['city']  ) ? $user_address['city']  : '';
 	$zip   = $logged_in && ! empty( $user_address['zip']   ) ? $user_address['zip']   : '';
 	ob_start(); ?>
-	<fieldset id="edd_cc_address" class="cc-address">
-		<span><legend><?php _e( 'Billing Details', 'edd' ); ?></legend></span>
-		<?php do_action( 'edd_cc_billing_top' ); ?>
-		<p id="edd-card-address-wrap">
-			<label for="card_address" class="edd-label">
-				<?php _e( 'Billing Address', 'edd' ); ?>
-				<?php if( edd_field_is_required( 'card_address' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
+	<fieldset id="pdd_cc_address" class="cc-address">
+		<span><legend><?php _e( 'Billing Details', 'pdd' ); ?></legend></span>
+		<?php do_action( 'pdd_cc_billing_top' ); ?>
+		<p id="pdd-card-address-wrap">
+			<label for="card_address" class="pdd-label">
+				<?php _e( 'Billing Address', 'pdd' ); ?>
+				<?php if( pdd_field_is_required( 'card_address' ) ) { ?>
+					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="edd-description"><?php _e( 'The primary billing address for your credit card.', 'edd' ); ?></span>
-			<input type="text" id="card_address" name="card_address" class="card-address edd-input<?php if( edd_field_is_required( 'card_address' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'Address line 1', 'edd' ); ?>" value="<?php echo $line1; ?>"/>
+			<span class="pdd-description"><?php _e( 'The primary billing address for your credit card.', 'pdd' ); ?></span>
+			<input type="text" id="card_address" name="card_address" class="card-address pdd-input<?php if( pdd_field_is_required( 'card_address' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'Address line 1', 'pdd' ); ?>" value="<?php echo $line1; ?>"/>
 		</p>
-		<p id="edd-card-address-2-wrap">
-			<label for="card_address_2" class="edd-label">
-				<?php _e( 'Billing Address Line 2 (optional)', 'edd' ); ?>
-				<?php if( edd_field_is_required( 'card_address_2' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
+		<p id="pdd-card-address-2-wrap">
+			<label for="card_address_2" class="pdd-label">
+				<?php _e( 'Billing Address Line 2 (optional)', 'pdd' ); ?>
+				<?php if( pdd_field_is_required( 'card_address_2' ) ) { ?>
+					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="edd-description"><?php _e( 'The suite, apt no, PO box, etc, associated with your billing address.', 'edd' ); ?></span>
-			<input type="text" id="card_address_2" name="card_address_2" class="card-address-2 edd-input<?php if( edd_field_is_required( 'card_address_2' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'Address line 2', 'edd' ); ?>" value="<?php echo $line2; ?>"/>
+			<span class="pdd-description"><?php _e( 'The suite, apt no, PO box, etc, associated with your billing address.', 'pdd' ); ?></span>
+			<input type="text" id="card_address_2" name="card_address_2" class="card-address-2 pdd-input<?php if( pdd_field_is_required( 'card_address_2' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'Address line 2', 'pdd' ); ?>" value="<?php echo $line2; ?>"/>
 		</p>
-		<p id="edd-card-city-wrap">
-			<label for="card_city" class="edd-label">
-				<?php _e( 'Billing City', 'edd' ); ?>
-				<?php if( edd_field_is_required( 'card_city' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
+		<p id="pdd-card-city-wrap">
+			<label for="card_city" class="pdd-label">
+				<?php _e( 'Billing City', 'pdd' ); ?>
+				<?php if( pdd_field_is_required( 'card_city' ) ) { ?>
+					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="edd-description"><?php _e( 'The city for your billing address.', 'edd' ); ?></span>
-			<input type="text" id="card_city" name="card_city" class="card-city edd-input<?php if( edd_field_is_required( 'card_city' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'City', 'edd' ); ?>" value="<?php echo $city; ?>"/>
+			<span class="pdd-description"><?php _e( 'The city for your billing address.', 'pdd' ); ?></span>
+			<input type="text" id="card_city" name="card_city" class="card-city pdd-input<?php if( pdd_field_is_required( 'card_city' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'City', 'pdd' ); ?>" value="<?php echo $city; ?>"/>
 		</p>
-		<p id="edd-card-zip-wrap">
-			<label for="card_zip" class="edd-label">
-				<?php _e( 'Billing Zip / Postal Code', 'edd' ); ?>
-				<?php if( edd_field_is_required( 'card_zip' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
+		<p id="pdd-card-zip-wrap">
+			<label for="card_zip" class="pdd-label">
+				<?php _e( 'Billing Zip / Postal Code', 'pdd' ); ?>
+				<?php if( pdd_field_is_required( 'card_zip' ) ) { ?>
+					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="edd-description"><?php _e( 'The zip or postal code for your billing address.', 'edd' ); ?></span>
-			<input type="text" size="4" name="card_zip" class="card-zip edd-input<?php if( edd_field_is_required( 'card_zip' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'Zip / Postal code', 'edd' ); ?>" value="<?php echo $zip; ?>"/>
+			<span class="pdd-description"><?php _e( 'The zip or postal code for your billing address.', 'pdd' ); ?></span>
+			<input type="text" size="4" name="card_zip" class="card-zip pdd-input<?php if( pdd_field_is_required( 'card_zip' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'Zip / Postal code', 'pdd' ); ?>" value="<?php echo $zip; ?>"/>
 		</p>
-		<p id="edd-card-country-wrap">
-			<label for="billing_country" class="edd-label">
-				<?php _e( 'Billing Country', 'edd' ); ?>
-				<?php if( edd_field_is_required( 'billing_country' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
+		<p id="pdd-card-country-wrap">
+			<label for="billing_country" class="pdd-label">
+				<?php _e( 'Billing Country', 'pdd' ); ?>
+				<?php if( pdd_field_is_required( 'billing_country' ) ) { ?>
+					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="edd-description"><?php _e( 'The country for your billing address.', 'edd' ); ?></span>
-			<select name="billing_country" id="billing_country" class="billing_country edd-select<?php if( edd_field_is_required( 'billing_country' ) ) { echo ' required'; } ?>">
+			<span class="pdd-description"><?php _e( 'The country for your billing address.', 'pdd' ); ?></span>
+			<select name="billing_country" id="billing_country" class="billing_country pdd-select<?php if( pdd_field_is_required( 'billing_country' ) ) { echo ' required'; } ?>">
 				<?php
 
-				$selected_country = edd_get_shop_country();
+				$selected_country = pdd_get_shop_country();
 
 				if( $logged_in && ! empty( $user_address['country'] ) && '*' !== $user_address['country'] ) {
 					$selected_country = $user_address['country'];
 				}
 
-				$countries = edd_get_country_list();
+				$countries = pdd_get_country_list();
 				foreach( $countries as $country_code => $country ) {
 				  echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
 				}
 				?>
 			</select>
 		</p>
-		<p id="edd-card-state-wrap">
-			<label for="card_state" class="edd-label">
-				<?php _e( 'Billing State / Province', 'edd' ); ?>
-				<?php if( edd_field_is_required( 'card_state' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
+		<p id="pdd-card-state-wrap">
+			<label for="card_state" class="pdd-label">
+				<?php _e( 'Billing State / Province', 'pdd' ); ?>
+				<?php if( pdd_field_is_required( 'card_state' ) ) { ?>
+					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="edd-description"><?php _e( 'The state or province for your billing address.', 'edd' ); ?></span>
+			<span class="pdd-description"><?php _e( 'The state or province for your billing address.', 'pdd' ); ?></span>
             <?php
-            $selected_state = edd_get_shop_state();
-            $states         = edd_get_shop_states( $selected_country );
+            $selected_state = pdd_get_shop_state();
+            $states         = pdd_get_shop_states( $selected_country );
 
             if( $logged_in && ! empty( $user_address['state'] ) ) {
 				$selected_state = $user_address['state'];
 			}
 
             if( ! empty( $states ) ) : ?>
-            <select name="card_state" id="card_state" class="card_state edd-select<?php if( edd_field_is_required( 'card_state' ) ) { echo ' required'; } ?>">
+            <select name="card_state" id="card_state" class="card_state pdd-select<?php if( pdd_field_is_required( 'card_state' ) ) { echo ' required'; } ?>">
                 <?php
                     foreach( $states as $state_code => $state ) {
                         echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
@@ -350,15 +350,15 @@ function edd_default_cc_address_fields() {
                 ?>
             </select>
         	<?php else : ?>
-			<input type="text" size="6" name="card_state" id="card_state" class="card_state edd-input" placeholder="<?php _e( 'State / Province', 'edd' ); ?>"/>
+			<input type="text" size="6" name="card_state" id="card_state" class="card_state pdd-input" placeholder="<?php _e( 'State / Province', 'pdd' ); ?>"/>
 			<?php endif; ?>
 		</p>
-		<?php do_action( 'edd_cc_billing_bottom' ); ?>
+		<?php do_action( 'pdd_cc_billing_bottom' ); ?>
 	</fieldset>
 	<?php
 	echo ob_get_clean();
 }
-add_action( 'edd_after_cc_fields', 'edd_default_cc_address_fields' );
+add_action( 'pdd_after_cc_fields', 'pdd_default_cc_address_fields' );
 
 
 /**
@@ -367,11 +367,11 @@ add_action( 'edd_after_cc_fields', 'edd_default_cc_address_fields' );
  * @since 1.6
  * @return void
  */
-function edd_checkout_tax_fields() {
-	if( edd_cart_needs_tax_address_fields() && edd_get_cart_total() )
-		edd_default_cc_address_fields();
+function pdd_checkout_tax_fields() {
+	if( pdd_cart_needs_tax_address_fields() && pdd_get_cart_total() )
+		pdd_default_cc_address_fields();
 }
-add_action( 'edd_purchase_form_after_cc_form', 'edd_checkout_tax_fields', 999 );
+add_action( 'pdd_purchase_form_after_cc_form', 'pdd_checkout_tax_fields', 999 );
 
 
 /**
@@ -382,192 +382,192 @@ add_action( 'edd_purchase_form_after_cc_form', 'edd_checkout_tax_fields', 999 );
  * @since 1.0
  * @return string
  */
-function edd_get_register_fields() {
-	global $edd_options;
+function pdd_get_register_fields() {
+	global $pdd_options;
 	global $user_ID;
 
 	if ( is_user_logged_in() )
 		$user_data = get_userdata( $user_ID );
 
-	$show_register_form = edd_get_option( 'show_register_form', 'none' );
+	$show_register_form = pdd_get_option( 'show_register_form', 'none' );
 
 	ob_start(); ?>
-	<fieldset id="edd_register_fields">
+	<fieldset id="pdd_register_fields">
 
 		<?php if( $show_register_form == 'both' ) { ?>
-			<p id="edd-login-account-wrap"><?php _e( 'Already have an account?', 'edd' ); ?> <a href="<?php echo add_query_arg('login', 1); ?>" class="edd_checkout_register_login" data-action="checkout_login"><?php _e( 'Login', 'edd' ); ?></a></p>
+			<p id="pdd-login-account-wrap"><?php _e( 'Already have an account?', 'pdd' ); ?> <a href="<?php echo add_query_arg('login', 1); ?>" class="pdd_checkout_register_login" data-action="checkout_login"><?php _e( 'Login', 'pdd' ); ?></a></p>
 		<?php } ?>
 		
-		<?php do_action('edd_register_fields_before'); ?>
+		<?php do_action('pdd_register_fields_before'); ?>
 
-		<fieldset id="edd_register_account_fields">
-			<span><legend><?php _e( 'Create an account', 'edd' ); if( !edd_no_guest_checkout() ) { echo ' ' . __( '(optional)', 'edd' ); } ?></legend></span>
-			<?php do_action('edd_register_account_fields_before'); ?>
-			<p id="edd-user-login-wrap">
-				<label for="edd_user_login">
-					<?php _e( 'Username', 'edd' ); ?>
-					<?php if( edd_no_guest_checkout() ) { ?>
-					<span class="edd-required-indicator">*</span>
+		<fieldset id="pdd_register_account_fields">
+			<span><legend><?php _e( 'Create an account', 'pdd' ); if( !pdd_no_guest_checkout() ) { echo ' ' . __( '(optional)', 'pdd' ); } ?></legend></span>
+			<?php do_action('pdd_register_account_fields_before'); ?>
+			<p id="pdd-user-login-wrap">
+				<label for="pdd_user_login">
+					<?php _e( 'Username', 'pdd' ); ?>
+					<?php if( pdd_no_guest_checkout() ) { ?>
+					<span class="pdd-required-indicator">*</span>
 					<?php } ?>
 				</label>
-				<span class="edd-description"><?php _e( 'The username you will use to log into your account.', 'edd' ); ?></span>
-				<input name="edd_user_login" id="edd_user_login" class="<?php if(edd_no_guest_checkout()) { echo 'required '; } ?>edd-input" type="text" placeholder="<?php _e( 'Username', 'edd' ); ?>" title="<?php _e( 'Username', 'edd' ); ?>"/>
+				<span class="pdd-description"><?php _e( 'The username you will use to log into your account.', 'pdd' ); ?></span>
+				<input name="pdd_user_login" id="pdd_user_login" class="<?php if(pdd_no_guest_checkout()) { echo 'required '; } ?>pdd-input" type="text" placeholder="<?php _e( 'Username', 'pdd' ); ?>" title="<?php _e( 'Username', 'pdd' ); ?>"/>
 			</p>
-			<p id="edd-user-pass-wrap">
+			<p id="pdd-user-pass-wrap">
 				<label for="password">
-					<?php _e( 'Password', 'edd' ); ?>
-					<?php if( edd_no_guest_checkout() ) { ?>
-					<span class="edd-required-indicator">*</span>
+					<?php _e( 'Password', 'pdd' ); ?>
+					<?php if( pdd_no_guest_checkout() ) { ?>
+					<span class="pdd-required-indicator">*</span>
 					<?php } ?>
 				</label>
-				<span class="edd-description"><?php _e( 'The password used to access your account.', 'edd' ); ?></span>
-				<input name="edd_user_pass" id="edd_user_pass" class="<?php if(edd_no_guest_checkout()) { echo 'required '; } ?>edd-input" placeholder="<?php _e( 'Password', 'edd' ); ?>" type="password"/>
+				<span class="pdd-description"><?php _e( 'The password used to access your account.', 'pdd' ); ?></span>
+				<input name="pdd_user_pass" id="pdd_user_pass" class="<?php if(pdd_no_guest_checkout()) { echo 'required '; } ?>pdd-input" placeholder="<?php _e( 'Password', 'pdd' ); ?>" type="password"/>
 			</p>
-			<p id="edd-user-pass-confirm-wrap" class="edd_register_password">
+			<p id="pdd-user-pass-confirm-wrap" class="pdd_register_password">
 				<label for="password_again">
-					<?php _e( 'Password Again', 'edd' ); ?>
-					<?php if( edd_no_guest_checkout() ) { ?>
-					<span class="edd-required-indicator">*</span>
+					<?php _e( 'Password Again', 'pdd' ); ?>
+					<?php if( pdd_no_guest_checkout() ) { ?>
+					<span class="pdd-required-indicator">*</span>
 					<?php } ?>
 				</label>
-				<span class="edd-description"><?php _e( 'Confirm your password.', 'edd' ); ?></span>
-				<input name="edd_user_pass_confirm" id="edd_user_pass_confirm" class="<?php if(edd_no_guest_checkout()) { echo 'required '; } ?>edd-input" placeholder="<?php _e( 'Confirm password', 'edd' ); ?>" type="password"/>
+				<span class="pdd-description"><?php _e( 'Confirm your password.', 'pdd' ); ?></span>
+				<input name="pdd_user_pass_confirm" id="pdd_user_pass_confirm" class="<?php if(pdd_no_guest_checkout()) { echo 'required '; } ?>pdd-input" placeholder="<?php _e( 'Confirm password', 'pdd' ); ?>" type="password"/>
 			</p>
-			<?php do_action( 'edd_register_account_fields_after' ); ?>
+			<?php do_action( 'pdd_register_account_fields_after' ); ?>
 		</fieldset>
 
-		<?php do_action('edd_register_fields_after'); ?>
+		<?php do_action('pdd_register_fields_after'); ?>
 
-		<input type="hidden" name="edd-purchase-var" value="needs-to-register"/>
+		<input type="hidden" name="pdd-purchase-var" value="needs-to-register"/>
 
-		<?php do_action( 'edd_purchase_form_user_info' ); ?>
+		<?php do_action( 'pdd_purchase_form_user_info' ); ?>
 
 	</fieldset>
 	<?php
 	echo ob_get_clean();
 }
-add_action( 'edd_purchase_form_register_fields', 'edd_get_register_fields' );
+add_action( 'pdd_purchase_form_register_fields', 'pdd_get_register_fields' );
 
 /**
  * Gets the login fields for the login form on the checkout. This function hooks
- * on the edd_purchase_form_login_fields to display the login form if a user already
+ * on the pdd_purchase_form_login_fields to display the login form if a user already
  * had an account.
  *
  * @since 1.0
  * @return string
  */
-function edd_get_login_fields() {
-	global $edd_options;
+function pdd_get_login_fields() {
+	global $pdd_options;
 
-	$color = isset( $edd_options[ 'checkout_color' ] ) ? $edd_options[ 'checkout_color' ] : 'gray';
+	$color = isset( $pdd_options[ 'checkout_color' ] ) ? $pdd_options[ 'checkout_color' ] : 'gray';
 	$color = ( $color == 'inherit' ) ? '' : $color;
-	$style = isset( $edd_options[ 'button_style' ] ) ? $edd_options[ 'button_style' ] : 'button';
+	$style = isset( $pdd_options[ 'button_style' ] ) ? $pdd_options[ 'button_style' ] : 'button';
 
-	$show_register_form = edd_get_option( 'show_register_form', 'none' );
+	$show_register_form = pdd_get_option( 'show_register_form', 'none' );
 
 	ob_start(); ?>
-		<fieldset id="edd_login_fields">
+		<fieldset id="pdd_login_fields">
 			<?php if( $show_register_form == 'both' ) { ?>
-				<p id="edd-new-account-wrap">
-					<?php _e( 'Need to create an account?', 'edd' ); ?>
-					<a href="<?php echo remove_query_arg('login'); ?>" class="edd_checkout_register_login" data-action="checkout_register">
-						<?php _e( 'Register', 'edd' ); if(!edd_no_guest_checkout()) { echo ' ' . __( 'or checkout as a guest.', 'edd' ); } ?>
+				<p id="pdd-new-account-wrap">
+					<?php _e( 'Need to create an account?', 'pdd' ); ?>
+					<a href="<?php echo remove_query_arg('login'); ?>" class="pdd_checkout_register_login" data-action="checkout_register">
+						<?php _e( 'Register', 'pdd' ); if(!pdd_no_guest_checkout()) { echo ' ' . __( 'or checkout as a guest.', 'pdd' ); } ?>
 					</a>
 				</p>
 			<?php } ?>
-			<?php do_action('edd_checkout_login_fields_before'); ?>
-			<p id="edd-user-login-wrap">
-				<label class="edd-label" for="edd-username"><?php _e( 'Username', 'edd' ); ?></label>
-				<input class="<?php if(edd_no_guest_checkout()) { echo 'required '; } ?>edd-input" type="text" name="edd_user_login" id="edd_user_login" value="" placeholder="<?php _e( 'Your username', 'edd' ); ?>"/>
+			<?php do_action('pdd_checkout_login_fields_before'); ?>
+			<p id="pdd-user-login-wrap">
+				<label class="pdd-label" for="pdd-username"><?php _e( 'Username', 'pdd' ); ?></label>
+				<input class="<?php if(pdd_no_guest_checkout()) { echo 'required '; } ?>pdd-input" type="text" name="pdd_user_login" id="pdd_user_login" value="" placeholder="<?php _e( 'Your username', 'pdd' ); ?>"/>
 			</p>
-			<p id="edd-user-pass-wrap" class="edd_login_password">
-				<label class="edd-label" for="edd-password"><?php _e( 'Password', 'edd' ); ?></label>
-				<input class="<?php if(edd_no_guest_checkout()) { echo 'required '; } ?>edd-input" type="password" name="edd_user_pass" id="edd_user_pass" placeholder="<?php _e( 'Your password', 'edd' ); ?>"/>
-				<input type="hidden" name="edd-purchase-var" value="needs-to-login"/>
+			<p id="pdd-user-pass-wrap" class="pdd_login_password">
+				<label class="pdd-label" for="pdd-password"><?php _e( 'Password', 'pdd' ); ?></label>
+				<input class="<?php if(pdd_no_guest_checkout()) { echo 'required '; } ?>pdd-input" type="password" name="pdd_user_pass" id="pdd_user_pass" placeholder="<?php _e( 'Your password', 'pdd' ); ?>"/>
+				<input type="hidden" name="pdd-purchase-var" value="needs-to-login"/>
 			</p>
-			<p id="edd-user-login-submit">
-				<input type="submit" class="edd-submit button <?php echo $color; ?>" name="edd_login_submit" value="<?php _e( 'Login', 'edd' ); ?>"/>
+			<p id="pdd-user-login-submit">
+				<input type="submit" class="pdd-submit button <?php echo $color; ?>" name="pdd_login_submit" value="<?php _e( 'Login', 'pdd' ); ?>"/>
 			</p>
-			<?php do_action('edd_checkout_login_fields_after'); ?>
-		</fieldset><!--end #edd_login_fields-->
+			<?php do_action('pdd_checkout_login_fields_after'); ?>
+		</fieldset><!--end #pdd_login_fields-->
 	<?php
 	echo ob_get_clean();
 }
-add_action( 'edd_purchase_form_login_fields', 'edd_get_login_fields' );
+add_action( 'pdd_purchase_form_login_fields', 'pdd_get_login_fields' );
 
 /**
  * Renders the payment mode form by getting all the enabled payment gateways and
  * outputting them as radio buttons for the user to choose the payment gateway. If
- * a default payment gateway has been chosen from the EDD Settings, it will be
+ * a default payment gateway has been chosen from the PDD Settings, it will be
  * automatically selected.
  *
  * @since 1.2.2
  * @return void
  */
-function edd_payment_mode_select() {
-	$gateways = edd_get_enabled_payment_gateways();
-	$page_URL = edd_get_current_page_url();
-	do_action('edd_payment_mode_top'); ?>
-	<?php if( edd_is_ajax_disabled() ) { ?>
-	<form id="edd_payment_mode" action="<?php echo $page_URL; ?>" method="GET">
+function pdd_payment_mode_select() {
+	$gateways = pdd_get_enabled_payment_gateways();
+	$page_URL = pdd_get_current_page_url();
+	do_action('pdd_payment_mode_top'); ?>
+	<?php if( pdd_is_ajax_disabled() ) { ?>
+	<form id="pdd_payment_mode" action="<?php echo $page_URL; ?>" method="GET">
 	<?php } ?>
-		<fieldset id="edd_payment_mode_select">
-			<?php do_action( 'edd_payment_mode_before_gateways_wrap' ); ?>
-			<div id="edd-payment-mode-wrap">
-				<span class="edd-payment-mode-label"><?php _e( 'Select Payment Method', 'edd' ); ?></span><br/>
+		<fieldset id="pdd_payment_mode_select">
+			<?php do_action( 'pdd_payment_mode_before_gateways_wrap' ); ?>
+			<div id="pdd-payment-mode-wrap">
+				<span class="pdd-payment-mode-label"><?php _e( 'Select Payment Method', 'pdd' ); ?></span><br/>
 				<?php
 
-				do_action( 'edd_payment_mode_before_gateways' );
+				do_action( 'pdd_payment_mode_before_gateways' );
 
 				foreach ( $gateways as $gateway_id => $gateway ) :
-					$checked = checked( $gateway_id, edd_get_default_gateway(), false );
-					$checked_class = $checked ? ' edd-gateway-option-selected' : '';
-					echo '<label for="edd-gateway-' . esc_attr( $gateway_id ) . '" class="edd-gateway-option' . $checked_class . '" id="edd-gateway-option-' . esc_attr( $gateway_id ) . '">';
-						echo '<input type="radio" name="payment-mode" class="edd-gateway" id="edd-gateway-' . esc_attr( $gateway_id ) . '" value="' . esc_attr( $gateway_id ) . '"' . $checked . '>' . esc_html( $gateway['checkout_label'] );
+					$checked = checked( $gateway_id, pdd_get_default_gateway(), false );
+					$checked_class = $checked ? ' pdd-gateway-option-selected' : '';
+					echo '<label for="pdd-gateway-' . esc_attr( $gateway_id ) . '" class="pdd-gateway-option' . $checked_class . '" id="pdd-gateway-option-' . esc_attr( $gateway_id ) . '">';
+						echo '<input type="radio" name="payment-mode" class="pdd-gateway" id="pdd-gateway-' . esc_attr( $gateway_id ) . '" value="' . esc_attr( $gateway_id ) . '"' . $checked . '>' . esc_html( $gateway['checkout_label'] );
 					echo '</label>';
 				endforeach;
 
-				do_action( 'edd_payment_mode_after_gateways' );
+				do_action( 'pdd_payment_mode_after_gateways' );
 
 				?>
 			</div>
-			<?php do_action( 'edd_payment_mode_after_gateways_wrap' ); ?>
+			<?php do_action( 'pdd_payment_mode_after_gateways_wrap' ); ?>
 		</fieldset>
-		<fieldset id="edd_payment_mode_submit" class="edd-no-js">
-			<p id="edd-next-submit-wrap">
-				<?php echo edd_checkout_button_next(); ?>
+		<fieldset id="pdd_payment_mode_submit" class="pdd-no-js">
+			<p id="pdd-next-submit-wrap">
+				<?php echo pdd_checkout_button_next(); ?>
 			</p>
 		</fieldset>
-	<?php if( edd_is_ajax_disabled() ) { ?>
+	<?php if( pdd_is_ajax_disabled() ) { ?>
 	</form>
 	<?php } ?>
-	<div id="edd_purchase_form_wrap"></div><!-- the checkout fields are loaded into this-->
-	<?php do_action('edd_payment_mode_bottom');
+	<div id="pdd_purchase_form_wrap"></div><!-- the checkout fields are loaded into this-->
+	<?php do_action('pdd_payment_mode_bottom');
 }
-add_action( 'edd_payment_mode_select', 'edd_payment_mode_select' );
+add_action( 'pdd_payment_mode_select', 'pdd_payment_mode_select' );
 
 
 /**
- * Show Payment Icons by getting all the accepted icons from the EDD Settings
+ * Show Payment Icons by getting all the accepted icons from the PDD Settings
  * then outputting the icons.
  *
  * @since 1.0
- * @global $edd_options Array of all the EDD Options
+ * @global $pdd_options Array of all the PDD Options
  * @return void
 */
-function edd_show_payment_icons() {
-	global $edd_options;
+function pdd_show_payment_icons() {
+	global $pdd_options;
 
-	if( edd_show_gateways() && did_action( 'edd_payment_mode_top' ) )
+	if( pdd_show_gateways() && did_action( 'pdd_payment_mode_top' ) )
 		return;
 
-	if ( isset( $edd_options['accepted_cards'] ) ) {
-		echo '<div class="edd-payment-icons">';
-		foreach( $edd_options['accepted_cards'] as $key => $card ) {
-			if( edd_string_is_image_url( $key ) ) {
+	if ( isset( $pdd_options['accepted_cards'] ) ) {
+		echo '<div class="pdd-payment-icons">';
+		foreach( $pdd_options['accepted_cards'] as $key => $card ) {
+			if( pdd_string_is_image_url( $key ) ) {
 				echo '<img class="payment-icon" src="' . esc_url( $key ) . '"/>';
 			} else {
-                $image = edd_locate_template( 'images' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR . strtolower( str_replace( ' ', '', $card ) ) . '.gif', false );
+                $image = pdd_locate_template( 'images' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR . strtolower( str_replace( ' ', '', $card ) ) . '.gif', false );
                 $content_dir = WP_CONTENT_DIR;
 
 				if( function_exists( 'wp_normalize_path' ) ) {
@@ -577,8 +577,8 @@ function edd_show_payment_icons() {
 				}
 				$image = str_replace( $content_dir, WP_CONTENT_URL, $image );
 
-				if( edd_is_ssl_enforced() || is_ssl() ) {
-					$image = edd_enforced_ssl_asset_filter( $image );
+				if( pdd_is_ssl_enforced() || is_ssl() ) {
+					$image = pdd_enforced_ssl_asset_filter( $image );
 				}
 
 				echo '<img class="payment-icon" src="' . esc_url( $image ) . '"/>';
@@ -587,8 +587,8 @@ function edd_show_payment_icons() {
 		echo '</div>';
 	}
 }
-add_action( 'edd_payment_mode_top', 'edd_show_payment_icons' );
-add_action( 'edd_checkout_form_top', 'edd_show_payment_icons' );
+add_action( 'pdd_payment_mode_top', 'pdd_show_payment_icons' );
+add_action( 'pdd_checkout_form_top', 'pdd_show_payment_icons' );
 
 
 /**
@@ -599,70 +599,70 @@ add_action( 'edd_checkout_form_top', 'edd_show_payment_icons' );
  * @since 1.2.2
  * @return void
 */
-function edd_discount_field() {
+function pdd_discount_field() {
 
-	if( isset( $_GET['payment-mode'] ) && edd_is_ajax_disabled() ) {
+	if( isset( $_GET['payment-mode'] ) && pdd_is_ajax_disabled() ) {
 		return; // Only show before a payment method has been selected if ajax is disabled
 	}
 
-	if ( edd_has_active_discounts() && edd_get_cart_total() ) :
+	if ( pdd_has_active_discounts() && pdd_get_cart_total() ) :
 
-		$color = edd_get_option( 'checkout_color', 'blue' );
+		$color = pdd_get_option( 'checkout_color', 'blue' );
 		$color = ( $color == 'inherit' ) ? '' : $color;
-		$style = edd_get_option( 'button_style', 'button' );
+		$style = pdd_get_option( 'button_style', 'button' );
 ?>
-		<fieldset id="edd_discount_code">
-			<p id="edd_show_discount" style="display:none;">
-				<?php _e( 'Have a discount code?', 'edd' ); ?> <a href="#" class="edd_discount_link"><?php echo _x( 'Click to enter it', 'Entering a discount code', 'edd' ); ?></a>
+		<fieldset id="pdd_discount_code">
+			<p id="pdd_show_discount" style="display:none;">
+				<?php _e( 'Have a discount code?', 'pdd' ); ?> <a href="#" class="pdd_discount_link"><?php echo _x( 'Click to enter it', 'Entering a discount code', 'pdd' ); ?></a>
 			</p>
-			<p id="edd-discount-code-wrap">
-				<label class="edd-label" for="edd-discount">
-					<?php _e( 'Discount', 'edd' ); ?>
-					<img src="<?php echo EDD_PLUGIN_URL; ?>assets/images/loading.gif" id="edd-discount-loader" style="display:none;"/>
+			<p id="pdd-discount-code-wrap">
+				<label class="pdd-label" for="pdd-discount">
+					<?php _e( 'Discount', 'pdd' ); ?>
+					<img src="<?php echo PDD_PLUGIN_URL; ?>assets/images/loading.gif" id="pdd-discount-loader" style="display:none;"/>
 				</label>
-				<span class="edd-description"><?php _e( 'Enter a coupon code if you have one.', 'edd' ); ?></span>
-				<input class="edd-input" type="text" id="edd-discount" name="edd-discount" placeholder="<?php _e( 'Enter discount', 'edd' ); ?>"/>
-				<input type="submit" class="edd-apply-discount edd-submit button <?php echo $color . ' ' . $style; ?>" value="<?php echo _x( 'Apply', 'Apply discount at checkout', 'edd' ); ?>"/>
-				<span id="edd-discount-error-wrap" class="edd_errors" style="display:none;"></span>
+				<span class="pdd-description"><?php _e( 'Enter a coupon code if you have one.', 'pdd' ); ?></span>
+				<input class="pdd-input" type="text" id="pdd-discount" name="pdd-discount" placeholder="<?php _e( 'Enter discount', 'pdd' ); ?>"/>
+				<input type="submit" class="pdd-apply-discount pdd-submit button <?php echo $color . ' ' . $style; ?>" value="<?php echo _x( 'Apply', 'Apply discount at checkout', 'pdd' ); ?>"/>
+				<span id="pdd-discount-error-wrap" class="pdd_errors" style="display:none;"></span>
 			</p>
 		</fieldset>
 <?php
 	endif;
 }
-add_action( 'edd_checkout_form_top', 'edd_discount_field', -1 );
+add_action( 'pdd_checkout_form_top', 'pdd_discount_field', -1 );
 
 /**
  * Renders the Checkout Agree to Terms, this displays a checkbox for users to
- * agree the T&Cs set in the EDD Settings. This is only displayed if T&Cs are
- * set in the EDD Settings.
+ * agree the T&Cs set in the PDD Settings. This is only displayed if T&Cs are
+ * set in the PDD Settings.
  *
  * @since 1.3.2
- * @global $edd_options Array of all the EDD Options
+ * @global $pdd_options Array of all the PDD Options
  * @return void
  */
-function edd_terms_agreement() {
-	global $edd_options;
-	if ( isset( $edd_options['show_agree_to_terms'] ) ) {
+function pdd_terms_agreement() {
+	global $pdd_options;
+	if ( isset( $pdd_options['show_agree_to_terms'] ) ) {
 ?>
-		<fieldset id="edd_terms_agreement">
-			<div id="edd_terms" style="display:none;">
+		<fieldset id="pdd_terms_agreement">
+			<div id="pdd_terms" style="display:none;">
 				<?php
-					do_action( 'edd_before_terms' );
-					echo wpautop( stripslashes( $edd_options['agree_text'] ) );
-					do_action( 'edd_after_terms' );
+					do_action( 'pdd_before_terms' );
+					echo wpautop( stripslashes( $pdd_options['agree_text'] ) );
+					do_action( 'pdd_after_terms' );
 				?>
 			</div>
-			<div id="edd_show_terms">
-				<a href="#" class="edd_terms_links"><?php _e( 'Show Terms', 'edd' ); ?></a>
-				<a href="#" class="edd_terms_links" style="display:none;"><?php _e( 'Hide Terms', 'edd' ); ?></a>
+			<div id="pdd_show_terms">
+				<a href="#" class="pdd_terms_links"><?php _e( 'Show Terms', 'pdd' ); ?></a>
+				<a href="#" class="pdd_terms_links" style="display:none;"><?php _e( 'Hide Terms', 'pdd' ); ?></a>
 			</div>
-			<label for="edd_agree_to_terms"><?php echo isset( $edd_options['agree_label'] ) ? stripslashes( $edd_options['agree_label'] ) : __( 'Agree to Terms?', 'edd' ); ?></label>
-			<input name="edd_agree_to_terms" class="required" type="checkbox" id="edd_agree_to_terms" value="1"/>
+			<label for="pdd_agree_to_terms"><?php echo isset( $pdd_options['agree_label'] ) ? stripslashes( $pdd_options['agree_label'] ) : __( 'Agree to Terms?', 'pdd' ); ?></label>
+			<input name="pdd_agree_to_terms" class="required" type="checkbox" id="pdd_agree_to_terms" value="1"/>
 		</fieldset>
 <?php
 	}
 }
-add_action( 'edd_purchase_form_before_submit', 'edd_terms_agreement' );
+add_action( 'pdd_purchase_form_before_submit', 'pdd_terms_agreement' );
 
 /**
  * Shows the final purchase total at the bottom of the checkout page
@@ -670,15 +670,15 @@ add_action( 'edd_purchase_form_before_submit', 'edd_terms_agreement' );
  * @since 1.5
  * @return void
  */
-function edd_checkout_final_total() {
+function pdd_checkout_final_total() {
 ?>
-<p id="edd_final_total_wrap">
-	<strong><?php _e( 'Purchase Total:', 'edd' ); ?></strong>
-	<span class="edd_cart_amount" data-subtotal="<?php echo edd_get_cart_subtotal(); ?>" data-total="<?php echo edd_get_cart_subtotal(); ?>"><?php edd_cart_total(); ?></span>
+<p id="pdd_final_total_wrap">
+	<strong><?php _e( 'Purchase Total:', 'pdd' ); ?></strong>
+	<span class="pdd_cart_amount" data-subtotal="<?php echo pdd_get_cart_subtotal(); ?>" data-total="<?php echo pdd_get_cart_subtotal(); ?>"><?php pdd_cart_total(); ?></span>
 </p>
 <?php
 }
-add_action( 'edd_purchase_form_before_submit', 'edd_checkout_final_total', 999 );
+add_action( 'pdd_purchase_form_before_submit', 'pdd_checkout_final_total', 999 );
 
 
 /**
@@ -687,73 +687,73 @@ add_action( 'edd_purchase_form_before_submit', 'edd_checkout_final_total', 999 )
  * @since 1.3.3
  * @return void
  */
-function edd_checkout_submit() {
+function pdd_checkout_submit() {
 ?>
-	<fieldset id="edd_purchase_submit">
-		<?php do_action( 'edd_purchase_form_before_submit' ); ?>
+	<fieldset id="pdd_purchase_submit">
+		<?php do_action( 'pdd_purchase_form_before_submit' ); ?>
 
-		<?php edd_checkout_hidden_fields(); ?>
+		<?php pdd_checkout_hidden_fields(); ?>
 
-		<?php echo edd_checkout_button_purchase(); ?>
+		<?php echo pdd_checkout_button_purchase(); ?>
 
-		<?php do_action( 'edd_purchase_form_after_submit' ); ?>
+		<?php do_action( 'pdd_purchase_form_after_submit' ); ?>
 
-		<?php if ( edd_is_ajax_disabled() ) { ?>
-			<p class="edd-cancel"><a href="javascript:history.go(-1)"><?php _e( 'Go back', 'edd' ); ?></a></p>
+		<?php if ( pdd_is_ajax_disabled() ) { ?>
+			<p class="pdd-cancel"><a href="javascript:history.go(-1)"><?php _e( 'Go back', 'pdd' ); ?></a></p>
 		<?php } ?>
 	</fieldset>
 <?php
 }
-add_action( 'edd_purchase_form_after_cc_form', 'edd_checkout_submit', 9999 );
+add_action( 'pdd_purchase_form_after_cc_form', 'pdd_checkout_submit', 9999 );
 
 /**
  * Renders the Next button on the Checkout
  *
  * @since 1.2
- * @global $edd_options Array of all the EDD Options
+ * @global $pdd_options Array of all the PDD Options
  * @return string
  */
-function edd_checkout_button_next() {
-	global $edd_options;
+function pdd_checkout_button_next() {
+	global $pdd_options;
 
-	$color = isset( $edd_options[ 'checkout_color' ] ) ? $edd_options[ 'checkout_color' ] : 'blue';
+	$color = isset( $pdd_options[ 'checkout_color' ] ) ? $pdd_options[ 'checkout_color' ] : 'blue';
 	$color = ( $color == 'inherit' ) ? '' : $color;
-	$style = isset( $edd_options[ 'button_style' ] ) ? $edd_options[ 'button_style' ] : 'button';
+	$style = isset( $pdd_options[ 'button_style' ] ) ? $pdd_options[ 'button_style' ] : 'button';
 
 	ob_start();
 ?>
-	<input type="hidden" name="edd_action" value="gateway_select" />
-	<input type="hidden" name="page_id" value="<?php echo absint( $edd_options['purchase_page'] ); ?>"/>
-	<input type="submit" name="gateway_submit" id="edd_next_button" class="edd-submit <?php echo $color; ?> <?php echo $style; ?>" value="<?php _e( 'Next', 'edd' ); ?>"/>
+	<input type="hidden" name="pdd_action" value="gateway_select" />
+	<input type="hidden" name="page_id" value="<?php echo absint( $pdd_options['purchase_page'] ); ?>"/>
+	<input type="submit" name="gateway_submit" id="pdd_next_button" class="pdd-submit <?php echo $color; ?> <?php echo $style; ?>" value="<?php _e( 'Next', 'pdd' ); ?>"/>
 <?php
-	return apply_filters( 'edd_checkout_button_next', ob_get_clean() );
+	return apply_filters( 'pdd_checkout_button_next', ob_get_clean() );
 }
 
 /**
  * Renders the Purchase button on the Checkout
  *
  * @since 1.2
- * @global $edd_options Array of all the EDD Options
+ * @global $pdd_options Array of all the PDD Options
  * @return string
  */
-function edd_checkout_button_purchase() {
-	global $edd_options;
+function pdd_checkout_button_purchase() {
+	global $pdd_options;
 
-	$color = isset( $edd_options[ 'checkout_color' ] ) ? $edd_options[ 'checkout_color' ] : 'blue';
+	$color = isset( $pdd_options[ 'checkout_color' ] ) ? $pdd_options[ 'checkout_color' ] : 'blue';
 	$color = ( $color == 'inherit' ) ? '' : $color;
-	$style = isset( $edd_options[ 'button_style' ] ) ? $edd_options[ 'button_style' ] : 'button';
+	$style = isset( $pdd_options[ 'button_style' ] ) ? $pdd_options[ 'button_style' ] : 'button';
 
-	if ( edd_get_cart_total() ) {
-		$complete_purchase = ! empty( $edd_options['checkout_label'] ) ? $edd_options['checkout_label'] : __( 'Purchase', 'edd' );
+	if ( pdd_get_cart_total() ) {
+		$complete_purchase = ! empty( $pdd_options['checkout_label'] ) ? $pdd_options['checkout_label'] : __( 'Purchase', 'pdd' );
 	} else {
-		$complete_purchase = ! empty( $edd_options['checkout_label'] ) ? $edd_options['checkout_label'] : __( 'Free Download', 'edd' );
+		$complete_purchase = ! empty( $pdd_options['checkout_label'] ) ? $pdd_options['checkout_label'] : __( 'Free Download', 'pdd' );
 	}
 
 	ob_start();
 ?>
-	<input type="submit" class="edd-submit <?php echo $color; ?> <?php echo $style; ?>" id="edd-purchase-button" name="edd-purchase" value="<?php echo $complete_purchase; ?>"/>
+	<input type="submit" class="pdd-submit <?php echo $color; ?> <?php echo $style; ?>" id="pdd-purchase-button" name="pdd-purchase" value="<?php echo $complete_purchase; ?>"/>
 <?php
-	return apply_filters( 'edd_checkout_button_purchase', ob_get_clean() );
+	return apply_filters( 'pdd_checkout_button_purchase', ob_get_clean() );
 }
 
 /**
@@ -761,20 +761,20 @@ function edd_checkout_button_purchase() {
  * the T&Cs text
  *
  * @since 1.0
- * @global $edd_options Array of all the EDD Options
+ * @global $pdd_options Array of all the PDD Options
  * @return void
  */
-function edd_agree_to_terms_js() {
-	global $edd_options;
+function pdd_agree_to_terms_js() {
+	global $pdd_options;
 
-	if ( isset( $edd_options['show_agree_to_terms'] ) ) {
+	if ( isset( $pdd_options['show_agree_to_terms'] ) ) {
 ?>
 	<script type="text/javascript">
 		jQuery(document).ready(function($){
-			$('body').on('click', '.edd_terms_links', function(e) {
+			$('body').on('click', '.pdd_terms_links', function(e) {
 				//e.preventDefault();
-				$('#edd_terms').slideToggle();
-				$('.edd_terms_links').toggle();
+				$('#pdd_terms').slideToggle();
+				$('.pdd_terms_links').toggle();
 				return false;
 			});
 		});
@@ -782,7 +782,7 @@ function edd_agree_to_terms_js() {
 <?php
 	}
 }
-add_action( 'edd_checkout_form_top', 'edd_agree_to_terms_js' );
+add_action( 'pdd_checkout_form_top', 'pdd_agree_to_terms_js' );
 
 /**
  * Renders the hidden Checkout fields
@@ -790,13 +790,13 @@ add_action( 'edd_checkout_form_top', 'edd_agree_to_terms_js' );
  * @since 1.3.2
  * @return void
  */
-function edd_checkout_hidden_fields() {
+function pdd_checkout_hidden_fields() {
 ?>
 	<?php if ( is_user_logged_in() ) { ?>
-	<input type="hidden" name="edd-user-id" value="<?php echo get_current_user_id(); ?>"/>
+	<input type="hidden" name="pdd-user-id" value="<?php echo get_current_user_id(); ?>"/>
 	<?php } ?>
-	<input type="hidden" name="edd_action" value="purchase"/>
-	<input type="hidden" name="edd-gateway" value="<?php echo edd_get_chosen_gateway(); ?>" />
+	<input type="hidden" name="pdd_action" value="purchase"/>
+	<input type="hidden" name="pdd-gateway" value="<?php echo pdd_get_chosen_gateway(); ?>" />
 <?php
 }
 
@@ -809,18 +809,18 @@ function edd_checkout_hidden_fields() {
  * @param string $content Content before filters
  * @return string $content Filtered content
  */
-function edd_filter_success_page_content( $content ) {
-	global $edd_options;
+function pdd_filter_success_page_content( $content ) {
+	global $pdd_options;
 
-	if ( isset( $edd_options['success_page'] ) && isset( $_GET['payment-confirmation'] ) && is_page( $edd_options['success_page'] ) ) {
-		if ( has_filter( 'edd_payment_confirm_' . $_GET['payment-confirmation'] ) ) {
-			$content = apply_filters( 'edd_payment_confirm_' . $_GET['payment-confirmation'], $content );
+	if ( isset( $pdd_options['success_page'] ) && isset( $_GET['payment-confirmation'] ) && is_page( $pdd_options['success_page'] ) ) {
+		if ( has_filter( 'pdd_payment_confirm_' . $_GET['payment-confirmation'] ) ) {
+			$content = apply_filters( 'pdd_payment_confirm_' . $_GET['payment-confirmation'], $content );
 		}
 	}
 
 	return $content;
 }
-add_filter( 'the_content', 'edd_filter_success_page_content' );
+add_filter( 'the_content', 'pdd_filter_success_page_content' );
 
 /**
  * Show a download's files in the purchase receipt
@@ -828,6 +828,6 @@ add_filter( 'the_content', 'edd_filter_success_page_content' );
  * @since 1.8.6
  * @return boolean
 */
-function edd_receipt_show_download_files( $item_id, $receipt_args ) {
-	return apply_filters( 'edd_receipt_show_download_files', true, $item_id, $receipt_args );
+function pdd_receipt_show_download_files( $item_id, $receipt_args ) {
+	return apply_filters( 'pdd_receipt_show_download_files', true, $item_id, $receipt_args );
 }

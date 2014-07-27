@@ -2,7 +2,7 @@
 /**
  * Contextual Help
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Settings
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -19,17 +19,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since       1.4
  * @return      void
  */
-function edd_settings_contextual_help() {
+function pdd_settings_contextual_help() {
 	$screen = get_current_screen();
 
-	if ( $screen->id != 'download_page_edd-settings' )
+	if ( $screen->id != 'download_page_pdd-settings' )
 		return;
 
 	$screen->set_help_sidebar(
-		'<p><strong>' . sprintf( __( 'For more information:', 'edd' ) . '</strong></p>' .
-		'<p>' . sprintf( __( 'Visit the <a href="%s">documentation</a> on the Easy Digital Downloads website.', 'edd' ), esc_url( 'https://easydigitaldownloads.com/documentation/' ) ) ) . '</p>' .
+		'<p><strong>' . sprintf( __( 'For more information:', 'pdd' ) . '</strong></p>' .
+		'<p>' . sprintf( __( 'Visit the <a href="%s">documentation</a> on the Easy Digital Downloads website.', 'pdd' ), esc_url( 'https://easydigitaldownloads.com/documentation/' ) ) ) . '</p>' .
 		'<p>' . sprintf(
-					__( '<a href="%s">Post an issue</a> on <a href="%s">GitHub</a>. View <a href="%s">extensions</a> or <a href="%s">themes</a>.', 'edd' ),
+					__( '<a href="%s">Post an issue</a> on <a href="%s">GitHub</a>. View <a href="%s">extensions</a> or <a href="%s">themes</a>.', 'pdd' ),
 					esc_url( 'https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues' ),
 					esc_url( 'https://github.com/easydigitaldownloads/Easy-Digital-Downloads' ),
 					esc_url( 'https://easydigitaldownloads.com/extensions/' ),
@@ -38,64 +38,64 @@ function edd_settings_contextual_help() {
 	);
 
 	$screen->add_help_tab( array(
-		'id'	    => 'edd-settings-general',
-		'title'	    => __( 'General', 'edd' ),
-		'content'	=> '<p>' . __( 'This screen provides the most basic settings for configuring your store. You can set the currency, page templates, and turn <em>Test Mode</em> on and off.', 'edd' ) . '</p>'
+		'id'	    => 'pdd-settings-general',
+		'title'	    => __( 'General', 'pdd' ),
+		'content'	=> '<p>' . __( 'This screen provides the most basic settings for configuring your store. You can set the currency, page templates, and turn <em>Test Mode</em> on and off.', 'pdd' ) . '</p>'
 	) );
 
 	$screen->add_help_tab( array(
-		'id'	    => 'edd-settings-payment-gateways',
-		'title'	    => __( 'Payment Gateways', 'edd' ),
+		'id'	    => 'pdd-settings-payment-gateways',
+		'title'	    => __( 'Payment Gateways', 'pdd' ),
 		'content'	=>
-			'<p>' . __( 'This screen provides ways to toggle payment gateways on or off, as well as configure gateway-specific settings. Any extra payment gateway extensions you have installed will appear on this page, and can be configured to suit your needs.', 'edd' ) . '</p>' . 
-			'<p>' . __( '<strong>Test Payment</strong> - This included gateway is great for testing your store, as it requires no payment, and leads straight to product downloads. However, please remember to turn it off once your site is live!', 'edd' ) . '</p>' .
-			'<p>' . __( '<strong>PayPal</strong> - A PayPal payment gateway is included as standard with Easy Digital Downloads. To test the PayPal gateway, you need a Sandbox account for PayPal and the site must be placed in Test Mode from the General settings tab. Please remember to enter your PayPal account email address in order for payments to get processed.', 'edd' ) . '</p>'
+			'<p>' . __( 'This screen provides ways to toggle payment gateways on or off, as well as configure gateway-specific settings. Any extra payment gateway extensions you have installed will appear on this page, and can be configured to suit your needs.', 'pdd' ) . '</p>' . 
+			'<p>' . __( '<strong>Test Payment</strong> - This included gateway is great for testing your store, as it requires no payment, and leads straight to product downloads. However, please remember to turn it off once your site is live!', 'pdd' ) . '</p>' .
+			'<p>' . __( '<strong>PayPal</strong> - A PayPal payment gateway is included as standard with Easy Digital Downloads. To test the PayPal gateway, you need a Sandbox account for PayPal and the site must be placed in Test Mode from the General settings tab. Please remember to enter your PayPal account email address in order for payments to get processed.', 'pdd' ) . '</p>'
 	) );
 
 	$screen->add_help_tab( array(
-		'id'	    => 'edd-settings-emails',
-		'title'	    => __( 'Emails', 'edd' ),
+		'id'	    => 'pdd-settings-emails',
+		'title'	    => __( 'Emails', 'pdd' ),
 		'content'	=>
-			'<p>' . __( "This screen allows you to customize how emails act throughout your store. You can choose a premade template, set the sender's name, email address, and subject.", 'edd' ) . '</p>' .
-			'<p>' . __( 'A set of email tags has also been provided to allow the creation of personalized emails. A tag consists of a keyword surrounded by curly braces: <code>{tag}</code>. A description of each of these tags appear below the editor.', 'edd' ) . '</p>'
+			'<p>' . __( "This screen allows you to customize how emails act throughout your store. You can choose a premade template, set the sender's name, email address, and subject.", 'pdd' ) . '</p>' .
+			'<p>' . __( 'A set of email tags has also been provided to allow the creation of personalized emails. A tag consists of a keyword surrounded by curly braces: <code>{tag}</code>. A description of each of these tags appear below the editor.', 'pdd' ) . '</p>'
 	) );
 
 	$screen->add_help_tab( array(
-		'id'	    => 'edd-settings-styles',
-		'title'	    => __( 'Styles', 'edd' ),
-		'content'	=> '<p>' . __( "This screen allows customization of your store's styles. For complete control, you can completely disable all styles generated by the plugin.", 'edd' ) . '</p>' 
+		'id'	    => 'pdd-settings-styles',
+		'title'	    => __( 'Styles', 'pdd' ),
+		'content'	=> '<p>' . __( "This screen allows customization of your store's styles. For complete control, you can completely disable all styles generated by the plugin.", 'pdd' ) . '</p>' 
 	) );
 
 	$screen->add_help_tab( array(
-		'id'	    => 'edd-settings-taxes',
-		'title'	    => __( 'Taxes', 'edd' ),
+		'id'	    => 'pdd-settings-taxes',
+		'title'	    => __( 'Taxes', 'pdd' ),
 		'content'	=> 
-			'<p>' . __( 'This screen allows youto configure the tax rules for your store.', 'edd' ) . '</p>' .
-			'<p>' . __( 'If you do not wish to charge any tax on purchase, simply leave the Enable Taxes option unchecked.', 'edd' ) . '</p>' .
-			'<p>' . __( '<strong>Default Tax Rate</strong>: The default tax rate is the tax rate charged to customers located in your base country / state or province.', 'edd' ) . '</p>' .
-			'<p>' . __( '<strong>Base Country</strong>: This determines the country that is loaded by default on the checkout screen for customers that do not have an address stored in their account.', 'edd' ) . '</p>' .
-			'<p>' . __( '<strong>Base State / Province</strong>: This determines the state / province that is loaded by default on the checkout screen for customers that do not have an address stored in their account.', 'edd' ) . '</p>' .
-			'<p>' . __( '<strong>Prices Entered with Tax</strong>: if enabled, this means that the price entered on the product edit screens is the total amount the customer will pay after taxes. For example, if enabled and the price of a product is $20, the customer will pay 20$ at checkout. The exact amount charged in tax will be calculated automatically.', 'edd' ) . '</p>' .
-			'<p>' . __( '<strong>Display Tax Rate on Prices</strong>: when enabled, the amount the customer is expected to pay in tax will be displayed below purchase buttons.', 'edd' ) . '</p>' .
-			'<p>' . __( '<strong>Display During Checkout</strong>: This determines whether prices are shown with taxes or without taxes on checkout. If set to Including Tax, a $10 product with a 10% tax will be shown as $11.', 'edd' ) . '</p>' .
-			'<p>' . __( '<strong>Calculate Tax After Discounts</strong>: If enabled, this option will make it so that tax is calucated on the after-discount amount. If a purchase of $20 is made and a 20% discount is applied, tax will be calcuated off of $16 instead of $20.', 'edd' ) . '</p>' .
-			'<p>' . __( '<strong>Additional Tax Rates</strong>: This section lets you add tax rates for specific countries and/or states/provinces in those countries.', 'edd' ) . '</p>'
+			'<p>' . __( 'This screen allows youto configure the tax rules for your store.', 'pdd' ) . '</p>' .
+			'<p>' . __( 'If you do not wish to charge any tax on purchase, simply leave the Enable Taxes option unchecked.', 'pdd' ) . '</p>' .
+			'<p>' . __( '<strong>Default Tax Rate</strong>: The default tax rate is the tax rate charged to customers located in your base country / state or province.', 'pdd' ) . '</p>' .
+			'<p>' . __( '<strong>Base Country</strong>: This determines the country that is loaded by default on the checkout screen for customers that do not have an address stored in their account.', 'pdd' ) . '</p>' .
+			'<p>' . __( '<strong>Base State / Province</strong>: This determines the state / province that is loaded by default on the checkout screen for customers that do not have an address stored in their account.', 'pdd' ) . '</p>' .
+			'<p>' . __( '<strong>Prices Entered with Tax</strong>: if enabled, this means that the price entered on the product edit screens is the total amount the customer will pay after taxes. For example, if enabled and the price of a product is $20, the customer will pay 20$ at checkout. The exact amount charged in tax will be calculated automatically.', 'pdd' ) . '</p>' .
+			'<p>' . __( '<strong>Display Tax Rate on Prices</strong>: when enabled, the amount the customer is expected to pay in tax will be displayed below purchase buttons.', 'pdd' ) . '</p>' .
+			'<p>' . __( '<strong>Display During Checkout</strong>: This determines whether prices are shown with taxes or without taxes on checkout. If set to Including Tax, a $10 product with a 10% tax will be shown as $11.', 'pdd' ) . '</p>' .
+			'<p>' . __( '<strong>Calculate Tax After Discounts</strong>: If enabled, this option will make it so that tax is calucated on the after-discount amount. If a purchase of $20 is made and a 20% discount is applied, tax will be calcuated off of $16 instead of $20.', 'pdd' ) . '</p>' .
+			'<p>' . __( '<strong>Additional Tax Rates</strong>: This section lets you add tax rates for specific countries and/or states/provinces in those countries.', 'pdd' ) . '</p>'
 	) );
 
 	$screen->add_help_tab( array(
-		'id'		=> 'edd-settings-extensions',
-		'title'		=> __( 'Extensions', 'edd' ),
-		'content'	=> '<p>' . __( 'This screen provides access to settings added by most Easy Digital Downloads extensions.', 'edd' ) . '</p>'
+		'id'		=> 'pdd-settings-extensions',
+		'title'		=> __( 'Extensions', 'pdd' ),
+		'content'	=> '<p>' . __( 'This screen provides access to settings added by most Easy Digital Downloads extensions.', 'pdd' ) . '</p>'
 	) );
 
 	$screen->add_help_tab( array(
-		'id'	    => 'edd-settings-misc',
-		'title'	    => __( 'Miscellaneous', 'edd' ),
+		'id'	    => 'pdd-settings-misc',
+		'title'	    => __( 'Miscellaneous', 'pdd' ),
 		'content'	=>
-			'<p>' . __( 'This screen provides other miscellaneous options such as disabling jQuery, allowing guest checkout, and configuring your terms of service.', 'edd' ) . '</p>' .
-			'<p>' . __( 'A description of all the options are provided beside their input boxes.', 'edd' ) . '</p>'
+			'<p>' . __( 'This screen provides other miscellaneous options such as disabling jQuery, allowing guest checkout, and configuring your terms of service.', 'pdd' ) . '</p>' .
+			'<p>' . __( 'A description of all the options are provided beside their input boxes.', 'pdd' ) . '</p>'
 	) );
 
-	do_action( 'edd_settings_contextual_help', $screen );
+	do_action( 'pdd_settings_contextual_help', $screen );
 }
-add_action( 'load-download_page_edd-settings', 'edd_settings_contextual_help' );
+add_action( 'load-download_page_pdd-settings', 'pdd_settings_contextual_help' );

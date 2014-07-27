@@ -2,7 +2,7 @@
 /**
  * Customer Reports Table Class
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -18,13 +18,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Customer_Reports_Table Class
+ * PDD_Customer_Reports_Table Class
  *
  * Renders the Customer Reports table
  *
  * @since 1.5
  */
-class EDD_Customer_Reports_Table extends WP_List_Table {
+class PDD_Customer_Reports_Table extends WP_List_Table {
 
 	/**
 	 * Number of items per page
@@ -61,8 +61,8 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => __( 'Customer', 'edd' ),     // Singular name of the listed records
-			'plural'    => __( 'Customers', 'edd' ),    // Plural name of the listed records
+			'singular'  => __( 'Customer', 'pdd' ),     // Singular name of the listed records
+			'plural'    => __( 'Customers', 'pdd' ),    // Plural name of the listed records
 			'ajax'      => false             			// Does this table support ajax?
 		) );
 
@@ -110,18 +110,18 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 		switch ( $column_name ) {
 			case 'name' :
 				return '<a href="' .
-						admin_url( '/edit.php?post_type=download&page=edd-payment-history&user=' . urlencode( $item['email'] )
+						admin_url( '/edit.php?post_type=download&page=pdd-payment-history&user=' . urlencode( $item['email'] )
 					) . '">' . esc_html( $item[ $column_name ] ) . '</a>';
 
 			case 'amount_spent' :
-				return edd_currency_filter( edd_format_amount( $item[ $column_name ] ) );
+				return pdd_currency_filter( pdd_format_amount( $item[ $column_name ] ) );
 
 			case 'file_downloads' :
-					return '<a href="' . admin_url( '/edit.php?post_type=download&page=edd-reports&tab=logs&user=' . urlencode( ! empty( $item['ID'] ) ? $item['ID'] : $item['email'] ) ) . '" target="_blank">' . __( 'View download log', 'edd' ) . '</a>';
+					return '<a href="' . admin_url( '/edit.php?post_type=download&page=pdd-reports&tab=logs&user=' . urlencode( ! empty( $item['ID'] ) ? $item['ID'] : $item['email'] ) ) . '" target="_blank">' . __( 'View download log', 'pdd' ) . '</a>';
 
 			default:
 				$value = isset( $item[ $column_name ] ) ? $item[ $column_name ] : null;
-				return apply_filters( 'edd_report_column_' . $column_name, $value, $item['ID'] );
+				return apply_filters( 'pdd_report_column_' . $column_name, $value, $item['ID'] );
 		}
 	}
 
@@ -134,14 +134,14 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'     		=> __( 'Name', 'edd' ),
-			'email'     	=> __( 'Email', 'edd' ),
-			'num_purchases' => __( 'Purchases', 'edd' ),
-			'amount_spent'  => __( 'Total Spent', 'edd' ),
-			'file_downloads'=> __( 'Files Downloaded', 'edd' )
+			'name'     		=> __( 'Name', 'pdd' ),
+			'email'     	=> __( 'Email', 'pdd' ),
+			'num_purchases' => __( 'Purchases', 'pdd' ),
+			'amount_spent'  => __( 'Total Spent', 'pdd' ),
+			'file_downloads'=> __( 'Files Downloaded', 'pdd' )
 		);
 
-		return apply_filters( 'edd_report_customer_columns', $columns );
+		return apply_filters( 'pdd_report_customer_columns', $columns );
 	}
 
 	/**
@@ -153,7 +153,7 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 	 */
 	public function bulk_actions() {
 		// These aren't really bulk actions but this outputs the markup in the right place
-		edd_report_views();
+		pdd_report_views();
 	}
 
 	/**
@@ -194,7 +194,7 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 		$paged  = $this->get_paged();
 		$offset = $this->per_page * ( $paged - 1 );
 		$search = $this->get_search();
-		$where  = "WHERE meta_key = '_edd_payment_user_email'";
+		$where  = "WHERE meta_key = '_pdd_payment_user_email'";
 
 		if ( $search ) {
 			$where .= " AND meta_value LIKE '%$search%'";
@@ -217,11 +217,11 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 					$user = $customer_email;
 				}
 
-				$stats   = edd_get_purchase_stats_by_user( $user );
+				$stats   = pdd_get_purchase_stats_by_user( $user );
 
 				$data[] = array(
 					'ID' 			=> $user_id,
-					'name' 			=> $wp_user ? $wp_user->display_name : __( 'Guest', 'edd' ),
+					'name' 			=> $wp_user ? $wp_user->display_name : __( 'Guest', 'pdd' ),
 					'email' 		=> $customer_email,
 					'num_purchases'	=> $stats['purchases'],
 					'amount_spent'	=> $stats['total_spent']
@@ -237,10 +237,10 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @uses EDD_Customer_Reports_Table::get_columns()
+	 * @uses PDD_Customer_Reports_Table::get_columns()
 	 * @uses WP_List_Table::get_sortable_columns()
-	 * @uses EDD_Customer_Reports_Table::get_pagenum()
-	 * @uses EDD_Customer_Reports_Table::get_total_customers()
+	 * @uses PDD_Customer_Reports_Table::get_pagenum()
+	 * @uses PDD_Customer_Reports_Table::get_total_customers()
 	 * @return void
 	 */
 	public function prepare_items() {
@@ -254,7 +254,7 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 
 		$this->items = $this->reports_data();
 
-		$this->total = edd_count_total_customers();
+		$this->total = pdd_count_total_customers();
 
 		$this->set_pagination_args( array(
 			'total_items' => $this->count,                  	// WE have to calculate the total number of items

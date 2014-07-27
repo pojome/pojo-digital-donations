@@ -11,12 +11,12 @@
  * {sitename}
  *
  *
- * To replace tags in content, use: edd_do_email_tags( $content, payment_id );
+ * To replace tags in content, use: pdd_do_email_tags( $content, payment_id );
  *
- * To add tags, use: edd_add_email_tag( $tag, $description, $func ). Be sure to wrap edd_add_email_tag()
- * in a function hooked to the 'edd_email_tags' action
+ * To add tags, use: pdd_add_email_tag( $tag, $description, $func ). Be sure to wrap pdd_add_email_tag()
+ * in a function hooked to the 'pdd_email_tags' action
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Emails
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -27,7 +27,7 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class EDD_Email_Template_Tags {
+class PDD_Email_Template_Tags {
 
 	/**
 	 * Container for storing all tags
@@ -123,7 +123,7 @@ class EDD_Email_Template_Tags {
 	}
 
 	/**
-	 * Do a specific tag, this function should not be used. Please use edd_do_email_tags instead.
+	 * Do a specific tag, this function should not be used. Please use pdd_do_email_tags instead.
 	 *
 	 * @since 1.9
 	 *
@@ -154,8 +154,8 @@ class EDD_Email_Template_Tags {
  * @param string   $tag  Email tag to be replace in email
  * @param callable $func Hook to run when email tag is found
  */
-function edd_add_email_tag( $tag, $description, $func ) {
-	EDD()->email_tags->add( $tag, $description, $func );
+function pdd_add_email_tag( $tag, $description, $func ) {
+	PDD()->email_tags->add( $tag, $description, $func );
 }
 
 /**
@@ -165,8 +165,8 @@ function edd_add_email_tag( $tag, $description, $func ) {
  *
  * @param string $tag Email tag to remove hook from
  */
-function edd_remove_email_tag( $tag ) {
-	EDD()->email_tags->remove( $tag );
+function pdd_remove_email_tag( $tag ) {
+	PDD()->email_tags->remove( $tag );
 }
 
 /**
@@ -178,8 +178,8 @@ function edd_remove_email_tag( $tag ) {
  *
  * @return bool
  */
-function edd_email_tag_exists( $tag ) {
-	return EDD()->email_tags->email_tag_exists( $tag );
+function pdd_email_tag_exists( $tag ) {
+	return PDD()->email_tags->email_tag_exists( $tag );
 }
 
 /**
@@ -189,8 +189,8 @@ function edd_email_tag_exists( $tag ) {
  *
  * @return array
  */
-function edd_get_email_tags() {
-	return EDD()->email_tags->get_tags();
+function pdd_get_email_tags() {
+	return PDD()->email_tags->get_tags();
 }
 
 /**
@@ -200,12 +200,12 @@ function edd_get_email_tags() {
  *
  * @return string
  */
-function edd_get_emails_tags_list() {
+function pdd_get_emails_tags_list() {
 	// The list
 	$list = '';
 
 	// Get all tags
-	$email_tags = edd_get_email_tags();
+	$email_tags = pdd_get_email_tags();
 
 	// Check
 	if ( count( $email_tags ) > 0 ) {
@@ -234,13 +234,13 @@ function edd_get_emails_tags_list() {
  *
  * @return string Content with email tags filtered out.
  */
-function edd_do_email_tags( $content, $payment_id ) {
+function pdd_do_email_tags( $content, $payment_id ) {
 
 	// Replace all tags
-	$content = EDD()->email_tags->do_tags( $content, $payment_id );
+	$content = PDD()->email_tags->do_tags( $content, $payment_id );
 
 	// Maintaining backwards compatibility
-	$content = apply_filters( 'edd_email_template_tags', $content, edd_get_payment_meta( $payment_id ), $payment_id );
+	$content = apply_filters( 'pdd_email_template_tags', $content, pdd_get_payment_meta( $payment_id ), $payment_id );
 
 	// Return content
 	return $content;
@@ -251,117 +251,117 @@ function edd_do_email_tags( $content, $payment_id ) {
  *
  * @since 1.9
  */
-function edd_load_email_tags() {
-	do_action( 'edd_add_email_tags' );
+function pdd_load_email_tags() {
+	do_action( 'pdd_add_email_tags' );
 }
-add_action( 'init', 'edd_load_email_tags', -999 );
+add_action( 'init', 'pdd_load_email_tags', -999 );
 
 /**
- * Add default EDD email template tags
+ * Add default PDD email template tags
  *
  * @since 1.9
  */
-function edd_setup_email_tags() {
+function pdd_setup_email_tags() {
 
 	// Setup default tags array
 	$email_tags = array(
 		array(
 			'tag'         => 'download_list',
-			'description' => __( 'A list of download links for each download purchased', 'edd' ),
-			'function'    => 'edd_email_tag_download_list'
+			'description' => __( 'A list of download links for each download purchased', 'pdd' ),
+			'function'    => 'pdd_email_tag_download_list'
 		),
 		array(
 			'tag'         => 'file_urls',
-			'description' => __( 'A plain-text list of download URLs for each download purchased', 'edd' ),
-			'function'    => 'edd_email_tag_file_urls'
+			'description' => __( 'A plain-text list of download URLs for each download purchased', 'pdd' ),
+			'function'    => 'pdd_email_tag_file_urls'
 		),
 		array(
 			'tag'         => 'name',
-			'description' => __( "The buyer's first name", 'edd' ),
-			'function'    => 'edd_email_tag_first_name'
+			'description' => __( "The buyer's first name", 'pdd' ),
+			'function'    => 'pdd_email_tag_first_name'
 		),
 		array(
 			'tag'         => 'fullname',
-			'description' => __( "The buyer's full name, first and last", 'edd' ),
-			'function'    => 'edd_email_tag_fullname'
+			'description' => __( "The buyer's full name, first and last", 'pdd' ),
+			'function'    => 'pdd_email_tag_fullname'
 		),
 		array(
 			'tag'         => 'username',
-			'description' => __( "The buyer's user name on the site, if they registered an account", 'edd' ),
-			'function'    => 'edd_email_tag_username'
+			'description' => __( "The buyer's user name on the site, if they registered an account", 'pdd' ),
+			'function'    => 'pdd_email_tag_username'
 		),
 		array(
 			'tag'         => 'user_email',
-			'description' => __( "The buyer's email address", 'edd' ),
-			'function'    => 'edd_email_tag_user_email'
+			'description' => __( "The buyer's email address", 'pdd' ),
+			'function'    => 'pdd_email_tag_user_email'
 		),
 		array(
 			'tag'         => 'billing_address',
-			'description' => __( 'The buyer\'s billing address', 'edd' ),
-			'function'    => 'edd_email_tag_billing_address'
+			'description' => __( 'The buyer\'s billing address', 'pdd' ),
+			'function'    => 'pdd_email_tag_billing_address'
 		),
 		array(
 			'tag'         => 'date',
-			'description' => __( 'The date of the purchase', 'edd' ),
-			'function'    => 'edd_email_tag_date'
+			'description' => __( 'The date of the purchase', 'pdd' ),
+			'function'    => 'pdd_email_tag_date'
 		),
 		array(
 			'tag'         => 'subtotal',
-			'description' => __( 'The price of the purchase before taxes', 'edd' ),
-			'function'    => 'edd_email_tag_subtotal'
+			'description' => __( 'The price of the purchase before taxes', 'pdd' ),
+			'function'    => 'pdd_email_tag_subtotal'
 		),
 		array(
 			'tag'         => 'tax',
-			'description' => __( 'The taxed amount of the purchase', 'edd' ),
-			'function'    => 'edd_email_tag_tax'
+			'description' => __( 'The taxed amount of the purchase', 'pdd' ),
+			'function'    => 'pdd_email_tag_tax'
 		),
 		array(
 			'tag'         => 'price',
-			'description' => __( 'The total price of the purchase', 'edd' ),
-			'function'    => 'edd_email_tag_price'
+			'description' => __( 'The total price of the purchase', 'pdd' ),
+			'function'    => 'pdd_email_tag_price'
 		),
 		array(
 			'tag'         => 'payment_id',
-			'description' => __( 'The unique ID number for this purchase', 'edd' ),
-			'function'    => 'edd_email_tag_payment_id'
+			'description' => __( 'The unique ID number for this purchase', 'pdd' ),
+			'function'    => 'pdd_email_tag_payment_id'
 		),
 		array(
 			'tag'         => 'receipt_id',
-			'description' => __( 'The unique ID number for this purchase receipt', 'edd' ),
-			'function'    => 'edd_email_tag_receipt_id'
+			'description' => __( 'The unique ID number for this purchase receipt', 'pdd' ),
+			'function'    => 'pdd_email_tag_receipt_id'
 		),
 		array(
 			'tag'         => 'payment_method',
-			'description' => __( 'The method of payment used for this purchase', 'edd' ),
-			'function'    => 'edd_email_tag_payment_method'
+			'description' => __( 'The method of payment used for this purchase', 'pdd' ),
+			'function'    => 'pdd_email_tag_payment_method'
 		),
 		array(
 			'tag'         => 'sitename',
-			'description' => __( 'Your site name', 'edd' ),
-			'function'    => 'edd_email_tag_sitename'
+			'description' => __( 'Your site name', 'pdd' ),
+			'function'    => 'pdd_email_tag_sitename'
 		),
 		array(
 			'tag'         => 'receipt_link',
-			'description' => __( 'Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.', 'edd' ),
-			'function'    => 'edd_email_tag_receipt_link'
+			'description' => __( 'Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.', 'pdd' ),
+			'function'    => 'pdd_email_tag_receipt_link'
 		),
 		array(
 			'tag'         => 'discount_codes',
-			'description' => __( 'Adds a list of any discount codes applied to this purchase', 'edd' ),
-			'function'    => 'edd_email_tag_discount_codes'
+			'description' => __( 'Adds a list of any discount codes applied to this purchase', 'pdd' ),
+			'function'    => 'pdd_email_tag_discount_codes'
 		),
 	);
 
-	// Apply edd_email_tags filter
-	$email_tags = apply_filters( 'edd_email_tags', $email_tags );
+	// Apply pdd_email_tags filter
+	$email_tags = apply_filters( 'pdd_email_tags', $email_tags );
 
 	// Add email tags
 	foreach ( $email_tags as $email_tag ) {
-		edd_add_email_tag( $email_tag['tag'], $email_tag['description'], $email_tag['function'] );
+		pdd_add_email_tag( $email_tag['tag'], $email_tag['description'], $email_tag['function'] );
 	}
 
 }
-add_action( 'edd_add_email_tags', 'edd_setup_email_tags' );
+add_action( 'pdd_add_email_tags', 'pdd_setup_email_tags' );
 
 /**
  * Email template tag: download_list
@@ -371,63 +371,63 @@ add_action( 'edd_add_email_tags', 'edd_setup_email_tags' );
  *
  * @return string download_list
  */
-function edd_email_tag_download_list( $payment_id ) {
+function pdd_email_tag_download_list( $payment_id ) {
 
-	$payment_data  = edd_get_payment_meta( $payment_id );
+	$payment_data  = pdd_get_payment_meta( $payment_id );
 	$download_list = '<ul>';
-	$cart_items    = edd_get_payment_meta_cart_details( $payment_id );
-	$email         = edd_get_payment_user_email( $payment_id );
+	$cart_items    = pdd_get_payment_meta_cart_details( $payment_id );
+	$email         = pdd_get_payment_user_email( $payment_id );
 
 	if ( $cart_items ) {
-		$show_names = apply_filters( 'edd_email_show_names', true );
+		$show_names = apply_filters( 'pdd_email_show_names', true );
 
 		foreach ( $cart_items as $item ) {
 
-			if ( edd_use_skus() ) {
-				$sku = edd_get_download_sku( $item['id'] );
+			if ( pdd_use_skus() ) {
+				$sku = pdd_get_download_sku( $item['id'] );
 			}
 
-			$price_id = edd_get_cart_item_price_id( $item );
+			$price_id = pdd_get_cart_item_price_id( $item );
 
 			if ( $show_names ) {
 
 				$title = get_the_title( $item['id'] );
 
 				if ( ! empty( $sku ) ) {
-					$title .= "&nbsp;&ndash;&nbsp;" . __( 'SKU', 'edd' ) . ': ' . $sku;
+					$title .= "&nbsp;&ndash;&nbsp;" . __( 'SKU', 'pdd' ) . ': ' . $sku;
 				}
 
 				if ( $price_id !== false ) {
-					$title .= "&nbsp;&ndash;&nbsp;" . edd_get_price_option_name( $item['id'], $price_id );
+					$title .= "&nbsp;&ndash;&nbsp;" . pdd_get_price_option_name( $item['id'], $price_id );
 				}
 
-				$download_list .= '<li>' . apply_filters( 'edd_email_receipt_download_title', $title, $item, $price_id, $payment_id ) . '<br/>';
+				$download_list .= '<li>' . apply_filters( 'pdd_email_receipt_download_title', $title, $item, $price_id, $payment_id ) . '<br/>';
 				$download_list .= '<ul>';
 			}
 
-			$files = edd_get_download_files( $item['id'], $price_id );
+			$files = pdd_get_download_files( $item['id'], $price_id );
 
 			if ( $files ) {
 				foreach ( $files as $filekey => $file ) {
 					$download_list .= '<li>';
-					$file_url = edd_get_download_file_url( $payment_data['key'], $email, $filekey, $item['id'], $price_id );
-					$download_list .= '<a href="' . esc_url( $file_url ) . '">' . edd_get_file_name( $file ) . '</a>';
+					$file_url = pdd_get_download_file_url( $payment_data['key'], $email, $filekey, $item['id'], $price_id );
+					$download_list .= '<a href="' . esc_url( $file_url ) . '">' . pdd_get_file_name( $file ) . '</a>';
 					$download_list .= '</li>';
 				}
 			}
-			elseif ( edd_is_bundled_product( $item['id'] ) ) {
+			elseif ( pdd_is_bundled_product( $item['id'] ) ) {
 
-				$bundled_products = edd_get_bundled_products( $item['id'] );
+				$bundled_products = pdd_get_bundled_products( $item['id'] );
 
 				foreach ( $bundled_products as $bundle_item ) {
 
-					$download_list .= '<li class="edd_bundled_product"><strong>' . get_the_title( $bundle_item ) . '</strong></li>';
+					$download_list .= '<li class="pdd_bundled_product"><strong>' . get_the_title( $bundle_item ) . '</strong></li>';
 
-					$files = edd_get_download_files( $bundle_item );
+					$files = pdd_get_download_files( $bundle_item );
 
 					foreach ( $files as $filekey => $file ) {
 						$download_list .= '<li>';
-						$file_url = edd_get_download_file_url( $payment_data['key'], $email, $filekey, $bundle_item, $price_id );
+						$file_url = pdd_get_download_file_url( $payment_data['key'], $email, $filekey, $bundle_item, $price_id );
 						$download_list .= '<a href="' . esc_url( $file_url ) . '">' . $file['name'] . '</a>';
 						$download_list .= '</li>';
 					}
@@ -438,8 +438,8 @@ function edd_email_tag_download_list( $payment_id ) {
 				$download_list .= '</ul>';
 			}
 
-			if ( '' != edd_get_product_notes( $item['id'] ) ) {
-				$download_list .= ' &mdash; <small>' . edd_get_product_notes( $item['id'] ) . '</small>';
+			if ( '' != pdd_get_product_notes( $item['id'] ) ) {
+				$download_list .= ' &mdash; <small>' . pdd_get_product_notes( $item['id'] ) . '</small>';
 			}
 
 
@@ -461,34 +461,34 @@ function edd_email_tag_download_list( $payment_id ) {
  *
  * @return string $file_urls
  */
-function edd_email_tag_file_urls( $payment_id ) {
+function pdd_email_tag_file_urls( $payment_id ) {
 
-	$payment_data = edd_get_payment_meta( $payment_id );
+	$payment_data = pdd_get_payment_meta( $payment_id );
 	$file_urls    = '';
-	$cart_items   = edd_get_payment_meta_cart_details( $payment_id );
-	$email        = edd_get_payment_user_email( $payment_id );
+	$cart_items   = pdd_get_payment_meta_cart_details( $payment_id );
+	$email        = pdd_get_payment_user_email( $payment_id );
 
 	foreach ( $cart_items as $item ) {
 
-		$price_id = edd_get_cart_item_price_id( $item );
-		$files    = edd_get_download_files( $item['id'], $price_id );
+		$price_id = pdd_get_cart_item_price_id( $item );
+		$files    = pdd_get_download_files( $item['id'], $price_id );
 
 		if ( $files ) {
 			foreach ( $files as $filekey => $file ) {
-				$file_url = edd_get_download_file_url( $payment_data['key'], $email, $filekey, $item['id'], $price_id );
+				$file_url = pdd_get_download_file_url( $payment_data['key'], $email, $filekey, $item['id'], $price_id );
 
 				$file_urls .= esc_html( $file_url ) . '<br/>';
 			}
 		}
-		elseif ( edd_is_bundled_product( $item['id'] ) ) {
+		elseif ( pdd_is_bundled_product( $item['id'] ) ) {
 
-			$bundled_products = edd_get_bundled_products( $item['id'] );
+			$bundled_products = pdd_get_bundled_products( $item['id'] );
 
 			foreach ( $bundled_products as $bundle_item ) {
 
-				$files = edd_get_download_files( $bundle_item );
+				$files = pdd_get_download_files( $bundle_item );
 				foreach ( $files as $filekey => $file ) {
-					$file_url = edd_get_download_file_url( $payment_data['key'], $email, $filekey, $bundle_item, $price_id );
+					$file_url = pdd_get_download_file_url( $payment_data['key'], $email, $filekey, $bundle_item, $price_id );
 					$file_urls .= esc_html( $file_url ) . '<br/>';
 				}
 
@@ -508,9 +508,9 @@ function edd_email_tag_file_urls( $payment_id ) {
  *
  * @return string name
  */
-function edd_email_tag_first_name( $payment_id ) {
-	$payment_data = edd_get_payment_meta( $payment_id );
-	$email_name   = edd_get_email_names( $payment_data['user_info'] );
+function pdd_email_tag_first_name( $payment_id ) {
+	$payment_data = pdd_get_payment_meta( $payment_id );
+	$email_name   = pdd_get_email_names( $payment_data['user_info'] );
 	return $email_name['name'];
 }
 
@@ -522,9 +522,9 @@ function edd_email_tag_first_name( $payment_id ) {
  *
  * @return string fullname
  */
-function edd_email_tag_fullname( $payment_id ) {
-	$payment_data = edd_get_payment_meta( $payment_id );
-	$email_name   = edd_get_email_names( $payment_data['user_info'] );
+function pdd_email_tag_fullname( $payment_id ) {
+	$payment_data = pdd_get_payment_meta( $payment_id );
+	$email_name   = pdd_get_email_names( $payment_data['user_info'] );
 	return $email_name['fullname'];
 }
 
@@ -536,9 +536,9 @@ function edd_email_tag_fullname( $payment_id ) {
  *
  * @return string username
  */
-function edd_email_tag_username( $payment_id ) {
-	$payment_data = edd_get_payment_meta( $payment_id );
-	$email_name   = edd_get_email_names( $payment_data['user_info'] );
+function pdd_email_tag_username( $payment_id ) {
+	$payment_data = pdd_get_payment_meta( $payment_id );
+	$email_name   = pdd_get_email_names( $payment_data['user_info'] );
 	return $email_name['username'];
 }
 
@@ -550,8 +550,8 @@ function edd_email_tag_username( $payment_id ) {
  *
  * @return string user_email
  */
-function edd_email_tag_user_email( $payment_id ) {
-	return edd_get_payment_user_email( $payment_id );
+function pdd_email_tag_user_email( $payment_id ) {
+	return pdd_get_payment_user_email( $payment_id );
 }
 
 /**
@@ -562,9 +562,9 @@ function edd_email_tag_user_email( $payment_id ) {
  *
  * @return string billing_address
  */
-function edd_email_tag_billing_address( $payment_id ) {
+function pdd_email_tag_billing_address( $payment_id ) {
 
-	$user_info    = edd_get_payment_meta_user_info( $payment_id );
+	$user_info    = pdd_get_payment_meta_user_info( $payment_id );
 	$user_address = ! empty( $user_info['address'] ) ? $user_info['address'] : array( 'line1' => '', 'line2' => '', 'city' => '', 'country' => '', 'state' => '', 'zip' => '' );
 
 	$return = $user_address['line1'] . "\n";
@@ -585,8 +585,8 @@ function edd_email_tag_billing_address( $payment_id ) {
  *
  * @return string date
  */
-function edd_email_tag_date( $payment_id ) {
-	$payment_data = edd_get_payment_meta( $payment_id );
+function pdd_email_tag_date( $payment_id ) {
+	$payment_data = pdd_get_payment_meta( $payment_id );
 	return date_i18n( get_option( 'date_format' ), strtotime( $payment_data['date'] ) );
 }
 
@@ -598,8 +598,8 @@ function edd_email_tag_date( $payment_id ) {
  *
  * @return string subtotal
  */
-function edd_email_tag_subtotal( $payment_id ) {
-	$subtotal = edd_currency_filter( edd_format_amount( edd_get_payment_subtotal( $payment_id ) ) );
+function pdd_email_tag_subtotal( $payment_id ) {
+	$subtotal = pdd_currency_filter( pdd_format_amount( pdd_get_payment_subtotal( $payment_id ) ) );
 	return html_entity_decode( $subtotal, ENT_COMPAT, 'UTF-8' );
 }
 
@@ -611,8 +611,8 @@ function edd_email_tag_subtotal( $payment_id ) {
  *
  * @return string tax
  */
-function edd_email_tag_tax( $payment_id ) {
-	$tax = edd_currency_filter( edd_format_amount( edd_get_payment_tax( $payment_id ) ) );
+function pdd_email_tag_tax( $payment_id ) {
+	$tax = pdd_currency_filter( pdd_format_amount( pdd_get_payment_tax( $payment_id ) ) );
 	return html_entity_decode( $tax, ENT_COMPAT, 'UTF-8' );
 }
 
@@ -624,8 +624,8 @@ function edd_email_tag_tax( $payment_id ) {
  *
  * @return string price
  */
-function edd_email_tag_price( $payment_id ) {
-	$price = edd_currency_filter( edd_format_amount( edd_get_payment_amount( $payment_id ) ) );
+function pdd_email_tag_price( $payment_id ) {
+	$price = pdd_currency_filter( pdd_format_amount( pdd_get_payment_amount( $payment_id ) ) );
 	return html_entity_decode( $price, ENT_COMPAT, 'UTF-8' );
 }
 
@@ -637,8 +637,8 @@ function edd_email_tag_price( $payment_id ) {
  *
  * @return int payment_id
  */
-function edd_email_tag_payment_id( $payment_id ) {
-	return edd_get_payment_number( $payment_id );
+function pdd_email_tag_payment_id( $payment_id ) {
+	return pdd_get_payment_number( $payment_id );
 }
 
 /**
@@ -649,8 +649,8 @@ function edd_email_tag_payment_id( $payment_id ) {
  *
  * @return string receipt_id
  */
-function edd_email_tag_receipt_id( $payment_id ) {
-	return edd_get_payment_key( $payment_id );
+function pdd_email_tag_receipt_id( $payment_id ) {
+	return pdd_get_payment_key( $payment_id );
 }
 
 /**
@@ -661,8 +661,8 @@ function edd_email_tag_receipt_id( $payment_id ) {
  *
  * @return string gateway
  */
-function edd_email_tag_payment_method( $payment_id ) {
-	return edd_get_gateway_checkout_label( edd_get_payment_gateway( $payment_id ) );
+function pdd_email_tag_payment_method( $payment_id ) {
+	return pdd_get_gateway_checkout_label( pdd_get_payment_gateway( $payment_id ) );
 }
 
 /**
@@ -673,7 +673,7 @@ function edd_email_tag_payment_method( $payment_id ) {
  *
  * @return string sitename
  */
-function edd_email_tag_sitename( $payment_id ) {
+function pdd_email_tag_sitename( $payment_id ) {
 	return get_bloginfo( 'name' );
 }
 
@@ -685,8 +685,8 @@ function edd_email_tag_sitename( $payment_id ) {
  *
  * @return string receipt_link
  */
-function edd_email_tag_receipt_link( $payment_id ) {
-	return sprintf( __( '%1$sView it in your browser.%2$s', 'edd' ), '<a href="' . add_query_arg( array( 'payment_key' => edd_get_payment_key( $payment_id ), 'edd_action' => 'view_receipt' ), home_url() ) . '">', '</a>' );
+function pdd_email_tag_receipt_link( $payment_id ) {
+	return sprintf( __( '%1$sView it in your browser.%2$s', 'pdd' ), '<a href="' . add_query_arg( array( 'payment_key' => pdd_get_payment_key( $payment_id ), 'pdd_action' => 'view_receipt' ), home_url() ) . '">', '</a>' );
 }
 
 /**
@@ -697,8 +697,8 @@ function edd_email_tag_receipt_link( $payment_id ) {
  * @since 2.0
  * @return string $discount_codes
  */
-function edd_email_tag_discount_codes( $payment_id ) {
-	$user_info = edd_get_payment_meta_user_info( $payment_id );
+function pdd_email_tag_discount_codes( $payment_id ) {
+	$user_info = pdd_get_payment_meta_user_info( $payment_id );
 
 	$discount_codes = '';
 

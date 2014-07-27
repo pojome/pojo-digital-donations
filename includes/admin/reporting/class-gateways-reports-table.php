@@ -2,7 +2,7 @@
 /**
  * Gateways Reports Table Class
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -18,13 +18,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Gateawy_Reports_Table Class
+ * PDD_Gateawy_Reports_Table Class
  *
  * Renders the Download Reports table
  *
  * @since 1.5
  */
-class EDD_Gateawy_Reports_Table extends WP_List_Table {
+class PDD_Gateawy_Reports_Table extends WP_List_Table {
 
 	/**
 	 * @var int Number of items per page
@@ -44,8 +44,8 @@ class EDD_Gateawy_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => edd_get_label_singular(),    // Singular name of the listed records
-			'plural'    => edd_get_label_plural(),    	// Plural name of the listed records
+			'singular'  => pdd_get_label_singular(),    // Singular name of the listed records
+			'plural'    => pdd_get_label_plural(),    	// Plural name of the listed records
 			'ajax'      => false             			// Does this table support ajax?
 		) );
 
@@ -78,10 +78,10 @@ class EDD_Gateawy_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'label'          => __( 'Gateway', 'edd' ),
-			'complete_sales' => __( 'Complete Sales', 'edd' ),
-			'pending_sales'  => __( 'Pending / Failed Sales', 'edd' ),
-			'total_sales'    => __( 'Total Sales', 'edd' )
+			'label'          => __( 'Gateway', 'pdd' ),
+			'complete_sales' => __( 'Complete Sales', 'pdd' ),
+			'pending_sales'  => __( 'Pending / Failed Sales', 'pdd' ),
+			'total_sales'    => __( 'Total Sales', 'pdd' )
 		);
 
 		return $columns;
@@ -109,7 +109,7 @@ class EDD_Gateawy_Reports_Table extends WP_List_Table {
 	 */
 	public function bulk_actions() {
 		// These aren't really bulk actions but this outputs the markup in the right place
-		edd_report_views();
+		pdd_report_views();
 	}
 
 
@@ -123,19 +123,19 @@ class EDD_Gateawy_Reports_Table extends WP_List_Table {
 	public function reports_data() {
 
 		$reports_data = array();
-		$gateways     = edd_get_payment_gateways();
+		$gateways     = pdd_get_payment_gateways();
 
 		foreach ( $gateways as $gateway_id => $gateway ) {
 
-			$complete_count = edd_count_sales_by_gateway( $gateway_id, 'publish' );
-			$pending_count  = edd_count_sales_by_gateway( $gateway_id, array( 'pending', 'failed' ) );
+			$complete_count = pdd_count_sales_by_gateway( $gateway_id, 'publish' );
+			$pending_count  = pdd_count_sales_by_gateway( $gateway_id, array( 'pending', 'failed' ) );
 
 			$reports_data[] = array(
 				'ID'             => $gateway_id,
 				'label'          => $gateway['admin_label'],
-				'complete_sales' => edd_format_amount( $complete_count, false ),
-				'pending_sales'  => edd_format_amount( $pending_count, false ),
-				'total_sales'    => edd_format_amount( $complete_count + $pending_count, false )
+				'complete_sales' => pdd_format_amount( $complete_count, false ),
+				'pending_sales'  => pdd_format_amount( $pending_count, false ),
+				'total_sales'    => pdd_format_amount( $complete_count + $pending_count, false )
 			);
 		}
 
@@ -148,9 +148,9 @@ class EDD_Gateawy_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @uses EDD_Gateawy_Reports_Table::get_columns()
-	 * @uses EDD_Gateawy_Reports_Table::get_sortable_columns()
-	 * @uses EDD_Gateawy_Reports_Table::reports_data()
+	 * @uses PDD_Gateawy_Reports_Table::get_columns()
+	 * @uses PDD_Gateawy_Reports_Table::get_sortable_columns()
+	 * @uses PDD_Gateawy_Reports_Table::reports_data()
 	 * @return void
 	 */
 	public function prepare_items() {

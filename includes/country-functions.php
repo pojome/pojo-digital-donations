@@ -2,7 +2,7 @@
 /**
  * Country Functions
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Functions
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -19,10 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since 1.6
  * @return string $country The two letter country code for the shop's base country
  */
-function edd_get_shop_country() {
-	global $edd_options;
-	$country = isset( $edd_options['base_country'] ) ? $edd_options['base_country'] : 'US';
-	return apply_filters( 'edd_shop_country', $country );
+function pdd_get_shop_country() {
+	global $pdd_options;
+	$country = isset( $pdd_options['base_country'] ) ? $pdd_options['base_country'] : 'US';
+	return apply_filters( 'pdd_shop_country', $country );
 }
 
 /**
@@ -31,10 +31,10 @@ function edd_get_shop_country() {
  * @since 1.6
  * @return string $state The shop's base state name
  */
-function edd_get_shop_state() {
-	global $edd_options;
-	$state = isset( $edd_options['base_state'] ) ? $edd_options['base_state'] : false;
-	return apply_filters( 'edd_shop_state', $state );
+function pdd_get_shop_state() {
+	global $pdd_options;
+	$state = isset( $pdd_options['base_state'] ) ? $pdd_options['base_state'] : false;
+	return apply_filters( 'pdd_shop_state', $state );
 }
 
 /**
@@ -45,52 +45,52 @@ function edd_get_shop_state() {
  * @param null $country
  * @return mixed|void  A list of states for the shop's base country
  */
-function edd_get_shop_states( $country = null ) {
-	global $edd_options;
+function pdd_get_shop_states( $country = null ) {
+	global $pdd_options;
 
 	if( empty( $country ) )
-		$country = edd_get_shop_country();
+		$country = pdd_get_shop_country();
 
 	switch( $country ) :
 
 		case 'US' :
-			$states = edd_get_states_list();
+			$states = pdd_get_states_list();
 			break;
 		case 'CA' :
-			$states = edd_get_provinces_list();
+			$states = pdd_get_provinces_list();
 			break;
 		case 'AU' :
-			$states = edd_get_australian_states_list();
+			$states = pdd_get_australian_states_list();
 			break;
 		case 'BR' :
-			$states = edd_get_brazil_states_list();
+			$states = pdd_get_brazil_states_list();
 			break;
 		case 'CN' :
-			$states = edd_get_chinese_states_list();
+			$states = pdd_get_chinese_states_list();
 			break;
 		case 'HK' :
-			$states = edd_get_hong_kong_states_list();
+			$states = pdd_get_hong_kong_states_list();
 			break;
 		case 'HU' :
-			$states = edd_get_hungary_states_list();
+			$states = pdd_get_hungary_states_list();
 			break;
 		case 'ID' :
-			$states = edd_get_indonesian_states_list();
+			$states = pdd_get_indonesian_states_list();
 			break;
 		case 'IN' :
-			$states = edd_get_indian_states_list();
+			$states = pdd_get_indian_states_list();
 			break;
 		case 'MY' :
-			$states = edd_get_malaysian_states_list();
+			$states = pdd_get_malaysian_states_list();
 			break;
 		case 'NZ' :
-			$states = edd_get_new_zealand_states_list();
+			$states = pdd_get_new_zealand_states_list();
 			break;
 		case 'TH' :
-			$states = edd_get_thailand_states_list();
+			$states = pdd_get_thailand_states_list();
 			break;
 		case 'ZA' :
-			$states = edd_get_south_african_states_list();
+			$states = pdd_get_south_african_states_list();
 			break;
 		default :
 			$states = array();
@@ -98,7 +98,7 @@ function edd_get_shop_states( $country = null ) {
 
 	endswitch;
 
-	return apply_filters( 'edd_shop_states', $states );
+	return apply_filters( 'pdd_shop_states', $states );
 }
 
 
@@ -108,9 +108,9 @@ function edd_get_shop_states( $country = null ) {
  * @since 1.0
  * @return array $countries A list of the available countries
  */
-function edd_get_country_list() {
+function pdd_get_country_list() {
 	$countries = array(
-		'0'  => __( 'Choose', 'edd' ),
+		'0'  => __( 'Choose', 'pdd' ),
 		'US' => 'United States',
 		'CA' => 'Canada',
 		'GB' => 'United Kingdom',
@@ -357,7 +357,7 @@ function edd_get_country_list() {
 		'ZW' => 'Zimbabwe'
 	);
 
-	return apply_filters( 'edd_countries', $countries );
+	return apply_filters( 'pdd_countries', $countries );
 }
 
 /**
@@ -367,9 +367,9 @@ function edd_get_country_list() {
  * @since       1.2
  * @return      array
  */
-function edd_get_states_list() {
+function pdd_get_states_list() {
 	$states = array(
-		'0'  => __( 'Choose', 'edd' ),
+		'0'  => __( 'Choose', 'pdd' ),
 		'AL' => 'Alabama',
 		'AK' => 'Alaska',
 		'AZ' => 'Arizona',
@@ -438,7 +438,7 @@ function edd_get_states_list() {
 		'AP' => 'Armed Forces - Pacific'
 	);
 
-	return apply_filters( 'edd_us_states', $states );
+	return apply_filters( 'pdd_us_states', $states );
 }
 
 /**
@@ -448,9 +448,9 @@ function edd_get_states_list() {
  * @since       1.2
  * @return      array
  */
-function edd_get_provinces_list() {
+function pdd_get_provinces_list() {
 	$provinces = array(
-		'0'  => __( 'Choose', 'edd' ),
+		'0'  => __( 'Choose', 'pdd' ),
 		'AB' => 'Alberta',
 		'BC' => 'British Columbia',
 		'MB' => 'Manitoba',
@@ -466,7 +466,7 @@ function edd_get_provinces_list() {
 		'YT' => 'Yukon'
 	);
 
-	return apply_filters( 'edd_canada_provinces', $provinces );
+	return apply_filters( 'pdd_canada_provinces', $provinces );
 }
 
 /**
@@ -475,9 +475,9 @@ function edd_get_provinces_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_australian_states_list() {
+function pdd_get_australian_states_list() {
 	$states = array(
-		'0'   => __( 'Choose', 'edd' ),
+		'0'   => __( 'Choose', 'pdd' ),
 		'ACT' => 'Australian Capital Territory',
 		'NSW' => 'New South Wales',
 		'NT'  => 'Northern Territory',
@@ -488,7 +488,7 @@ function edd_get_australian_states_list() {
 		'WA'  => 'Western Australia'
 	);
 
-	return apply_filters( 'edd_australian_states', $states );
+	return apply_filters( 'pdd_australian_states', $states );
 }
 
 /**
@@ -497,9 +497,9 @@ function edd_get_australian_states_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_brazil_states_list() {
+function pdd_get_brazil_states_list() {
 	$states = array(
-		'0'  => __( 'Choose', 'edd' ),
+		'0'  => __( 'Choose', 'pdd' ),
 		'AC' => 'Acre',
 		'AL' => 'Alagoas',
 		'AP' => 'Amap&aacute;',
@@ -529,7 +529,7 @@ function edd_get_brazil_states_list() {
 		'TO' => 'Tocantins'
 	);
 
-	return apply_filters( 'edd_brazil_states', $states );
+	return apply_filters( 'pdd_brazil_states', $states );
 }
 
 /**
@@ -538,15 +538,15 @@ function edd_get_brazil_states_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_hong_kong_states_list() {
+function pdd_get_hong_kong_states_list() {
 	$states = array(
-		'0'               => __( 'Choose', 'edd' ),
+		'0'               => __( 'Choose', 'pdd' ),
 		'HONG KONG'       => 'Hong Kong Island',
 		'KOWLOON'         => 'Kowloon',
 		'NEW TERRITORIES' => 'New Territories'
 	);
 
-	return apply_filters( 'edd_hong_kong_states', $states );
+	return apply_filters( 'pdd_hong_kong_states', $states );
 }
 
 /**
@@ -555,9 +555,9 @@ function edd_get_hong_kong_states_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_hungary_states_list() {
+function pdd_get_hungary_states_list() {
 	$states = array(
-		'0'  => __( 'Choose', 'edd' ),
+		'0'  => __( 'Choose', 'pdd' ),
 		'BK' => 'Bács-Kiskun',
 		'BE' => 'Békés',
 		'BA' => 'Baranya',
@@ -580,7 +580,7 @@ function edd_get_hungary_states_list() {
 		'ZA' => 'Zala'
 	);
 
-	return apply_filters( 'edd_hungary_states', $states );
+	return apply_filters( 'pdd_hungary_states', $states );
 }
 
 /**
@@ -589,9 +589,9 @@ function edd_get_hungary_states_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_chinese_states_list() {
+function pdd_get_chinese_states_list() {
 	$states = array(
-		'0'    => __( 'Choose', 'edd' ),
+		'0'    => __( 'Choose', 'pdd' ),
 	    'CN1'  => 'Yunnan / &#20113;&#21335;',
 	    'CN2'  => 'Beijing / &#21271;&#20140;',
 	    'CN3'  => 'Tianjin / &#22825;&#27941;',
@@ -626,7 +626,7 @@ function edd_get_chinese_states_list() {
 	    'CN32' => 'Xinjiang / &#26032;&#30086;'
 	);
 
-	return apply_filters( 'edd_chinese_states', $states );
+	return apply_filters( 'pdd_chinese_states', $states );
 }
 
 /**
@@ -635,9 +635,9 @@ function edd_get_chinese_states_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_new_zealand_states_list() {
+function pdd_get_new_zealand_states_list() {
 	$states = array(
-		'0'  => __( 'Choose', 'edd' ),
+		'0'  => __( 'Choose', 'pdd' ),
 		'AK' => 'Auckland',
 		'BP' => 'Bay of Plenty',
 		'CT' => 'Canterbury',
@@ -655,7 +655,7 @@ function edd_get_new_zealand_states_list() {
 		'WC' => 'West Coast'
 	);
 
-	return apply_filters( 'edd_new_zealand_states', $states );
+	return apply_filters( 'pdd_new_zealand_states', $states );
 }
 
 /**
@@ -664,9 +664,9 @@ function edd_get_new_zealand_states_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_indonesian_states_list() {
+function pdd_get_indonesian_states_list() {
 	$states  = array(
-		'0'  => __( 'Choose', 'edd' ),
+		'0'  => __( 'Choose', 'pdd' ),
 		'AC' => 'Daerah Istimewa Aceh',
 	    'SU' => 'Sumatera Utara',
 	    'SB' => 'Sumatera Barat',
@@ -703,7 +703,7 @@ function edd_get_indonesian_states_list() {
 	    'PB' => 'Papua Barat'
 	);
 
-	return apply_filters( 'edd_indonesia_states', $states );
+	return apply_filters( 'pdd_indonesia_states', $states );
 }
 
 /**
@@ -712,9 +712,9 @@ function edd_get_indonesian_states_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_indian_states_list() {
+function pdd_get_indian_states_list() {
 	$states = array(
-		'0'  => __( 'Choose', 'edd' ),
+		'0'  => __( 'Choose', 'pdd' ),
 		'AP' => 'Andra Pradesh',
 		'AR' => 'Arunachal Pradesh',
 		'AS' => 'Assam',
@@ -752,7 +752,7 @@ function edd_get_indian_states_list() {
 		'PY' => 'Pondicherry (Puducherry)'
 	);
 
-	return apply_filters( 'edd_indian_states', $states );
+	return apply_filters( 'pdd_indian_states', $states );
 }
 
 /**
@@ -761,9 +761,9 @@ function edd_get_indian_states_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_malaysian_states_list() {
+function pdd_get_malaysian_states_list() {
 	$states = array(
-		'0'   => __( 'Choose', 'edd' ),
+		'0'   => __( 'Choose', 'pdd' ),
 		'JHR' => 'Johor',
 		'KDH' => 'Kedah',
 		'KTN' => 'Kelantan',
@@ -782,7 +782,7 @@ function edd_get_malaysian_states_list() {
 		'PJY' => 'W.P. Putrajaya'
 	);
 
-	return apply_filters( 'edd_malaysian_states', $states );
+	return apply_filters( 'pdd_malaysian_states', $states );
 }
 
 /**
@@ -791,9 +791,9 @@ function edd_get_malaysian_states_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_south_african_states_list() {
+function pdd_get_south_african_states_list() {
 	$states = array(
-		'0'   => __( 'Choose', 'edd' ),
+		'0'   => __( 'Choose', 'pdd' ),
 		'EC'  => 'Eastern Cape',
 		'FS'  => 'Free State',
 		'GP'  => 'Gauteng',
@@ -805,7 +805,7 @@ function edd_get_south_african_states_list() {
 		'WC'  => 'Western Cape'
 	);
 
-	return apply_filters( 'edd_south_african_states', $states );
+	return apply_filters( 'pdd_south_african_states', $states );
 }
 
 /**
@@ -814,9 +814,9 @@ function edd_get_south_african_states_list() {
  * @since 1.6
  * @return array $states A list of states
  */
-function edd_get_thailand_states_list() {
+function pdd_get_thailand_states_list() {
 	$states = array(
-		'0'     => __( 'Choose', 'edd' ),
+		'0'     => __( 'Choose', 'pdd' ),
 		'TH-37' => 'Amnat Charoen (&#3629;&#3635;&#3609;&#3634;&#3592;&#3648;&#3592;&#3619;&#3636;&#3597;)',
 		'TH-15' => 'Ang Thong (&#3629;&#3656;&#3634;&#3591;&#3607;&#3629;&#3591;)',
 		'TH-14' => 'Ayutthaya (&#3614;&#3619;&#3632;&#3609;&#3588;&#3619;&#3624;&#3619;&#3637;&#3629;&#3618;&#3640;&#3608;&#3618;&#3634;)',
@@ -896,5 +896,5 @@ function edd_get_thailand_states_list() {
 		'TH-35' => 'Yasothon (&#3618;&#3650;&#3626;&#3608;&#3619;)'
 	);
 
-	return apply_filters( 'edd_thailand_states', $states );
+	return apply_filters( 'pdd_thailand_states', $states );
 }

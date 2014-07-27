@@ -2,7 +2,7 @@
 /**
  * Process Purchase
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Functions
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -21,34 +21,34 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since       1.0
  * @return      void
  */
-function edd_process_purchase_form() {
+function pdd_process_purchase_form() {
 
 	// Make sure the cart isn't empty
-	if ( ! edd_get_cart_contents() && ! edd_cart_has_fees() ) {
+	if ( ! pdd_get_cart_contents() && ! pdd_cart_has_fees() ) {
 		$valid_data = array();
-		edd_set_error( 'empty_cart', __( 'Your cart is empty', 'edd' ) );
+		pdd_set_error( 'empty_cart', __( 'Your cart is empty', 'pdd' ) );
 	} else {
 		// Validate the form $_POST data
-		$valid_data = edd_purchase_form_validate_fields();
+		$valid_data = pdd_purchase_form_validate_fields();
 
 		// Allow themes and plugins to hook to errors
-		do_action( 'edd_checkout_error_checks', $valid_data, $_POST );
+		do_action( 'pdd_checkout_error_checks', $valid_data, $_POST );
 	}
 
-	$is_ajax = isset( $_POST['edd_ajax'] );
+	$is_ajax = isset( $_POST['pdd_ajax'] );
 
 	// Process the login form
-	if ( isset( $_POST['edd_login_submit'] ) ) {
-		edd_process_purchase_login();
+	if ( isset( $_POST['pdd_login_submit'] ) ) {
+		pdd_process_purchase_login();
 	}
 
 	// Validate the user
-	$user = edd_get_purchase_form_user( $valid_data );
+	$user = pdd_get_purchase_form_user( $valid_data );
 
-	if ( edd_get_errors() || ! $user ) {
+	if ( pdd_get_errors() || ! $user ) {
 		if ( $is_ajax ) {
-			do_action( 'edd_ajax_checkout_errors' );
-			edd_die();
+			do_action( 'pdd_ajax_checkout_errors' );
+			pdd_die();
 		} else {
 			return false;
 		}
@@ -56,7 +56,7 @@ function edd_process_purchase_form() {
 
 	if ( $is_ajax ) {
 		echo 'success';
-		edd_die();
+		pdd_die();
 	}
 
 	// Setup user information
@@ -73,18 +73,18 @@ function edd_process_purchase_form() {
 
 	// Setup purchase information
 	$purchase_data = array(
-		'downloads'    => edd_get_cart_contents(),
-		'fees'         => edd_get_cart_fees(),        // Any arbitrary fees that have been added to the cart
-		'subtotal'     => edd_get_cart_subtotal(),    // Amount before taxes and discounts
-		'discount'     => edd_get_cart_discounted_amount(), // Discounted amount
-		'tax'          => edd_get_cart_tax(),               // Taxed amount
-		'price'        => edd_get_cart_total(),    // Amount after taxes
-		'purchase_key' => strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'edd', true ) ) ),  // Unique key
+		'downloads'    => pdd_get_cart_contents(),
+		'fees'         => pdd_get_cart_fees(),        // Any arbitrary fees that have been added to the cart
+		'subtotal'     => pdd_get_cart_subtotal(),    // Amount before taxes and discounts
+		'discount'     => pdd_get_cart_discounted_amount(), // Discounted amount
+		'tax'          => pdd_get_cart_tax(),               // Taxed amount
+		'price'        => pdd_get_cart_total(),    // Amount after taxes
+		'purchase_key' => strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'pdd', true ) ) ),  // Unique key
 		'user_email'   => $user['user_email'],
 		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'user_info'    => stripslashes_deep( $user_info ),
 		'post_data'    => $_POST,
-		'cart_details' => edd_get_cart_content_details(),
+		'cart_details' => pdd_get_cart_content_details(),
 		'gateway'      => $valid_data['gateway'],
 		'card_info'    => $valid_data['cc_info']
 	);
@@ -93,18 +93,18 @@ function edd_process_purchase_form() {
 	$valid_data['user'] = $user;
 
 	// Allow themes and plugins to hook before the gateway
-	do_action( 'edd_checkout_before_gateway', $_POST, $user_info, $valid_data );
+	do_action( 'pdd_checkout_before_gateway', $_POST, $user_info, $valid_data );
 
 	// If the total amount in the cart is 0, send to the manual gateway. This emulates a free download purchase
 	if ( !$purchase_data['price'] ) {
 		// Revert to manual
 		$purchase_data['gateway'] = 'manual';
-		$_POST['edd-gateway'] = 'manual';
+		$_POST['pdd-gateway'] = 'manual';
 	}
 
 	// Allow the purchase data to be modified before it is sent to the gateway
 	$purchase_data = apply_filters(
-		'edd_purchase_data_before_gateway',
+		'pdd_purchase_data_before_gateway',
 		$purchase_data,
 		$valid_data
 	);
@@ -116,15 +116,15 @@ function edd_process_purchase_form() {
 	unset( $session_data['card_info']['card_number'] );
 
 	// Used for showing download links to non logged-in users after purchase, and for other plugins needing purchase data.
-	edd_set_purchase_session( $session_data );
+	pdd_set_purchase_session( $session_data );
 
 	// Send info to the gateway for payment processing
-	edd_send_to_gateway( $purchase_data['gateway'], $purchase_data );
-	edd_die();
+	pdd_send_to_gateway( $purchase_data['gateway'], $purchase_data );
+	pdd_die();
 }
-add_action( 'edd_purchase', 'edd_process_purchase_form' );
-add_action( 'wp_ajax_edd_process_checkout', 'edd_process_purchase_form' );
-add_action( 'wp_ajax_nopriv_edd_process_checkout', 'edd_process_purchase_form' );
+add_action( 'pdd_purchase', 'pdd_process_purchase_form' );
+add_action( 'wp_ajax_pdd_process_checkout', 'pdd_process_purchase_form' );
+add_action( 'wp_ajax_nopriv_pdd_process_checkout', 'pdd_process_purchase_form' );
 
 /**
  * Process the checkout login form
@@ -133,32 +133,32 @@ add_action( 'wp_ajax_nopriv_edd_process_checkout', 'edd_process_purchase_form' )
  * @since       1.8
  * @return      void
  */
-function edd_process_purchase_login() {
+function pdd_process_purchase_login() {
 
-	$is_ajax = isset( $_POST['edd_ajax'] );
+	$is_ajax = isset( $_POST['pdd_ajax'] );
 
-	$user_data = edd_purchase_form_validate_user_login();
+	$user_data = pdd_purchase_form_validate_user_login();
 
-	if ( edd_get_errors() || $user_data['user_id'] < 1 ) {
+	if ( pdd_get_errors() || $user_data['user_id'] < 1 ) {
 		if ( $is_ajax ) {
-			do_action( 'edd_ajax_checkout_errors' );
-			edd_die();
+			do_action( 'pdd_ajax_checkout_errors' );
+			pdd_die();
 		} else {
 			wp_redirect( $_SERVER['HTTP_REFERER'] ); exit;
 		}
 	}
 
-	edd_log_user_in( $user_data['user_id'], $user_data['user_login'], $user_data['user_pass'] );
+	pdd_log_user_in( $user_data['user_id'], $user_data['user_login'], $user_data['user_pass'] );
 
 	if ( $is_ajax ) {
 		echo 'success';
-		edd_die();
+		pdd_die();
 	} else {
-		wp_redirect( edd_get_checkout_uri( $_SERVER['QUERY_STRING'] ) );
+		wp_redirect( pdd_get_checkout_uri( $_SERVER['QUERY_STRING'] ) );
 	}
 }
-add_action( 'wp_ajax_edd_process_checkout_login', 'edd_process_purchase_login' );
-add_action( 'wp_ajax_nopriv_edd_process_checkout_login', 'edd_process_purchase_login' );
+add_action( 'wp_ajax_pdd_process_checkout_login', 'pdd_process_purchase_login' );
+add_action( 'wp_ajax_nopriv_pdd_process_checkout_login', 'pdd_process_purchase_login' );
 
 /**
  * Purchase Form Validate Fields
@@ -167,48 +167,48 @@ add_action( 'wp_ajax_nopriv_edd_process_checkout_login', 'edd_process_purchase_l
  * @since       1.0.8.1
  * @return      bool|array
  */
-function edd_purchase_form_validate_fields() {
-	global $edd_options;
+function pdd_purchase_form_validate_fields() {
+	global $pdd_options;
 
 	// Check if there is $_POST
 	if ( empty( $_POST ) ) return false;
 
 	// Start an array to collect valid data
 	$valid_data = array(
-		'gateway'          => edd_purchase_form_validate_gateway(), // Gateway fallback
-		'discount'         => edd_purchase_form_validate_discounts(),    // Set default discount
+		'gateway'          => pdd_purchase_form_validate_gateway(), // Gateway fallback
+		'discount'         => pdd_purchase_form_validate_discounts(),    // Set default discount
 		'need_new_user'    => false,     // New user flag
 		'need_user_login'  => false,     // Login user flag
 		'logged_user_data' => array(),   // Logged user collected data
 		'new_user_data'    => array(),   // New user collected data
 		'login_user_data'  => array(),   // Login user collected data
 		'guest_user_data'  => array(),   // Guest user collected data
-		'cc_info'          => edd_purchase_form_validate_cc()    // Credit card info
+		'cc_info'          => pdd_purchase_form_validate_cc()    // Credit card info
 	);
 
 	// Validate agree to terms
-	if ( isset( $edd_options['show_agree_to_terms'] ) )
-		edd_purchase_form_validate_agree_to_terms();
+	if ( isset( $pdd_options['show_agree_to_terms'] ) )
+		pdd_purchase_form_validate_agree_to_terms();
 
 	if ( is_user_logged_in() ) {
 		// Collect logged in user data
-		$valid_data['logged_in_user'] = edd_purchase_form_validate_logged_in_user();
-	} else if ( isset( $_POST['edd-purchase-var'] ) && $_POST['edd-purchase-var'] == 'needs-to-register' ) {
+		$valid_data['logged_in_user'] = pdd_purchase_form_validate_logged_in_user();
+	} else if ( isset( $_POST['pdd-purchase-var'] ) && $_POST['pdd-purchase-var'] == 'needs-to-register' ) {
 			// Set new user registration as required
 			$valid_data['need_new_user'] = true;
 
 			// Validate new user data
-			$valid_data['new_user_data'] = edd_purchase_form_validate_new_user();
+			$valid_data['new_user_data'] = pdd_purchase_form_validate_new_user();
 			// Check if login validation is needed
-		} else if ( isset( $_POST['edd-purchase-var'] ) && $_POST['edd-purchase-var'] == 'needs-to-login' ) {
+		} else if ( isset( $_POST['pdd-purchase-var'] ) && $_POST['pdd-purchase-var'] == 'needs-to-login' ) {
 			// Set user login as required
 			$valid_data['need_user_login'] = true;
 
 			// Validate users login info
-			$valid_data['login_user_data'] = edd_purchase_form_validate_user_login();
+			$valid_data['login_user_data'] = pdd_purchase_form_validate_user_login();
 		} else {
 		// Not registering or logging in, so setup guest user data
-		$valid_data['guest_user_data'] = edd_purchase_form_validate_guest_user();
+		$valid_data['guest_user_data'] = pdd_purchase_form_validate_guest_user();
 	}
 
 	// Return collected data
@@ -222,22 +222,22 @@ function edd_purchase_form_validate_fields() {
  * @since       1.0
  * @return      string
  */
-function edd_purchase_form_validate_gateway() {
+function pdd_purchase_form_validate_gateway() {
 
 	// Check if a gateway value is present
-	if ( ! empty( $_POST['edd-gateway'] ) ) {
+	if ( ! empty( $_POST['pdd-gateway'] ) ) {
 
-		$gateway = sanitize_text_field( $_POST['edd-gateway'] );
+		$gateway = sanitize_text_field( $_POST['pdd-gateway'] );
 
-		if ( edd_is_gateway_active( $gateway ) ) {
+		if ( pdd_is_gateway_active( $gateway ) ) {
 			return $gateway;
-		} elseif ( '0.00' == edd_get_cart_total() ) {
+		} elseif ( '0.00' == pdd_get_cart_total() ) {
 			return 'manual';
 		}
 
 	}
 
-	return edd_get_default_gateway();
+	return pdd_get_default_gateway();
 
 }
 
@@ -248,16 +248,16 @@ function edd_purchase_form_validate_gateway() {
  * @since       1.0.8.1
  * @return      string
  */
-function edd_purchase_form_validate_discounts() {
+function pdd_purchase_form_validate_discounts() {
 
 	// Retrieve the discount stored in cookies
-	$discounts = edd_get_cart_discounts();
+	$discounts = pdd_get_cart_discounts();
 
 	$user = '';
-	if ( isset( $_POST['edd_user_login'] ) && ! empty( $_POST['edd_user_login'] ) ) {
-		$user = sanitize_text_field( $_POST['edd_user_login'] );
-	} else if ( isset( $_POST['edd_email'] ) && ! empty($_POST['edd_email'] ) ) {
-		$user = sanitize_text_field( $_POST['edd_email'] );
+	if ( isset( $_POST['pdd_user_login'] ) && ! empty( $_POST['pdd_user_login'] ) ) {
+		$user = sanitize_text_field( $_POST['pdd_user_login'] );
+	} else if ( isset( $_POST['pdd_email'] ) && ! empty($_POST['pdd_email'] ) ) {
+		$user = sanitize_text_field( $_POST['pdd_email'] );
 	} else if ( is_user_logged_in() ) {
 		$user = wp_get_current_user()->user_email;
 	}
@@ -265,9 +265,9 @@ function edd_purchase_form_validate_discounts() {
 	$error = false;
 
 	// Check for valid discount(s) is present
-	if ( ! empty( $_POST['edd-discount'] ) && empty( $discounts ) && __( 'Enter discount', 'edd' ) != $_POST['edd-discount'] ) {
+	if ( ! empty( $_POST['pdd-discount'] ) && empty( $discounts ) && __( 'Enter discount', 'pdd' ) != $_POST['pdd-discount'] ) {
 		// Check for a posted discount
-		$posted_discount = isset( $_POST['edd-discount'] ) ? trim( $_POST['edd-discount'] ) : false;
+		$posted_discount = isset( $_POST['pdd-discount'] ) ? trim( $_POST['pdd-discount'] ) : false;
 
 		if ( $posted_discount ) {
 			$discounts   = array();
@@ -280,7 +280,7 @@ function edd_purchase_form_validate_discounts() {
 
 		foreach ( $discounts as $discount ) {
 			// Check if valid
-			if (  ! edd_is_discount_valid( $discount, $user ) ) {
+			if (  ! pdd_is_discount_valid( $discount, $user ) ) {
 				// Discount is not valid
 				$error = true;
 			}
@@ -291,7 +291,7 @@ function edd_purchase_form_validate_discounts() {
 	}
 
 	if ( $error ) {
-		edd_set_error( 'invalid_discount', __( 'One or more of the discounts you entered is invalid', 'edd' ) );
+		pdd_set_error( 'invalid_discount', __( 'One or more of the discounts you entered is invalid', 'pdd' ) );
 	}
 
 	return implode( ', ', $discounts );
@@ -304,11 +304,11 @@ function edd_purchase_form_validate_discounts() {
  * @since       1.0.8.1
  * @return      void
  */
-function edd_purchase_form_validate_agree_to_terms() {
+function pdd_purchase_form_validate_agree_to_terms() {
 	// Validate agree to terms
-	if ( ! isset( $_POST['edd_agree_to_terms'] ) || $_POST['edd_agree_to_terms'] != 1 ) {
+	if ( ! isset( $_POST['pdd_agree_to_terms'] ) || $_POST['pdd_agree_to_terms'] != 1 ) {
 		// User did not agree
-		edd_set_error( 'agree_to_terms', apply_filters( 'edd_agree_to_terms_text', __( 'You must agree to the terms of use', 'edd' ) ) );
+		pdd_set_error( 'agree_to_terms', apply_filters( 'pdd_agree_to_terms_text', __( 'You must agree to the terms of use', 'pdd' ) ) );
 	}
 }
 
@@ -319,41 +319,41 @@ function edd_purchase_form_validate_agree_to_terms() {
  * @since       1.5
  * @return      array
  */
-function edd_purchase_form_required_fields() {
+function pdd_purchase_form_required_fields() {
 	$required_fields = array(
-		'edd_email' => array(
+		'pdd_email' => array(
 			'error_id' => 'invalid_email',
-			'error_message' => __( 'Please enter a valid email address', 'edd' )
+			'error_message' => __( 'Please enter a valid email address', 'pdd' )
 		),
-		'edd_first' => array(
+		'pdd_first' => array(
 			'error_id' => 'invalid_first_name',
-			'error_message' => __( 'Please enter your first name', 'edd' )
+			'error_message' => __( 'Please enter your first name', 'pdd' )
 		)
 	);
 
 	// Let payment gateways and other extensions determine if address fields should be required
-	$require_address = apply_filters( 'edd_require_billing_address', edd_use_taxes() && edd_get_cart_total() );
+	$require_address = apply_filters( 'pdd_require_billing_address', pdd_use_taxes() && pdd_get_cart_total() );
 
 	if ( $require_address ) {
 		$required_fields['card_zip'] = array(
 			'error_id' => 'invalid_zip_code',
-			'error_message' => __( 'Please enter your zip / postal code', 'edd' )
+			'error_message' => __( 'Please enter your zip / postal code', 'pdd' )
 		);
 		$required_fields['card_city'] = array(
 			'error_id' => 'invalid_city',
-			'error_message' => __( 'Please enter your billing city', 'edd' )
+			'error_message' => __( 'Please enter your billing city', 'pdd' )
 		);
 		$required_fields['billing_country'] = array(
 			'error_id' => 'invalid_country',
-			'error_message' => __( 'Please select your billing country', 'edd' )
+			'error_message' => __( 'Please select your billing country', 'pdd' )
 		);
 		$required_fields['card_state'] = array(
 			'error_id' => 'invalid_state',
-			'error_message' => __( 'Please enter billing state / province', 'edd' )
+			'error_message' => __( 'Please enter billing state / province', 'pdd' )
 		);
 	}
 
-	return apply_filters( 'edd_purchase_form_required_fields', $required_fields );
+	return apply_filters( 'pdd_purchase_form_required_fields', $required_fields );
 }
 
 /**
@@ -363,7 +363,7 @@ function edd_purchase_form_required_fields() {
  * @since       1.0
  * @return      array
  */
-function edd_purchase_form_validate_logged_in_user() {
+function pdd_purchase_form_validate_logged_in_user() {
 	global $user_ID;
 
 	// Start empty array to collect valid user data
@@ -378,9 +378,9 @@ function edd_purchase_form_validate_logged_in_user() {
 		$user_data = get_userdata( $user_ID );
 
 		// Loop through required fields and show error messages
-		foreach ( edd_purchase_form_required_fields() as $field_name => $value ) {
-			if ( in_array( $value, edd_purchase_form_required_fields() ) && empty( $_POST[ $field_name ] ) ) {
-				edd_set_error( $value['error_id'], $value['error_message'] );
+		foreach ( pdd_purchase_form_required_fields() as $field_name => $value ) {
+			if ( in_array( $value, pdd_purchase_form_required_fields() ) && empty( $_POST[ $field_name ] ) ) {
+				pdd_set_error( $value['error_id'], $value['error_message'] );
 			}
 		}
 
@@ -389,18 +389,18 @@ function edd_purchase_form_validate_logged_in_user() {
 			// Collected logged in user data
 			$valid_user_data = array(
 				'user_id'    => $user_ID,
-				'user_email' => isset( $_POST['edd_email'] ) ? sanitize_email( $_POST['edd_email'] ) : $user_data->user_email,
-				'user_first' => isset( $_POST['edd_first'] ) && ! empty( $_POST['edd_first'] ) ? sanitize_text_field( $_POST['edd_first'] ) : $user_data->first_name,
-				'user_last'  => isset( $_POST['edd_last'] ) && ! empty( $_POST['edd_last']  ) ? sanitize_text_field( $_POST['edd_last']  ) : $user_data->last_name,
+				'user_email' => isset( $_POST['pdd_email'] ) ? sanitize_email( $_POST['pdd_email'] ) : $user_data->user_email,
+				'user_first' => isset( $_POST['pdd_first'] ) && ! empty( $_POST['pdd_first'] ) ? sanitize_text_field( $_POST['pdd_first'] ) : $user_data->first_name,
+				'user_last'  => isset( $_POST['pdd_last'] ) && ! empty( $_POST['pdd_last']  ) ? sanitize_text_field( $_POST['pdd_last']  ) : $user_data->last_name,
 			);
 
 			if ( ! is_email( $valid_user_data['user_email'] ) ) {
-				edd_set_error( 'email_invalid', __( 'Invalid email', 'edd' ) );
+				pdd_set_error( 'email_invalid', __( 'Invalid email', 'pdd' ) );
 			}
 
 		} else {
 			// Set invalid user error
-			edd_set_error( 'invalid_user', __( 'The user information is invalid', 'edd' ) );
+			pdd_set_error( 'invalid_user', __( 'The user information is invalid', 'pdd' ) );
 		}
 	}
 
@@ -415,7 +415,7 @@ function edd_purchase_form_validate_logged_in_user() {
  * @since       1.0.8.1
  * @return      array
  */
-function edd_purchase_form_validate_new_user() {
+function pdd_purchase_form_validate_new_user() {
 	$registering_new_user = false;
 
 	// Start an empty array to collect valid user data
@@ -423,21 +423,21 @@ function edd_purchase_form_validate_new_user() {
 		// Assume there will be errors
 		'user_id' => -1,
 		// Get first name
-		'user_first' => isset( $_POST["edd_first"] ) ? sanitize_text_field( $_POST["edd_first"] ) : '',
+		'user_first' => isset( $_POST["pdd_first"] ) ? sanitize_text_field( $_POST["pdd_first"] ) : '',
 		// Get last name
-		'user_last' => isset( $_POST["edd_last"] ) ? sanitize_text_field( $_POST["edd_last"] ) : '',
+		'user_last' => isset( $_POST["pdd_last"] ) ? sanitize_text_field( $_POST["pdd_last"] ) : '',
 	);
 
 	// Check the new user's credentials against existing ones
-	$user_login   = isset( $_POST["edd_user_login"] ) ? trim( $_POST["edd_user_login"] ) : false;
-	$user_email   = isset( $_POST['edd_email'] ) ? trim( $_POST['edd_email'] ) : false;
-	$user_pass    = isset( $_POST["edd_user_pass"] ) ? trim( $_POST["edd_user_pass"] ) : false;
-	$pass_confirm = isset( $_POST["edd_user_pass_confirm"] ) ? trim( $_POST["edd_user_pass_confirm"] ) : false;
+	$user_login   = isset( $_POST["pdd_user_login"] ) ? trim( $_POST["pdd_user_login"] ) : false;
+	$user_email   = isset( $_POST['pdd_email'] ) ? trim( $_POST['pdd_email'] ) : false;
+	$user_pass    = isset( $_POST["pdd_user_pass"] ) ? trim( $_POST["pdd_user_pass"] ) : false;
+	$pass_confirm = isset( $_POST["pdd_user_pass_confirm"] ) ? trim( $_POST["pdd_user_pass_confirm"] ) : false;
 
 	// Loop through required fields and show error messages
-	foreach ( edd_purchase_form_required_fields() as $field_name => $value ) {
-		if ( in_array( $value, edd_purchase_form_required_fields() ) && empty( $_POST[ $field_name ] ) ) {
-			edd_set_error( $value['error_id'], $value['error_message'] );
+	foreach ( pdd_purchase_form_required_fields() as $field_name => $value ) {
+		if ( in_array( $value, pdd_purchase_form_required_fields() ) && empty( $_POST[ $field_name ] ) ) {
+			pdd_set_error( $value['error_id'], $value['error_message'] );
 		}
 	}
 
@@ -448,21 +448,21 @@ function edd_purchase_form_validate_new_user() {
 		// We have an user name, check if it already exists
 		if ( username_exists( $user_login ) ) {
 			// Username already registered
-			edd_set_error( 'username_unavailable', __( 'Username already taken', 'edd' ) );
+			pdd_set_error( 'username_unavailable', __( 'Username already taken', 'pdd' ) );
 			// Check if it's valid
-		} else if ( ! edd_validate_username( $user_login ) ) {
+		} else if ( ! pdd_validate_username( $user_login ) ) {
 				// Invalid username
 				if ( is_multisite() )
-					edd_set_error( 'username_invalid', __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed', 'edd' ) );
+					pdd_set_error( 'username_invalid', __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed', 'pdd' ) );
 				else
-					edd_set_error( 'username_invalid', __( 'Invalid username', 'edd' ) );
+					pdd_set_error( 'username_invalid', __( 'Invalid username', 'pdd' ) );
 			} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_login'] = $user_login;
 		}
 	} else {
-		if ( edd_no_guest_checkout() ) {
-			edd_set_error( 'registration_required', __( 'You must register or login to complete your purchase', 'edd' ) );
+		if ( pdd_no_guest_checkout() ) {
+			pdd_set_error( 'registration_required', __( 'You must register or login to complete your purchase', 'pdd' ) );
 		}
 	}
 
@@ -470,17 +470,17 @@ function edd_purchase_form_validate_new_user() {
 	if ( $user_email && strlen( $user_email ) > 0 ) {
 		// Validate email
 		if ( ! is_email( $user_email ) ) {
-			edd_set_error( 'email_invalid', __( 'Invalid email', 'edd' ) );
+			pdd_set_error( 'email_invalid', __( 'Invalid email', 'pdd' ) );
 			// Check if email exists
 		} else if ( email_exists( $user_email ) && $registering_new_user ) {
-				edd_set_error( 'email_used', __( 'Email already used', 'edd' ) );
+				pdd_set_error( 'email_used', __( 'Email already used', 'pdd' ) );
 			} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_email'] = $user_email;
 		}
 	} else {
 		// No email
-		edd_set_error( 'email_empty', __( 'Enter an email', 'edd' ) );
+		pdd_set_error( 'email_empty', __( 'Enter an email', 'pdd' ) );
 	}
 
 	// Check password
@@ -488,7 +488,7 @@ function edd_purchase_form_validate_new_user() {
 		// Verify confirmation matches
 		if ( $user_pass != $pass_confirm ) {
 			// Passwords do not match
-			edd_set_error( 'password_mismatch', __( 'Passwords don\'t match', 'edd' ) );
+			pdd_set_error( 'password_mismatch', __( 'Passwords don\'t match', 'pdd' ) );
 		} else {
 			// All is good to go
 			$valid_user_data['user_pass'] = $user_pass;
@@ -497,10 +497,10 @@ function edd_purchase_form_validate_new_user() {
 		// Password or confirmation missing
 		if ( ! $user_pass && $registering_new_user ) {
 			// The password is invalid
-			edd_set_error( 'password_empty', __( 'Enter a password', 'edd' ) );
+			pdd_set_error( 'password_empty', __( 'Enter a password', 'pdd' ) );
 		} else if ( ! $pass_confirm && $registering_new_user ) {
 				// Confirmation password is invalid
-				edd_set_error( 'confirmation_empty', __( 'Enter the password confirmation', 'edd' ) );
+				pdd_set_error( 'confirmation_empty', __( 'Enter the password confirmation', 'pdd' ) );
 			}
 	}
 
@@ -514,7 +514,7 @@ function edd_purchase_form_validate_new_user() {
  * @since       1.0.8.1
  * @return      array
  */
-function edd_purchase_form_validate_user_login() {
+function pdd_purchase_form_validate_user_login() {
 
 	// Start an array to collect valid user data
 	$valid_user_data = array(
@@ -523,29 +523,29 @@ function edd_purchase_form_validate_user_login() {
 	);
 
 	// Username
-	if ( ! isset( $_POST['edd_user_login'] ) || $_POST['edd_user_login'] == '' ) {
-		edd_set_error( 'must_log_in', __( 'You must login or register to complete your purchase', 'edd' ) );
+	if ( ! isset( $_POST['pdd_user_login'] ) || $_POST['pdd_user_login'] == '' ) {
+		pdd_set_error( 'must_log_in', __( 'You must login or register to complete your purchase', 'pdd' ) );
 		return $valid_user_data;
 	}
 
 	// Get the user by login
-	$user_data = get_user_by( 'login', strip_tags( $_POST['edd_user_login'] ) );
+	$user_data = get_user_by( 'login', strip_tags( $_POST['pdd_user_login'] ) );
 
 	// Check if user exists
 	if ( $user_data ) {
 		// Get password
-		$user_pass = isset( $_POST["edd_user_pass"] ) ? $_POST["edd_user_pass"] : false;
+		$user_pass = isset( $_POST["pdd_user_pass"] ) ? $_POST["pdd_user_pass"] : false;
 
 		// Check user_pass
 		if ( $user_pass ) {
 			// Check if password is valid
 			if ( ! wp_check_password( $user_pass, $user_data->user_pass, $user_data->ID ) ) {
 				// Incorrect password
-				edd_set_error(
+				pdd_set_error(
 					'password_incorrect',
 					sprintf(
-						__( 'The password you entered is incorrect. %sReset Password%s', 'edd' ),
-						'<a href="' . wp_lostpassword_url( edd_get_checkout_uri() ) . '" title="' . __( 'Lost Password' ) . '">',
+						__( 'The password you entered is incorrect. %sReset Password%s', 'pdd' ),
+						'<a href="' . wp_lostpassword_url( pdd_get_checkout_uri() ) . '" title="' . __( 'Lost Password' ) . '">',
 						'</a>'
 					)
 				);
@@ -563,11 +563,11 @@ function edd_purchase_form_validate_user_login() {
 			}
 		} else {
 			// Empty password
-			edd_set_error( 'password_empty', __( 'Enter a password', 'edd' ) );
+			pdd_set_error( 'password_empty', __( 'Enter a password', 'pdd' ) );
 		}
 	} else {
 		// no username
-		edd_set_error( 'username_incorrect', __( 'The username you entered does not exist', 'edd' ) );
+		pdd_set_error( 'username_incorrect', __( 'The username you entered does not exist', 'pdd' ) );
 	}
 
 	return $valid_user_data;
@@ -580,7 +580,7 @@ function edd_purchase_form_validate_user_login() {
  * @since  1.0.8.1
  * @return  array
  */
-function edd_purchase_form_validate_guest_user() {
+function pdd_purchase_form_validate_guest_user() {
 	// Start an array to collect valid user data
 	$valid_user_data = array(
 		// Set a default id for guests
@@ -588,32 +588,32 @@ function edd_purchase_form_validate_guest_user() {
 	);
 
 	// Show error message if user must be logged in
-	if ( edd_logged_in_only() ) {
-		edd_set_error( 'logged_in_only', __( 'You must be logged into an account to purchase', 'edd' ) );
+	if ( pdd_logged_in_only() ) {
+		pdd_set_error( 'logged_in_only', __( 'You must be logged into an account to purchase', 'pdd' ) );
 	}
 
 	// Get the guest email
-	$guest_email = isset( $_POST['edd_email'] ) ? $_POST['edd_email'] : false;
+	$guest_email = isset( $_POST['pdd_email'] ) ? $_POST['pdd_email'] : false;
 
 	// Check email
 	if ( $guest_email && strlen( $guest_email ) > 0 ) {
 		// Validate email
 		if ( ! is_email( $guest_email ) ) {
 			// Invalid email
-			edd_set_error( 'email_invalid', __( 'Invalid email', 'edd' ) );
+			pdd_set_error( 'email_invalid', __( 'Invalid email', 'pdd' ) );
 		} else {
 			// All is good to go
 			$valid_user_data['user_email'] = $guest_email;
 		}
 	} else {
 		// No email
-		edd_set_error( 'email_empty', __( 'Enter an email', 'edd' ) );
+		pdd_set_error( 'email_empty', __( 'Enter an email', 'pdd' ) );
 	}
 
 	// Loop through required fields and show error messages
-	foreach ( edd_purchase_form_required_fields() as $field_name => $value ) {
-		if ( in_array( $value, edd_purchase_form_required_fields() ) && empty( $_POST[ $field_name ] ) ) {
-			edd_set_error( $value['error_id'], $value['error_message'] );
+	foreach ( pdd_purchase_form_required_fields() as $field_name => $value ) {
+		if ( in_array( $value, pdd_purchase_form_required_fields() ) && empty( $_POST[ $field_name ] ) ) {
+			pdd_set_error( $value['error_id'], $value['error_message'] );
 		}
 	}
 
@@ -629,15 +629,15 @@ function edd_purchase_form_validate_guest_user() {
  * @since  1.0.8.1
  * @return  integer
  */
-function edd_register_and_login_new_user( $user_data = array() ) {
+function pdd_register_and_login_new_user( $user_data = array() ) {
 	// Verify the array
 	if ( empty( $user_data ) )
 		return -1;
 
-	if ( edd_get_errors() )
+	if ( pdd_get_errors() )
 		return -1;
 
-	$user_args = apply_filters( 'edd_insert_user_args', array(
+	$user_args = apply_filters( 'pdd_insert_user_args', array(
 			'user_login'      => isset( $user_data['user_login'] ) ? $user_data['user_login'] : '',
 			'user_pass'       => isset( $user_data['user_pass'] )  ? $user_data['user_pass']  : '',
 			'user_email'      => isset( $user_data['user_email'] ) ? $user_data['user_email'] : '',
@@ -655,13 +655,13 @@ function edd_register_and_login_new_user( $user_data = array() ) {
 		return -1;
 
 	// Allow themes and plugins to filter the user data
-	$user_data = apply_filters( 'edd_insert_user_data', $user_data, $user_args );
+	$user_data = apply_filters( 'pdd_insert_user_data', $user_data, $user_args );
 
 	// Allow themes and plugins to hook
-	do_action( 'edd_insert_user', $user_id, $user_data );
+	do_action( 'pdd_insert_user', $user_id, $user_data );
 
 	// Login new user
-	edd_log_user_in( $user_id, $user_data['user_login'], $user_data['user_pass'] );
+	pdd_log_user_in( $user_id, $user_data['user_login'], $user_data['user_pass'] );
 
 	// Return user id
 	return $user_id;
@@ -676,7 +676,7 @@ function edd_register_and_login_new_user( $user_data = array() ) {
  * @since  1.0.8.1
  * @return  array
  */
-function edd_get_purchase_form_user( $valid_data = array() ) {
+function pdd_get_purchase_form_user( $valid_data = array() ) {
 	// Initialize user
 	$user    = false;
 	$is_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
@@ -693,12 +693,12 @@ function edd_get_purchase_form_user( $valid_data = array() ) {
 				// Set user
 				$user = $valid_data['new_user_data'];
 				// Register and login new user
-				$user['user_id'] = edd_register_and_login_new_user( $user );
+				$user['user_id'] = pdd_register_and_login_new_user( $user );
 				// User login
 			} else if ( $valid_data['need_user_login'] === true  && ! $is_ajax ) {
 
 				/*
-				 * The login form is now processed in the edd_process_purchase_login() function.
+				 * The login form is now processed in the pdd_process_purchase_login() function.
 				 * This is still here for backwards compatibility.
 				 * This also allows the old login process to still work if a user removes the
 				 * checkout login submit button.
@@ -710,12 +710,12 @@ function edd_get_purchase_form_user( $valid_data = array() ) {
 				// Set user
 				$user = $valid_data['login_user_data'];
 				// Login user
-				edd_log_user_in( $user['user_id'], $user['user_login'], $user['user_pass'] );
+				pdd_log_user_in( $user['user_id'], $user['user_login'], $user['user_pass'] );
 			}
 		}
 
 	// Check guest checkout
-	if ( false === $user && false === edd_no_guest_checkout() ) {
+	if ( false === $user && false === pdd_no_guest_checkout() ) {
 		// Set user
 		$user = $valid_data['guest_user_data'];
 	}
@@ -728,12 +728,12 @@ function edd_get_purchase_form_user( $valid_data = array() ) {
 
 	// Get user first name
 	if ( ! isset( $user['user_first'] ) || strlen( trim( $user['user_first'] ) ) < 1 ) {
-		$user['user_first'] = isset( $_POST["edd_first"] ) ? strip_tags( trim( $_POST["edd_first"] ) ) : '';
+		$user['user_first'] = isset( $_POST["pdd_first"] ) ? strip_tags( trim( $_POST["pdd_first"] ) ) : '';
 	}
 
 	// Get user last name
 	if ( ! isset( $user['user_last'] ) || strlen( trim( $user['user_last'] ) ) < 1 ) {
-		$user['user_last'] = isset( $_POST["edd_last"] ) ? strip_tags( trim( $_POST["edd_last"] ) ) : '';
+		$user['user_last'] = isset( $_POST["pdd_last"] ) ? strip_tags( trim( $_POST["pdd_last"] ) ) : '';
 	}
 
 	// Get the user's billing address details
@@ -750,7 +750,7 @@ function edd_get_purchase_form_user( $valid_data = array() ) {
 
 	if ( ! empty( $user['user_id'] ) && $user['user_id'] > 0 && ! empty( $user['address'] ) ) {
 		// Store the address in the user's meta so the cart can be pre-populated with it on return purchases
-		update_user_meta( $user['user_id'], '_edd_user_address', $user['address'] );
+		update_user_meta( $user['user_id'], '_pdd_user_address', $user['address'] );
 	}
 
 	// Return valid user
@@ -764,13 +764,13 @@ function edd_get_purchase_form_user( $valid_data = array() ) {
  * @since  1.4.4
  * @return  array
  */
-function edd_purchase_form_validate_cc() {
-	$card_data = edd_get_purchase_cc_info();
+function pdd_purchase_form_validate_cc() {
+	$card_data = pdd_get_purchase_cc_info();
 
 	// Validate the card zip
 	if ( ! empty( $card_data['card_zip'] ) ) {
-		if ( ! edd_purchase_form_validate_cc_zip( $card_data['card_zip'], $card_data['card_country'] ) ) {
-			edd_set_error( 'invalid_cc_zip', __( 'The zip / postal code you entered for your billing address is invalid', 'edd' ) );
+		if ( ! pdd_purchase_form_validate_cc_zip( $card_data['card_zip'], $card_data['card_country'] ) ) {
+			pdd_set_error( 'invalid_cc_zip', __( 'The zip / postal code you entered for your billing address is invalid', 'pdd' ) );
 		}
 	}
 
@@ -785,7 +785,7 @@ function edd_purchase_form_validate_cc() {
  * @since  1.4.4
  * @return  array
  */
-function edd_get_purchase_cc_info() {
+function pdd_get_purchase_cc_info() {
 	$cc_info = array();
 	$cc_info['card_name']      = isset( $_POST['card_name'] )       ? sanitize_text_field( $_POST['card_name'] )       : '';
 	$cc_info['card_number']    = isset( $_POST['card_number'] )     ? sanitize_text_field( $_POST['card_number'] )     : '';
@@ -813,7 +813,7 @@ function edd_get_purchase_cc_info() {
  *
  * @return bool|mixed|void
  */
-function edd_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
+function pdd_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 	$ret = false;
 
 	if ( empty( $zip ) || empty( $country_code ) )
@@ -982,7 +982,7 @@ function edd_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 	if ( ! isset ( $zip_regex[ $country_code ] ) || preg_match( "/" . $zip_regex[ $country_code ] . "/i", $zip ) )
 		$ret = true;
 
-	return apply_filters( 'edd_is_zip_valid', $ret, $zip, $country_code );
+	return apply_filters( 'pdd_is_zip_valid', $ret, $zip, $country_code );
 }
 
 
@@ -992,9 +992,9 @@ function edd_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
  * @since       2.0
  * @return      void
  */
-function edd_check_purchase_email( $valid_data, $posted ) {
+function pdd_check_purchase_email( $valid_data, $posted ) {
 	$is_banned = false;
-	$banned    = edd_get_banned_emails();
+	$banned    = pdd_get_banned_emails();
 
 	if( empty( $banned ) ) {
 		return;
@@ -1004,27 +1004,27 @@ function edd_check_purchase_email( $valid_data, $posted ) {
 
 		// The user is logged in, check that their account email is not banned
 		$user_data = get_userdata( get_current_user_id() );
-		if( edd_is_email_banned( $user_data->user_email ) ) {
+		if( pdd_is_email_banned( $user_data->user_email ) ) {
 
 			$is_banned = true;
 		}
 
-		if( edd_is_email_banned( $posted['edd_email'] ) ) {
+		if( pdd_is_email_banned( $posted['pdd_email'] ) ) {
 			$is_banned = true;
 		}
 
-	} elseif( isset( $posted['edd-purchase-var'] ) && $posted['edd-purchase-var'] == 'needs-to-login' ) {
+	} elseif( isset( $posted['pdd-purchase-var'] ) && $posted['pdd-purchase-var'] == 'needs-to-login' ) {
 
 		// The user is logging in, check that their email is not banned
-		$user_data = get_user_by( 'login', $posted['edd_user_login'] );
-		if( $user_data && edd_is_email_banned( $user_data->user_email ) ) {
+		$user_data = get_user_by( 'login', $posted['pdd_user_login'] );
+		if( $user_data && pdd_is_email_banned( $user_data->user_email ) ) {
 			$is_banned = true;
 		}
 
 	} else {
 
 		// Guest purchase, check that the email is not banned
-		if( edd_is_email_banned( $posted['edd_email'] ) ) {
+		if( pdd_is_email_banned( $posted['pdd_email'] ) ) {
 			$is_banned = true;
 		}
 
@@ -1032,10 +1032,10 @@ function edd_check_purchase_email( $valid_data, $posted ) {
 
 	if( $is_banned ) {
 		// Set an error and give the customer a general error (don't alert them that they were banned)
-		edd_set_error( 'email_banned', __( 'An internal error has occurred, please try again or contact support.', 'edd' ) );
+		pdd_set_error( 'email_banned', __( 'An internal error has occurred, please try again or contact support.', 'pdd' ) );
 	}
 }
-add_action( 'edd_checkout_error_checks', 'edd_check_purchase_email', 10, 2 );
+add_action( 'pdd_checkout_error_checks', 'pdd_check_purchase_email', 10, 2 );
 
 
 /**
@@ -1044,11 +1044,11 @@ add_action( 'edd_checkout_error_checks', 'edd_check_purchase_email', 10, 2 );
  * @since 1.7
  * @return void
  */
-function edd_process_straight_to_gateway( $data ) {
+function pdd_process_straight_to_gateway( $data ) {
 	$download_id   = $data['download_id'];
-	$options       = isset( $data['edd_options'] ) ? $data['edd_options'] : array();
-	$purchase_data = edd_build_straight_to_gateway_data( $download_id, $options );
-	edd_set_purchase_session( $purchase_data );
-	edd_send_to_gateway( $purchase_data['gateway'], $purchase_data );
+	$options       = isset( $data['pdd_options'] ) ? $data['pdd_options'] : array();
+	$purchase_data = pdd_build_straight_to_gateway_data( $download_id, $options );
+	pdd_set_purchase_session( $purchase_data );
+	pdd_send_to_gateway( $purchase_data['gateway'], $purchase_data );
 }
-add_action( 'edd_straight_to_gateway', 'edd_process_straight_to_gateway' );
+add_action( 'pdd_straight_to_gateway', 'pdd_process_straight_to_gateway' );

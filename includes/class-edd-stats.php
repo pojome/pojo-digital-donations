@@ -2,7 +2,7 @@
 /**
  * Stats Base
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Classes/Stats
  * @copyright   Copyright (c) 2012, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -11,7 +11,7 @@
 
 
 /**
- * EDD_Stats Class
+ * PDD_Stats Class
  *
  * Base class for other stats classes
  *
@@ -19,7 +19,7 @@
  *
  * @since 1.8
  */
-class EDD_Stats {
+class PDD_Stats {
 
 
 	/**
@@ -79,18 +79,18 @@ class EDD_Stats {
 	 */
 	public function get_predefined_dates() {
 		$predefined = array(
-			'today'        => __( 'Today',        'edd' ),
-			'yesterday'    => __( 'Yesterday',    'edd' ),
-			'this_week'    => __( 'This Week',    'edd' ),
-			'last_week'    => __( 'Last Week',    'edd' ),
-			'this_month'   => __( 'This Month',   'edd' ),
-			'last_month'   => __( 'Last Month',   'edd' ),
-			'this_quarter' => __( 'This Quarter', 'edd' ),
-			'last_quarter' => __( 'Last Quater',  'edd' ),
-			'this_year'    => __( 'This Year',    'edd' ),
-			'last_year'    => __( 'Last Year',    'edd' )
+			'today'        => __( 'Today',        'pdd' ),
+			'yesterday'    => __( 'Yesterday',    'pdd' ),
+			'this_week'    => __( 'This Week',    'pdd' ),
+			'last_week'    => __( 'Last Week',    'pdd' ),
+			'this_month'   => __( 'This Month',   'pdd' ),
+			'last_month'   => __( 'Last Month',   'pdd' ),
+			'this_quarter' => __( 'This Quarter', 'pdd' ),
+			'last_quarter' => __( 'Last Quater',  'pdd' ),
+			'this_year'    => __( 'This Year',    'pdd' ),
+			'last_year'    => __( 'Last Year',    'pdd' )
 		);
-		return apply_filters( 'edd_stats_predefined_dates', $predefined );
+		return apply_filters( 'pdd_stats_predefined_dates', $predefined );
 	}
 
 	/**
@@ -433,7 +433,7 @@ class EDD_Stats {
 
 		} else {
 
-			return new WP_Error( 'invalid_date', __( 'Improper date provided.', 'edd' ) );
+			return new WP_Error( 'invalid_date', __( 'Improper date provided.', 'pdd' ) );
 
 		}
 
@@ -444,7 +444,7 @@ class EDD_Stats {
 
 		}
 
-		return apply_filters( 'edd_stats_date', $date, $end_date, $this );
+		return apply_filters( 'pdd_stats_date', $date, $end_date, $this );
 
 	}
 

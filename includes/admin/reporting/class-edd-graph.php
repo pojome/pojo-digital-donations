@@ -4,7 +4,7 @@
  *
  * This class handles building pretty report graphs
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2012, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -15,11 +15,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * EDD_Graph Class
+ * PDD_Graph Class
  *
  * @since 1.9
  */
-class EDD_Graph {
+class PDD_Graph {
 
 	/*
 
@@ -42,7 +42,7 @@ class EDD_Graph {
 		)
 	);
 
-	$graph = new EDD_Graph( $data );
+	$graph = new PDD_Graph( $data );
 	$graph->display();
 
 	*/
@@ -132,7 +132,7 @@ class EDD_Graph {
 	 * @since 1.9
 	 */
 	public function get_data() {
-		return apply_filters( 'edd_get_graph_data', $this->data, $this );
+		return apply_filters( 'pdd_get_graph_data', $this->data, $this );
 	}
 
 	/**
@@ -143,7 +143,7 @@ class EDD_Graph {
 	public function load_scripts() {
 		// Use minified libraries if SCRIPT_DEBUG is turned off
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		wp_enqueue_script( 'jquery-flot', EDD_PLUGIN_URL . 'assets/js/jquery.flot' . $suffix . '.js' );
+		wp_enqueue_script( 'jquery-flot', PDD_PLUGIN_URL . 'assets/js/jquery.flot' . $suffix . '.js' );
 	}
 
 	/**
@@ -164,7 +164,7 @@ class EDD_Graph {
 		<script type="text/javascript">
 			jQuery( document ).ready( function($) {
 				$.plot(
-					$("#edd-graph-<?php echo $this->id; ?>"),
+					$("#pdd-graph-<?php echo $this->id; ?>"),
 					[
 						<?php foreach( $this->get_data() as $label => $data ) : ?>
 						{
@@ -222,8 +222,8 @@ class EDD_Graph {
 
 				);
 
-				function edd_flot_tooltip(x, y, contents) {
-					$('<div id="edd-flot-tooltip">' + contents + '</div>').css( {
+				function pdd_flot_tooltip(x, y, contents) {
+					$('<div id="pdd-flot-tooltip">' + contents + '</div>').css( {
 						position: 'absolute',
 						display: 'none',
 						top: y + 5,
@@ -236,27 +236,27 @@ class EDD_Graph {
 				}
 
 				var previousPoint = null;
-				$("#edd-graph-<?php echo $this->id; ?>").bind("plothover", function (event, pos, item) {
+				$("#pdd-graph-<?php echo $this->id; ?>").bind("plothover", function (event, pos, item) {
 					$("#x").text(pos.x.toFixed(2));
 					$("#y").text(pos.y.toFixed(2));
 					if (item) {
 						if (previousPoint != item.dataIndex) {
 							previousPoint = item.dataIndex;
-							$("#edd-flot-tooltip").remove();
+							$("#pdd-flot-tooltip").remove();
 							var x = item.datapoint[0].toFixed(2),
 							y = item.datapoint[1].toFixed(2);
 							if( item.series.id == 'earnings' ) {
-								if( edd_vars.currency_pos == 'before' ) {
-									edd_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + edd_vars.currency_sign + y );
+								if( pdd_vars.currency_pos == 'before' ) {
+									pdd_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + pdd_vars.currency_sign + y );
 								} else {
-									edd_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + y + edd_vars.currency_sign );
+									pdd_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + y + pdd_vars.currency_sign );
 								}
 							} else {
-								edd_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + y.replace( '.00', '' ) );
+								pdd_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + y.replace( '.00', '' ) );
 							}
 						}
 					} else {
-						$("#edd-flot-tooltip").remove();
+						$("#pdd-flot-tooltip").remove();
 						previousPoint = null;
 					}
 				});
@@ -264,7 +264,7 @@ class EDD_Graph {
 			});
 
 		</script>
-		<div id="edd-graph-<?php echo $this->id; ?>" class="edd-graph" style="height: 300px;"></div>
+		<div id="pdd-graph-<?php echo $this->id; ?>" class="pdd-graph" style="height: 300px;"></div>
 <?php
 		return ob_get_clean();
 	}
@@ -275,9 +275,9 @@ class EDD_Graph {
 	 * @since 1.9
 	 */
 	public function display() {
-		do_action( 'edd_before_graph', $this );
+		do_action( 'pdd_before_graph', $this );
 		echo $this->build_graph();
-		do_action( 'edd_after_graph', $this );
+		do_action( 'pdd_after_graph', $this );
 	}
 
 }

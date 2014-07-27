@@ -4,7 +4,7 @@
  *
  * Functions for compatibility with other plugins.
  *
- * @package     EDD
+ * @package     PDD
  * @subpackage  Functions/Compatibility
  * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -23,10 +23,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since 1.2.2
  * @return void
  */
-function edd_remove_post_types_order() {
+function pdd_remove_post_types_order() {
 	remove_filter( 'posts_orderby', 'CPTOrderPosts' );
 }
-add_action( 'load-edit.php', 'edd_remove_post_types_order' );
+add_action( 'load-edit.php', 'pdd_remove_post_types_order' );
 
 /**
  * Disables opengraph tags on the checkout page
@@ -37,12 +37,12 @@ add_action( 'load-edit.php', 'edd_remove_post_types_order' );
  * @since 1.3.3.1
  * @return bool
  */
-function edd_disable_jetpack_og_on_checkout() {
-	if ( edd_is_checkout() ) {
+function pdd_disable_jetpack_og_on_checkout() {
+	if ( pdd_is_checkout() ) {
 		remove_action( 'wp_head', 'jetpack_og_tags' );
 	}
 }
-add_action( 'template_redirect', 'edd_disable_jetpack_og_on_checkout' );
+add_action( 'template_redirect', 'pdd_disable_jetpack_og_on_checkout' );
 
 /**
  * Checks if a caching plugin is active
@@ -50,9 +50,9 @@ add_action( 'template_redirect', 'edd_disable_jetpack_og_on_checkout' );
  * @since 1.4.1
  * @return bool $caching True if caching plugin is enabled, false otherwise
  */
-function edd_is_caching_plugin_active() {
+function pdd_is_caching_plugin_active() {
 	$caching = ( function_exists( 'wpsupercache_site_admin' ) || defined( 'W3TC' ) );
-	return apply_filters( 'edd_is_caching_plugin_active', $caching );
+	return apply_filters( 'pdd_is_caching_plugin_active', $caching );
 }
 
 /**
@@ -64,20 +64,20 @@ function edd_is_caching_plugin_active() {
  * @param array $settings Misc Settings
  * @return array $settings Updated Misc Settings
  */
-function edd_append_no_cache_param( $settings ) {
-	if ( ! edd_is_caching_plugin_active() )
+function pdd_append_no_cache_param( $settings ) {
+	if ( ! pdd_is_caching_plugin_active() )
 		return $settings;
 
 	$settings[] = array(
 		'id' => 'no_cache_checkout',
-		'name' => __('No Caching on Checkout?', 'edd'),
-		'desc' => __('Check this box in order to append a ?nocache parameter to the checkout URL to prevent caching plugins from caching the page.', 'edd'),
+		'name' => __('No Caching on Checkout?', 'pdd'),
+		'desc' => __('Check this box in order to append a ?nocache parameter to the checkout URL to prevent caching plugins from caching the page.', 'pdd'),
 		'type' => 'checkbox'
 	);
 
 	return $settings;
 }
-add_filter( 'edd_settings_misc', 'edd_append_no_cache_param', -1 );
+add_filter( 'pdd_settings_misc', 'pdd_append_no_cache_param', -1 );
 
 /**
  * Show the correct language on the [downloads] short code if qTranslate is active
@@ -86,10 +86,10 @@ add_filter( 'edd_settings_misc', 'edd_append_no_cache_param', -1 );
  * @param string $content Download content
  * @return string $content Download content
  */
-function edd_qtranslate_content( $content ) {
+function pdd_qtranslate_content( $content ) {
 	if( defined( 'QT_LANGUAGE' ) )
 		$content = qtrans_useCurrentLanguageIfNotFoundShowAvailable( $content );
 	return $content;
 }
-add_filter( 'edd_downloads_content', 'edd_qtranslate_content' );
-add_filter( 'edd_downloads_excerpt', 'edd_qtranslate_content' );
+add_filter( 'pdd_downloads_content', 'pdd_qtranslate_content' );
+add_filter( 'pdd_downloads_excerpt', 'pdd_qtranslate_content' );
