@@ -39,7 +39,7 @@ More information at [Pojo Digital Donations.com](https://easydigitaldownloads.co
 
 [youtube http://www.youtube.com/watch?v=japHPcIFs4I]
 
-**Follow this plugin on [GitHub](https://github.com/easydigitaldownloads/Easy-Digital-Downloads)**
+**Follow this plugin on [GitHub](https://github.com/pojome/pojo-digital-donations)**
 
 **Sell and Track Software License Keys**
 

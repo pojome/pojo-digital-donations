@@ -1,4 +1,4 @@
-# [Pojo Digital Donations](http://easydigitaldownloads.com) [![Build Status](https://secure.travis-ci.org/easydigitaldownloads/Easy-Digital-Downloads.png?branch=master)](http://travis-ci.org/easydigitaldownloads/Easy-Digital-Downloads) [![Coverage Status](https://coveralls.io/repos/easydigitaldownloads/Easy-Digital-Downloads/badge.png)](https://coveralls.io/r/easydigitaldownloads/Easy-Digital-Downloads) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/easydigitaldownloads/Easy-Digital-Downloads/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/easydigitaldownloads/Easy-Digital-Downloads/?branch=master) #
+# [Pojo Digital Donations](http://easydigitaldownloads.com) [![Build Status](https://secure.travis-ci.org/pojome/pojo-digital-donations.png?branch=master)](http://travis-ci.org/pojome/pojo-digital-donations) [![Coverage Status](https://coveralls.io/repos/pojome/pojo-digital-donations/badge.png)](https://coveralls.io/r/pojome/pojo-digital-donations) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pojome/pojo-digital-donations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pojome/pojo-digital-donations/?branch=master) #
 
 ### Welcome to our GitHub Repository
 
@@ -10,23 +10,23 @@ More information can be found at [easydigitaldownloads.com](http://easydigitaldo
 
 For detailed setup instructions, visit the official [Documentation](http://easydigitaldownloads.com/documentation/) page.
 
-1. You can clone the GitHub repository: `https://github.com/easydigitaldownloads/Easy-Digital-Downloads.git`
-2. Or download it directly as a ZIP file: `https://github.com/easydigitaldownloads/Easy-Digital-Downloads/archive/master.zip`
+1. You can clone the GitHub repository: `https://github.com/pojome/pojo-digital-donations.git`
+2. Or download it directly as a ZIP file: `https://github.com/pojome/pojo-digital-donations/archive/master.zip`
 
 This will download the latest developer copy of Pojo Digital Donations.
 
 ## Bugs ##
-If you find an issue, let us know [here](https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues?state=open)!
+If you find an issue, let us know [here](https://github.com/pojome/pojo-digital-donations/issues?state=open)!
 
 ## Support ##
 This is a developer's portal for Pojo Digital Donations and should _not_ be used for support. Please visit the [support forums](https://easydigitaldownloads.com/support).
 
 ## Contributions ##
-Anyone is welcome to contribute to Pojo Digital Donations. Please read the [guidelines for contributing](https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/master/CONTRIBUTING.md) to this repository.
+Anyone is welcome to contribute to Pojo Digital Donations. Please read the [guidelines for contributing](https://github.com/pojome/pojo-digital-donations/blob/master/CONTRIBUTING.md) to this repository.
 
 There are various ways you can contribute:
 
-1. Raise an [Issue](https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues) on GitHub
+1. Raise an [Issue](https://github.com/pojome/pojo-digital-donations/issues) on GitHub
 2. Send us a Pull Request with your bug fixes and/or new features
 3. Translate Pojo Digital Donations into different languages
-4. Provide feedback and suggestions on [enhancements](https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues?direction=desc&labels=Enhancement&page=1&sort=created&state=open)
+4. Provide feedback and suggestions on [enhancements](https://github.com/pojome/pojo-digital-donations/issues?direction=desc&labels=Enhancement&page=1&sort=created&state=open)
