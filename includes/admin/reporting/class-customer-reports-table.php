@@ -110,14 +110,14 @@ class PDD_Customer_Reports_Table extends WP_List_Table {
 		switch ( $column_name ) {
 			case 'name' :
 				return '<a href="' .
-						admin_url( '/edit.php?post_type=download&page=pdd-payment-history&user=' . urlencode( $item['email'] )
+						admin_url( '/edit.php?post_type=pdd_camp&page=pdd-payment-history&user=' . urlencode( $item['email'] )
 					) . '">' . esc_html( $item[ $column_name ] ) . '</a>';
 
 			case 'amount_spent' :
 				return pdd_currency_filter( pdd_format_amount( $item[ $column_name ] ) );
 
 			case 'file_downloads' :
-					return '<a href="' . admin_url( '/edit.php?post_type=download&page=pdd-reports&tab=logs&user=' . urlencode( ! empty( $item['ID'] ) ? $item['ID'] : $item['email'] ) ) . '" target="_blank">' . __( 'View download log', 'pdd' ) . '</a>';
+					return '<a href="' . admin_url( '/edit.php?post_type=pdd_camp&page=pdd-reports&tab=logs&user=' . urlencode( ! empty( $item['ID'] ) ? $item['ID'] : $item['email'] ) ) . '" target="_blank">' . __( 'View download log', 'pdd' ) . '</a>';
 
 			default:
 				$value = isset( $item[ $column_name ] ) ? $item[ $column_name ] : null;

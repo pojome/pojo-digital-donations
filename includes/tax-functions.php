@@ -301,7 +301,7 @@ function pdd_cart_needs_tax_address_fields() {
  * @since 1.9
  * @return bool
  */
-function pdd_download_is_tax_exclusive( $download_id = 0 ) {
-	$ret = (bool) get_post_meta( $download_id, '_pdd_download_tax_exclusive', true );
-	return apply_filters( 'pdd_download_is_tax_exclusive', $ret, $download_id );
+function pdd_camp_is_tax_exclusive( $download_id = 0 ) {
+	$ret = (bool) get_post_meta( $download_id, '_pdd_camp_tax_exclusive', true );
+	return apply_filters( 'pdd_camp_is_tax_exclusive', $ret, $download_id );
 }

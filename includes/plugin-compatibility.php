@@ -91,5 +91,5 @@ function pdd_qtranslate_content( $content ) {
 		$content = qtrans_useCurrentLanguageIfNotFoundShowAvailable( $content );
 	return $content;
 }
-add_filter( 'pdd_downloads_content', 'pdd_qtranslate_content' );
-add_filter( 'pdd_downloads_excerpt', 'pdd_qtranslate_content' );
+add_filter( 'pdd_camps_content', 'pdd_qtranslate_content' );
+add_filter( 'pdd_camps_excerpt', 'pdd_qtranslate_content' );

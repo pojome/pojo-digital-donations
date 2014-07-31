@@ -93,7 +93,7 @@ function pdd_update_payment_details( $data ) {
 			$i++;
 		}
 
-		$meta['downloads']    = $downloads;
+		$meta['campaigns']    = $downloads;
 		$meta['cart_details'] = $cart_details;
 	}
 
@@ -134,7 +134,7 @@ function pdd_update_payment_details( $data ) {
 
 	do_action( 'pdd_updated_edited_purchase', $payment_id );
 
-	wp_safe_redirect( admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details&pdd-message=payment-updated&id=' . $payment_id ) );
+	wp_safe_redirect( admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history&view=view-order-details&pdd-message=payment-updated&id=' . $payment_id ) );
 	exit;
 }
 add_action( 'pdd_update_payment_details', 'pdd_update_payment_details' );
@@ -171,7 +171,7 @@ function pdd_trigger_payment_note_deletion( $data ) {
 		wp_die( __( 'You do not have permission to edit this payment record', 'pdd' ), __( 'Error', 'pdd' ) );
 	}
 
-	$edit_order_url = admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details&pdd-message=payment-note-deleted&id=' . absint( $data['payment_id'] ) );
+	$edit_order_url = admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history&view=view-order-details&pdd-message=payment-note-deleted&id=' . absint( $data['payment_id'] ) );
 
 	pdd_delete_payment_note( $data['note_id'], $data['payment_id'] );
 

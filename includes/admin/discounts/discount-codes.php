@@ -34,7 +34,7 @@ function pdd_discounts_page() {
 	<div class="wrap">
 		<h2><?php _e( 'Discount Codes', 'pdd' ); ?><a href="<?php echo add_query_arg( array( 'pdd-action' => 'add_discount' ) ); ?>" class="add-new-h2"><?php _e( 'Add New', 'pdd' ); ?></a></h2>
 		<?php do_action( 'pdd_discounts_page_top' ); ?>
-		<form id="pdd-discounts-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-discounts' ); ?>">
+		<form id="pdd-discounts-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-discounts' ); ?>">
 			<?php $discount_codes_table->search_box( __( 'Search', 'pdd' ), 'pdd-discounts' ); ?>
 
 			<input type="hidden" name="post_type" value="download" />

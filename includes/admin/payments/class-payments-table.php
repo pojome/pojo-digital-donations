@@ -118,7 +118,7 @@ class PDD_Payment_History_Table extends WP_List_Table {
 
 		$this->get_payment_counts();
 		$this->process_bulk_action();
-		$this->base_url = admin_url( 'edit.php?post_type=download&page=pdd-payment-history' );
+		$this->base_url = admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history' );
 	}
 
 	public function advanced_filters() {
@@ -138,7 +138,7 @@ class PDD_Payment_History_Table extends WP_List_Table {
 				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>"/>
 			<?php endif; ?>
 			<?php if( ! empty( $start_date ) || ! empty( $end_date ) ) : ?>
-				<a href="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-payment-history' ); ?>" class="button-secondary"><?php _e( 'Clear Filter', 'pdd' ); ?></a>
+				<a href="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history' ); ?>" class="button-secondary"><?php _e( 'Clear Filter', 'pdd' ); ?></a>
 			<?php endif; ?>
 			<?php $this->search_box( __( 'Search', 'pdd' ), 'pdd-payments' ); ?>
 		</div>
@@ -272,7 +272,7 @@ class PDD_Payment_History_Table extends WP_List_Table {
 				$value   = pdd_get_payment_status( $payment, true );
 				break;
 			case 'details' :
-				$value = '<a href="' . add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details' ) ) . '">' . __( 'View Order Details', 'pdd' ) . '</a>';
+				$value = '<a href="' . add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history&view=view-order-details' ) ) . '">' . __( 'View Order Details', 'pdd' ) . '</a>';
 				break;
 			default:
 				$value = isset( $payment->$column_name ) ? $payment->$column_name : '';

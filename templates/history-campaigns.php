@@ -5,13 +5,13 @@ if ( $purchases ) :
 	do_action( 'pdd_before_download_history' ); ?>
 	<table id="pdd_user_history">
 		<thead>
-			<tr class="pdd_download_history_row">
-				<?php do_action( 'pdd_download_history_header_start' ); ?>
-				<th class="pdd_download_download_name"><?php _e( 'Download Name', 'pdd' ); ?></th>
+			<tr class="pdd_camp_history_row">
+				<?php do_action( 'pdd_camp_history_header_start' ); ?>
+				<th class="pdd_camp_download_name"><?php _e( 'Download Name', 'pdd' ); ?></th>
 				<?php if ( ! pdd_no_redownload() ) : ?>
-					<th class="pdd_download_download_files"><?php _e( 'Files', 'pdd' ); ?></th>
+					<th class="pdd_camp_download_files"><?php _e( 'Files', 'pdd' ); ?></th>
 				<?php endif; //End if no redownload?>
-				<?php do_action( 'pdd_download_history_header_end' ); ?>
+				<?php do_action( 'pdd_camp_history_header_end' ); ?>
 			</tr>
 		</thead>
 		<?php foreach ( $purchases as $payment ) :
@@ -26,7 +26,7 @@ if ( $purchases ) :
 					if ( pdd_is_bundled_product( $download['id'] ) )
 						continue; ?>
 
-					<tr class="pdd_download_history_row">
+					<tr class="pdd_camp_history_row">
 						<?php
 						$price_id 		= pdd_get_cart_item_price_id( $download );
 						$download_files = pdd_get_download_files( $download['id'], $price_id );
@@ -37,12 +37,12 @@ if ( $purchases ) :
 							$name .= ' - ' . pdd_get_price_option_name( $download['id'], $price_id, $payment->ID );
 						}
 
-						do_action( 'pdd_download_history_row_start', $payment->ID, $download['id'] );
+						do_action( 'pdd_camp_history_row_start', $payment->ID, $download['id'] );
 						?>
-						<td class="pdd_download_download_name"><?php echo esc_html( $name ); ?></td>
+						<td class="pdd_camp_download_name"><?php echo esc_html( $name ); ?></td>
 
 						<?php if ( ! pdd_no_redownload() ) : ?>
-							<td class="pdd_download_download_files">
+							<td class="pdd_camp_download_files">
 								<?php
 
 								if ( pdd_is_payment_complete( $payment->ID ) ) :
@@ -54,13 +54,13 @@ if ( $purchases ) :
 											$download_url = pdd_get_download_file_url( $purchase_data['key'], $email, $filekey, $download['id'], $price_id );
 											?>
 
-											<div class="pdd_download_file">
-												<a href="<?php echo esc_url( $download_url ); ?>" class="pdd_download_file_link">
+											<div class="pdd_camp_file">
+												<a href="<?php echo esc_url( $download_url ); ?>" class="pdd_camp_file_link">
 													<?php echo esc_html( $file['name'] ); ?>
 												</a>
 											</div>
 
-											<?php do_action( 'pdd_download_history_files', $filekey, $file, $id, $payment->ID, $purchase_data );
+											<?php do_action( 'pdd_camp_history_files', $filekey, $file, $id, $payment->ID, $purchase_data );
 										endforeach;
 
 									else :
@@ -68,7 +68,7 @@ if ( $purchases ) :
 									endif; // End if payment complete
 
 								else : ?>
-									<span class="pdd_download_payment_status">
+									<span class="pdd_camp_payment_status">
 										<?php printf( __( 'Payment status is %s', 'pdd' ), pdd_get_payment_status( $payment, true) ); ?>
 									</span>
 									<?php
@@ -77,7 +77,7 @@ if ( $purchases ) :
 							</td>
 						<?php endif; // End if ! pdd_no_redownload()
 
-						do_action( 'pdd_download_history_row_end', $payment->ID, $download['id'] );
+						do_action( 'pdd_camp_history_row_end', $payment->ID, $download['id'] );
 						?>
 					</tr>
 					<?php
@@ -86,7 +86,7 @@ if ( $purchases ) :
 		endforeach;
 		?>
 	</table>
-	<div id="pdd_download_history_pagination" class="pdd_pagination navigation">
+	<div id="pdd_camp_history_pagination" class="pdd_pagination navigation">
 		<?php
 		$big = 999999;
 		echo paginate_links( array(

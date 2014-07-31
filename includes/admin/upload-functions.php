@@ -30,7 +30,7 @@ function pdd_change_downloads_upload_dir() {
 	global $pagenow;
 
 	if ( ! empty( $_REQUEST['post_id'] ) && ( 'async-upload.php' == $pagenow || 'media-upload.php' == $pagenow ) ) {
-		if ( 'download' == get_post_type( $_REQUEST['post_id'] ) ) {
+		if ( 'pdd_camp' == get_post_type( $_REQUEST['post_id'] ) ) {
 			pdd_create_protection_files( true );
 			add_filter( 'upload_dir', 'pdd_set_upload_dir' );
 		}

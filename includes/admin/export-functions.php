@@ -78,4 +78,4 @@ function pdd_export_all_downloads_history() {
 
 	$file_download_export->export();
 }
-add_action( 'pdd_downloads_history_export', 'pdd_export_all_downloads_history' );
+add_action( 'pdd_camps_history_export', 'pdd_export_all_downloads_history' );

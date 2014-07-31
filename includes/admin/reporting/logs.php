@@ -47,7 +47,7 @@ function pdd_logs_view_file_downloads() {
 	?>
 	<div class="wrap">
 		<?php do_action( 'pdd_logs_file_downloads_top' ); ?>
-		<form id="pdd-logs-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-reports&tab=logs' ); ?>">
+		<form id="pdd-logs-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports&tab=logs' ); ?>">
 			<?php
 			$logs_table->search_box( __( 'Search', 'pdd' ), 'pdd-payments' );
 			$logs_table->display();
@@ -97,7 +97,7 @@ function pdd_logs_view_api_requests() {
 	?>
 	<div class="wrap">
 		<?php do_action( 'pdd_logs_api_requests_top' ); ?>
-		<form id="pdd-logs-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-reports&tab=logs' ); ?>">
+		<form id="pdd-logs-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports&tab=logs' ); ?>">
 			<?php
 			$logs_table->search_box( __( 'Search', 'pdd' ), 'pdd-api-requests' );
 			$logs_table->display();

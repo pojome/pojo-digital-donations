@@ -22,12 +22,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return array $download_columns Updated array of download columns for Downloads
  *  Post Type List Table
  */
-function pdd_download_columns( $download_columns ) {
+function pdd_camp_columns( $download_columns ) {
 	$download_columns = array(
 		'cb'                => '<input type="checkbox"/>',
 		'title'             => __( 'Name', 'pdd' ),
-		'download_category' => __( 'Categories', 'pdd' ),
-		'download_tag'      => __( 'Tags', 'pdd' ),
+		'camp_category' => __( 'Categories', 'pdd' ),
+		'camp_tag'      => __( 'Tags', 'pdd' ),
 		'price'             => __( 'Price', 'pdd' ),
 		'sales'             => __( 'Sales', 'pdd' ),
 		'earnings'          => __( 'Earnings', 'pdd' ),
@@ -35,9 +35,9 @@ function pdd_download_columns( $download_columns ) {
 		'date'              => __( 'Date', 'pdd' )
 	);
 
-	return apply_filters( 'pdd_download_columns', $download_columns );
+	return apply_filters( 'pdd_camp_columns', $download_columns );
 }
-add_filter( 'manage_edit-download_columns', 'pdd_download_columns' );
+add_filter( 'manage_edit-download_columns', 'pdd_camp_columns' );
 
 /**
  * Render Download Columns
@@ -48,7 +48,7 @@ add_filter( 'manage_edit-download_columns', 'pdd_download_columns' );
  * @return void
  */
 function pdd_render_download_columns( $column_name, $post_id ) {
-	if ( get_post_type( $post_id ) == 'download' ) {
+	if ( get_post_type( $post_id ) == 'pdd_camp' ) {
 		global $pdd_options;
 
 		$style 			= isset( $pdd_options['button_style'] ) ? $pdd_options['button_style'] : 'button';
@@ -57,11 +57,11 @@ function pdd_render_download_columns( $column_name, $post_id ) {
 		$purchase_text 	= ! empty( $pdd_options['add_to_cart_text'] ) ? $pdd_options['add_to_cart_text'] : __( 'Purchase', 'pdd' );
 
 		switch ( $column_name ) {
-			case 'download_category':
-				echo get_the_term_list( $post_id, 'download_category', '', ', ', '');
+			case 'camp_category':
+				echo get_the_term_list( $post_id, 'camp_category', '', ', ', '');
 				break;
-			case 'download_tag':
-				echo get_the_term_list( $post_id, 'download_tag', '', ', ', '');
+			case 'camp_tag':
+				echo get_the_term_list( $post_id, 'camp_tag', '', ', ', '');
 				break;
 			case 'price':
 				if ( pdd_has_variable_prices( $post_id ) ) {
@@ -73,7 +73,7 @@ function pdd_render_download_columns( $column_name, $post_id ) {
 				break;
 			case 'sales':
 				if ( current_user_can( 'view_product_stats', $post_id ) ) {
-					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=download&page=pdd-reports&tab=logs&download=' . $post_id ) ) . '">';
+					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports&tab=logs&download=' . $post_id ) ) . '">';
 						echo pdd_get_download_sales_stats( $post_id );
 					echo '</a>';
 				} else {
@@ -82,7 +82,7 @@ function pdd_render_download_columns( $column_name, $post_id ) {
 				break;
 			case 'earnings':
 				if ( current_user_can( 'view_product_stats', $post_id ) ) {
-					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=download&page=pdd-reports&view=downloads&download-id=' . $post_id ) ) . '">';
+					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports&view=downloads&download-id=' . $post_id ) ) . '">';
 						echo pdd_currency_filter( pdd_format_amount( pdd_get_download_earnings_stats( $post_id ) ) );
 					echo '</a>';
 				} else {
@@ -90,7 +90,7 @@ function pdd_render_download_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'shortcode':
-				echo '[purchase_link id="' . absint( $post_id ) . '" text="' . esc_html( $purchase_text ) . '" style="' . $style . '" color="' . esc_attr( $color ) . '"]';
+				echo '[donate_link id="' . absint( $post_id ) . '" text="' . esc_html( $purchase_text ) . '" style="' . $style . '" color="' . esc_attr( $color ) . '"]';
 				break;
 		}
 	}
@@ -122,13 +122,13 @@ add_filter( 'manage_edit-download_sortable_columns', 'pdd_sortable_download_colu
  */
 function pdd_sort_downloads( $vars ) {
 	// Check if we're viewing the "download" post type
-	if ( isset( $vars['post_type'] ) && 'download' == $vars['post_type'] ) {
+	if ( isset( $vars['post_type'] ) && 'pdd_camp' == $vars['post_type'] ) {
 		// Check if 'orderby' is set to "sales"
 		if ( isset( $vars['orderby'] ) && 'sales' == $vars['orderby'] ) {
 			$vars = array_merge(
 				$vars,
 				array(
-					'meta_key' => '_pdd_download_sales',
+					'meta_key' => '_pdd_camp_sales',
 					'orderby'  => 'meta_value_num'
 				)
 			);
@@ -139,7 +139,7 @@ function pdd_sort_downloads( $vars ) {
 			$vars = array_merge(
 				$vars,
 				array(
-					'meta_key' => '_pdd_download_earnings',
+					'meta_key' => '_pdd_camp_earnings',
 					'orderby'  => 'meta_value_num'
 				)
 			);
@@ -168,10 +168,10 @@ function pdd_sort_downloads( $vars ) {
  * @since 1.0
  * @return void
  */
-function pdd_download_load() {
+function pdd_camp_load() {
 	add_filter( 'request', 'pdd_sort_downloads' );
 }
-add_action( 'load-edit.php', 'pdd_download_load', 9999 );
+add_action( 'load-edit.php', 'pdd_camp_load', 9999 );
 
 /**
  * Add Download Filters
@@ -184,25 +184,25 @@ add_action( 'load-edit.php', 'pdd_download_load', 9999 );
 function pdd_add_download_filters() {
 	global $typenow;
 
-	// Checks if the current post type is 'download'
-	if ( $typenow == 'download') {
-		$terms = get_terms( 'download_category' );
+	// Checks if the current post type is 'pdd_camp'
+	if ( $typenow == 'pdd_camp') {
+		$terms = get_terms( 'camp_category' );
 		if ( count( $terms ) > 0 ) {
-			echo "<select name='download_category' id='download_category' class='postform'>";
+			echo "<select name='camp_category' id='camp_category' class='postform'>";
 				echo "<option value=''>" . __( 'Show all categories', 'pdd' ) . "</option>";
 				foreach ( $terms as $term ) {
-					$selected = isset( $_GET['download_category'] ) && $_GET['download_category'] == $term->slug ? ' selected="selected"' : '';
+					$selected = isset( $_GET['camp_category'] ) && $_GET['camp_category'] == $term->slug ? ' selected="selected"' : '';
 					echo '<option value="' . esc_attr( $term->slug ) . '"' . $selected . '>' . esc_html( $term->name ) .' (' . $term->count .')</option>';
 				}
 			echo "</select>";
 		}
 
-		$terms = get_terms( 'download_tag' );
+		$terms = get_terms( 'camp_tag' );
 		if ( count( $terms ) > 0) {
-			echo "<select name='download_tag' id='download_tag' class='postform'>";
+			echo "<select name='camp_tag' id='camp_tag' class='postform'>";
 				echo "<option value=''>" . __( 'Show all tags', 'pdd' ) . "</option>";
 				foreach ( $terms as $term ) {
-					$selected = isset( $_GET['download_tag']) && $_GET['download_tag'] == $term->slug ? ' selected="selected"' : '';
+					$selected = isset( $_GET['camp_tag']) && $_GET['camp_tag'] == $term->slug ? ' selected="selected"' : '';
 					echo '<option value="' . esc_attr( $term->slug ) . '"' . $selected . '>' . esc_html( $term->name ) .' (' . $term->count .')</option>';
 				}
 			echo "</select>";
@@ -221,7 +221,7 @@ add_action( 'restrict_manage_posts', 'pdd_add_download_filters', 100 );
  * @return void
  */
 function pdd_price_field_quick_edit( $column_name, $post_type ) {
-	if ( $column_name != 'price' || $post_type != 'download' ) return;
+	if ( $column_name != 'price' || $post_type != 'pdd_camp' ) return;
 	?>
 	<fieldset class="inline-edit-col-left">
 		<div id="pdd-download-data" class="inline-edit-col">
@@ -248,7 +248,7 @@ add_action( 'bulk_edit_custom_box', 'pdd_price_field_quick_edit', 10, 2 );
  * @return void
  */
 function pdd_price_save_quick_edit( $post_id ) {
-	if ( ! isset( $_POST['post_type']) || 'download' !== $_POST['post_type'] ) return;
+	if ( ! isset( $_POST['post_type']) || 'pdd_camp' !== $_POST['post_type'] ) return;
 	if ( ! current_user_can( 'edit_post', $post_id ) ) return $post_id;
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return $post_id;
 

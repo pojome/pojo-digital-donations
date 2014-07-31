@@ -619,6 +619,6 @@ function pdd_parse_report_dates( $data ) {
 	$view = pdd_get_reporting_view();
 	$id   = isset( $_GET['download-id'] ) ? $_GET['download-id'] : null;
 
-	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=download&page=pdd-reports&view=' . esc_attr( $view ) . '&download-id=' . absint( $id ) ) ) ); pdd_die();
+	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports&view=' . esc_attr( $view ) . '&download-id=' . absint( $id ) ) ) ); pdd_die();
 }
 add_action( 'pdd_filter_reports', 'pdd_parse_report_dates' );

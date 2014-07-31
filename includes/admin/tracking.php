@@ -97,7 +97,7 @@ class PDD_Tracking {
 
 		$data['active_plugins']   = $active_plugins;
 		$data['inactive_plugins'] = $plugins;
-		$data['products']         = wp_count_posts( 'download' )->publish;
+		$data['products']         = wp_count_posts( 'pdd_camp' )->publish;
 
 		$this->data = $data;
 	}

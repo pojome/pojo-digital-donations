@@ -34,7 +34,7 @@ class PDD_Welcome {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'admin_menus') );
 		add_action( 'admin_head', array( $this, 'admin_head' ) );
-		add_action( 'admin_init', array( $this, 'welcome'    ) );
+		//add_action( 'admin_init', array( $this, 'welcome'    ) );
 	}
 
 	/**
@@ -183,7 +183,7 @@ class PDD_Welcome {
 					<img src="<?php echo PDD_PLUGIN_URL . 'assets/images/screenshots/20-sequential.png'; ?>" class="pdd-welcome-screenshots"/>
 
 					<h4><?php _e( 'Prefix, Postfix, and Starting Number', 'pdd' );?></h4>
-					<p><?php printf( __( 'Sequential order numbers are now supported out of the box. Simply go to <a href="%s">Settings &rarr; Misc</a> to enable them. The starting number, prefix, and postfix for order numbers can all be easily configured.', 'pdd' ), admin_url( 'edit.php?post_type=download&page=pdd-settings&tab=misc' ) ); ?></p>
+					<p><?php printf( __( 'Sequential order numbers are now supported out of the box. Simply go to <a href="%s">Settings &rarr; Misc</a> to enable them. The starting number, prefix, and postfix for order numbers can all be easily configured.', 'pdd' ), admin_url( 'edit.php?post_type=pdd_camp&page=pdd-settings&tab=misc' ) ); ?></p>
 
 					<h4><?php _e( 'Upgrade Routine', 'pdd' );?></h4>
 					<p><?php _e( 'Sequential order numbers are important for some and even mandatory for others, so we want to ensure that all users can make use of them. For this reason, we have provided a one-click upgrade routine that will update all previous purchase records with sequential order numbers matching your settings.', 'pdd' );?></p>
@@ -267,7 +267,7 @@ class PDD_Welcome {
 			</div>
 
 			<div class="return-to-dashboard">
-				<a href="<?php echo esc_url( admin_url( add_query_arg( array( 'post_type' => 'download', 'page' => 'pdd-settings' ), 'edit.php' ) ) ); ?>"><?php _e( 'Go to Pojo Digital Donations Settings', 'pdd' ); ?></a> &middot;
+				<a href="<?php echo esc_url( admin_url( add_query_arg( array( 'post_type' => 'pdd_camp', 'page' => 'pdd-settings' ), 'edit.php' ) ) ); ?>"><?php _e( 'Go to Pojo Digital Donations Settings', 'pdd' ); ?></a> &middot;
 				<a href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'pdd-changelog' ), 'index.php' ) ) ); ?>"><?php _e( 'View the Full Changelog', 'pdd' ); ?></a>
 			</div>
 		</div>
@@ -300,7 +300,7 @@ class PDD_Welcome {
 			</div>
 
 			<div class="return-to-dashboard">
-				<a href="<?php echo esc_url( admin_url( add_query_arg( array( 'post_type' => 'download', 'page' => 'pdd-settings' ), 'edit.php' ) ) ); ?>"><?php _e( 'Go to Pojo Digital Donations Settings', 'pdd' ); ?></a>
+				<a href="<?php echo esc_url( admin_url( add_query_arg( array( 'post_type' => 'pdd_camp', 'page' => 'pdd-settings' ), 'edit.php' ) ) ); ?>"><?php _e( 'Go to Pojo Digital Donations Settings', 'pdd' ); ?></a>
 			</div>
 		</div>
 		<?php
@@ -338,9 +338,6 @@ class PDD_Welcome {
 					<h4><?php _e( 'Product Price', 'pdd' );?></h4>
 					<p><?php _e( 'Products can have simple prices or variable prices if you wish to have more than one price point for a product. For a single price, simply enter the price. For multiple price points, click <em>Enable variable pricing</em> and enter the options.', 'pdd' );?></p>
 
-					<h4><?php _e( 'Download Files', 'pdd' );?></h4>
-					<p><?php _e( 'Uploading the downloadable files is simple. Click <em>Upload File</em> in the Download Files section and choose your download file. To add more than one file, simply click the <em>Add New</em> button.', 'pdd' );?></p>
-
 				</div>
 			</div>
 
@@ -370,7 +367,7 @@ class PDD_Welcome {
 
 					<img src="<?php echo PDD_PLUGIN_URL . 'assets/images/screenshots/purchase-link.png'; ?>" class="pdd-welcome-screenshots"/>
 
-					<h4><?php _e( 'The <em>[purchase_link]</em> Shortcode','pdd' );?></h4>
+					<h4><?php _e( 'The <em>[donate_link]</em> Shortcode','pdd' );?></h4>
 					<p><?php _e( 'With easily accessible shortcodes to display purchase buttons, you can add a Buy Now or Add to Cart button for any product anywhere on your site in seconds.', 'pdd' );?></p>
 
 					<h4><?php _e( 'Buy Now Buttons', 'pdd' );?></h4>

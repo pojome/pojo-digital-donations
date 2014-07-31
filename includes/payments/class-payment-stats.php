@@ -204,7 +204,7 @@ class PDD_Payment_Stats extends PDD_Stats {
 
 		$downloads = $wpdb->get_results( $wpdb->prepare(
 			"SELECT post_id as download_id, max(meta_value) as sales
-				FROM $wpdb->postmeta WHERE meta_key='_pdd_download_sales' AND meta_value > 0
+				FROM $wpdb->postmeta WHERE meta_key='_pdd_camp_sales' AND meta_value > 0
 				GROUP BY meta_value+0
 				DESC LIMIT %d;", $number
 		) );

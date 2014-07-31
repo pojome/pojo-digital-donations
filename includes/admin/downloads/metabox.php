@@ -21,15 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return void
  */
 function pdd_add_download_meta_box() {
-	$post_types = apply_filters( 'pdd_download_metabox_post_types' , array( 'download' ) );
+	$post_types = apply_filters( 'pdd_camp_metabox_post_types' , array( 'pdd_camp' ) );
 
 	foreach ( $post_types as $post_type ) {
 
 		/** Product Prices **/
 		add_meta_box( 'pdd_product_prices', sprintf( __( '%1$s Prices', 'pdd' ), pdd_get_label_singular(), pdd_get_label_plural() ),  'pdd_render_download_meta_box', $post_type, 'normal', 'high' );
-
-		/** Product Files (and bundled products) **/
-		add_meta_box( 'pdd_product_files', sprintf( __( '%1$s Files', 'pdd' ), pdd_get_label_singular(), pdd_get_label_plural() ),  'pdd_render_files_meta_box', $post_type, 'normal', 'high' );
 
 		/** Product Settings **/
 		add_meta_box( 'pdd_product_settings', sprintf( __( '%1$s Settings', 'pdd' ), pdd_get_label_singular(), pdd_get_label_plural() ),  'pdd_render_settings_meta_box', $post_type, 'side', 'default' );
@@ -51,7 +48,7 @@ add_action( 'add_meta_boxes', 'pdd_add_download_meta_box' );
  * @since 1.9.5
  * @return array $fields Array of fields.
  */
-function pdd_download_metabox_fields() {
+function pdd_camp_metabox_fields() {
 
 	$fields = array(
 			'_pdd_product_type',
@@ -61,20 +58,16 @@ function pdd_download_metabox_fields() {
 			'pdd_variable_prices',
 			'_custom_amount',
 			'pdd_min_custom_amount',
-			'pdd_download_files',
+			'pdd_camp_files',
 			'_pdd_purchase_text',
 			'_pdd_purchase_style',
 			'_pdd_purchase_color',
 			'_pdd_bundled_products',
-			'_pdd_hide_purchase_link',
-			'_pdd_download_tax_exclusive',
+			'_pdd_hide_donate_link',
+			'_pdd_camp_tax_exclusive',
 			'_pdd_button_behavior',
 			'pdd_product_notes'
 		);
-
-	if ( current_user_can( 'manage_shop_settings' ) ) {
-		$fields[] = '_pdd_download_limit';
-	}
 
 	if ( pdd_use_skus() ) {
 		$fields[] = 'pdd_sku';
@@ -91,9 +84,9 @@ function pdd_download_metabox_fields() {
  * @global array $post All the data of the the current post
  * @return void
  */
-function pdd_download_meta_box_save( $post_id, $post ) {
+function pdd_camp_meta_box_save( $post_id, $post ) {
 
-	if ( ! isset( $_POST['pdd_download_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['pdd_download_meta_box_nonce'], basename( __FILE__ ) ) ) {
+	if ( ! isset( $_POST['pdd_camp_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['pdd_camp_meta_box_nonce'], basename( __FILE__ ) ) ) {
 		return;
 	}
 
@@ -110,39 +103,16 @@ function pdd_download_meta_box_save( $post_id, $post ) {
 	}
 
 	// The default fields that get saved
-	$fields = pdd_download_metabox_fields();
+	$fields = pdd_camp_metabox_fields();
 
 	foreach ( $fields as $field ) {
-
 		// Accept blank or "0"
-		if ( '_pdd_download_limit' == $field ) {
-			if ( ! empty( $_POST[ $field ] ) || strlen( $_POST[ $field ] ) === 0 || "0" === $_POST[ $field ] ) {
-
-				$global_limit = pdd_get_option( 'file_download_limit' );
-				$new_limit    = apply_filters( 'pdd_metabox_save_' . $field, $_POST[ $field ] );
-
-				// Only update the new limit if it is not the same as the global limit
-				if( $global_limit == $new_limit ) {
-
-					delete_post_meta( $post_id, '_pdd_download_limit' );
-
-				} else {
-
-					update_post_meta( $post_id, '_pdd_download_limit', $new_limit );
-
-				}
-			}
-
+		if ( ! empty( $_POST[ $field ] ) ) {
+			$new = apply_filters( 'pdd_metabox_save_' . $field, $_POST[ $field ] );
+			update_post_meta( $post_id, $field, $new );
 		} else {
-
-			if ( ! empty( $_POST[ $field ] ) ) {
-				$new = apply_filters( 'pdd_metabox_save_' . $field, $_POST[ $field ] );
-				update_post_meta( $post_id, $field, $new );
-			} else {
-				delete_post_meta( $post_id, $field );
-			}
+			delete_post_meta( $post_id, $field );
 		}
-
 	}
 
 	if ( pdd_has_variable_prices( $post_id ) ) {
@@ -153,7 +123,7 @@ function pdd_download_meta_box_save( $post_id, $post ) {
 	do_action( 'pdd_save_download', $post_id, $post );
 }
 
-add_action( 'save_post', 'pdd_download_meta_box_save', 10, 2 );
+add_action( 'save_post', 'pdd_camp_meta_box_save', 10, 2 );
 
 /**
  * Sanitize the price before it is saved
@@ -249,7 +219,7 @@ function pdd_sanitize_files_save( $files ) {
 	// Make sure all files are rekeyed starting at 0
 	return array_values( $files );
 }
-add_filter( 'pdd_metabox_save_pdd_download_files', 'pdd_sanitize_files_save' );
+add_filter( 'pdd_metabox_save_pdd_camp_files', 'pdd_sanitize_files_save' );
 
 /**
  * Don't save blank rows.
@@ -271,7 +241,7 @@ function pdd_metabox_save_check_blank_rows( $new ) {
 	return $new;
 }
 add_filter( 'pdd_metabox_save_pdd_variable_prices', 'pdd_metabox_save_check_blank_rows' );
-add_filter( 'pdd_metabox_save_pdd_download_files', 'pdd_metabox_save_check_blank_rows' );
+add_filter( 'pdd_metabox_save_pdd_camp_files', 'pdd_metabox_save_check_blank_rows' );
 
 
 /** Download Configuration *****************************************************************/
@@ -302,7 +272,7 @@ function pdd_render_download_meta_box() {
 	 */
 	do_action( 'pdd_meta_box_fields', $post->ID );
 
-	wp_nonce_field( basename( __FILE__ ), 'pdd_download_meta_box_nonce' );
+	wp_nonce_field( basename( __FILE__ ), 'pdd_camp_meta_box_nonce' );
 }
 
 /**
@@ -318,7 +288,7 @@ function pdd_render_files_meta_box() {
 	 * Output the files fields
 	 * @since 1.9
 	 */
-	do_action( 'pdd_meta_box_files_fields', $post->ID );
+	//do_action( 'pdd_meta_box_files_fields', $post->ID );
 }
 
 /**
@@ -343,8 +313,8 @@ function pdd_render_settings_meta_box() {
  * If variable pricing is not enabled, simply output a single input box.
  *
  * If variable pricing is enabled, outputs a table of all current prices.
- * Extensions can add column heads to the table via the `pdd_download_file_table_head`
- * hook, and actual columns via `pdd_download_file_table_row`
+ * Extensions can add column heads to the table via the `pdd_camp_file_table_head`
+ * hook, and actual columns via `pdd_camp_file_table_row`
  *
  * @since 1.0
  *
@@ -444,7 +414,7 @@ function pdd_render_price_field( $post_id ) {
 						-->
 						<th><?php _e( 'Option Name', 'pdd' ); ?></th>
 						<th style="width: 100px"><?php _e( 'Price', 'pdd' ); ?></th>
-						<?php do_action( 'pdd_download_price_table_head', $post_id ); ?>
+						<?php do_action( 'pdd_camp_price_table_head', $post_id ); ?>
 						<th style="width: 2%"></th>
 					</tr>
 				</thead>
@@ -540,7 +510,7 @@ function pdd_render_price_row( $key, $args = array(), $post_id ) {
 		<?php endif; ?>
 	</td>
 
-	<?php do_action( 'pdd_download_price_table_row', $post_id, $key, $args ); ?>
+	<?php do_action( 'pdd_camp_price_table_row', $post_id, $key, $args ); ?>
 
 	<td>
 		<a href="#" class="pdd_remove_repeatable" data-type="price" style="background: url(<?php echo admin_url('/images/xit.gif'); ?>) no-repeat;">&times;</a>
@@ -596,7 +566,7 @@ function pdd_render_products_field( $post_id ) {
 				<thead>
 					<tr>
 						<th><?php printf( __( 'Bundled %s:', 'pdd' ), pdd_get_label_plural() ); ?></th>
-						<?php do_action( 'pdd_download_products_table_head', $post_id ); ?>
+						<?php do_action( 'pdd_camp_products_table_head', $post_id ); ?>
 					</tr>
 				</thead>
 				<tbody>
@@ -612,7 +582,7 @@ function pdd_render_products_field( $post_id ) {
 							) );
 							?>
 						</td>
-						<?php do_action( 'pdd_download_products_table_row', $post_id ); ?>
+						<?php do_action( 'pdd_camp_products_table_row', $post_id ); ?>
 					</tr>
 				</tbody>
 			</table>
@@ -626,8 +596,8 @@ add_action( 'pdd_meta_box_files_fields', 'pdd_render_products_field', 10 );
  * File Downloads section.
  *
  * Outputs a table of all current files. Extensions can add column heads to the table
- * via the `pdd_download_file_table_head` hook, and actual columns via
- * `pdd_download_file_table_row`
+ * via the `pdd_camp_file_table_head` hook, and actual columns via
+ * `pdd_camp_file_table_row`
  *
  * @since 1.0
  * @see pdd_render_file_row()
@@ -641,12 +611,12 @@ function pdd_render_files_field( $post_id = 0 ) {
 	$display          = $type == 'bundle' ? ' style="display:none;"' : '';
 	$variable_display = $variable_pricing ? '' : 'display:none;';
 ?>
-	<div id="pdd_download_files"<?php echo $display; ?>>
+	<div id="pdd_camp_files"<?php echo $display; ?>>
 		<p>
 			<strong><?php _e( 'File Downloads:', 'pdd' ); ?></strong>
 		</p>
 
-		<input type="hidden" id="pdd_download_files" class="pdd_repeatable_upload_name_field" value=""/>
+		<input type="hidden" id="pdd_camp_files" class="pdd_repeatable_upload_name_field" value=""/>
 
 		<div id="pdd_file_fields" class="pdd_meta_table_wrap">
 			<table class="widefat pdd_repeatable_table" width="100%" cellpadding="0" cellspacing="0">
@@ -658,7 +628,7 @@ function pdd_render_files_field( $post_id = 0 ) {
 						<th style="width: 20%"><?php _e( 'File Name', 'pdd' ); ?></th>
 						<th><?php _e( 'File URL', 'pdd' ); ?></th>
 						<th class="pricing" style="width: 20%; <?php echo $variable_display; ?>"><?php _e( 'Price Assignment', 'pdd' ); ?></th>
-						<?php do_action( 'pdd_download_file_table_head', $post_id ); ?>
+						<?php do_action( 'pdd_camp_file_table_head', $post_id ); ?>
 						<th style="width: 2%"></th>
 					</tr>
 				</thead>
@@ -733,9 +703,9 @@ function pdd_render_file_row( $key = '', $args = array(), $post_id ) {
 	</td>
 	-->
 	<td>
-		<input type="hidden" name="pdd_download_files[<?php echo absint( $key ); ?>][attachment_id]" class="pdd_repeatable_attachment_id_field" value="<?php echo esc_attr( absint( $args['attachment_id'] ) ); ?>"/>
+		<input type="hidden" name="pdd_camp_files[<?php echo absint( $key ); ?>][attachment_id]" class="pdd_repeatable_attachment_id_field" value="<?php echo esc_attr( absint( $args['attachment_id'] ) ); ?>"/>
 		<?php echo PDD()->html->text( array(
-			'name'        => 'pdd_download_files[' . $key . '][name]',
+			'name'        => 'pdd_camp_files[' . $key . '][name]',
 			'value'       => $args['name'],
 			'placeholder' => __( 'File Name', 'pdd' ),
 			'class'       => 'pdd_repeatable_name_field large-text'
@@ -745,7 +715,7 @@ function pdd_render_file_row( $key = '', $args = array(), $post_id ) {
 	<td>
 		<div class="pdd_repeatable_upload_field_container">
 			<?php echo PDD()->html->text( array(
-				'name'        => 'pdd_download_files[' . $key . '][file]',
+				'name'        => 'pdd_camp_files[' . $key . '][file]',
 				'value'       => $args['file'],
 				'placeholder' => __( 'Upload or enter the file URL', 'pdd' ),
 				'class'       => 'pdd_repeatable_upload_field pdd_upload_field large-text'
@@ -768,7 +738,7 @@ function pdd_render_file_row( $key = '', $args = array(), $post_id ) {
 			}
 
 			echo PDD()->html->select( array(
-				'name'             => 'pdd_download_files[' . $key . '][condition]',
+				'name'             => 'pdd_camp_files[' . $key . '][condition]',
 				'class'            => 'pdd_repeatable_condition_field',
 				'options'          => $options,
 				'selected'         => $args['condition'],
@@ -777,7 +747,7 @@ function pdd_render_file_row( $key = '', $args = array(), $post_id ) {
 		?>
 	</td>
 
-	<?php do_action( 'pdd_download_file_table_row', $post_id, $key, $args ); ?>
+	<?php do_action( 'pdd_camp_file_table_row', $post_id, $key, $args ); ?>
 
 	<td>
 		<a href="#" class="pdd_remove_repeatable" data-type="file" style="background: url(<?php echo admin_url('/images/xit.gif'); ?>) no-repeat;">&times;</a>
@@ -803,15 +773,15 @@ function pdd_render_download_limit_row( $post_id ) {
     if( ! current_user_can( 'manage_shop_settings' ) )
         return;
 
-	$pdd_download_limit = pdd_get_file_download_limit( $post_id );
+	$pdd_camp_limit = pdd_get_file_download_limit( $post_id );
 	$display = 'bundle' == pdd_get_download_type( $post_id ) ? ' style="display: none;"' : '';
 ?>
-	<div id="pdd_download_limit_wrap"<?php echo $display; ?>>
+	<div id="pdd_camp_limit_wrap"<?php echo $display; ?>>
 		<p><strong><?php _e( 'File Download Limit:', 'pdd' ); ?></strong></p>
-		<label for="pdd_download_limit">
+		<label for="pdd_camp_limit">
 			<?php echo PDD()->html->text( array(
-				'name'  => '_pdd_download_limit',
-				'value' => $pdd_download_limit,
+				'name'  => '_pdd_camp_limit',
+				'value' => $pdd_camp_limit,
 				'class' => 'small-text'
 			) ); ?>
 			<?php _e( 'Leave blank for global setting or 0 for unlimited', 'pdd' ); ?>
@@ -819,7 +789,7 @@ function pdd_render_download_limit_row( $post_id ) {
 	</div>
 <?php
 }
-add_action( 'pdd_meta_box_settings_fields', 'pdd_render_download_limit_row', 20 );
+//add_action( 'pdd_meta_box_settings_fields', 'pdd_render_download_limit_row', 20 );
 
 /**
  * Product tax settings
@@ -836,12 +806,12 @@ function pdd_render_dowwn_tax_options( $post_id = 0 ) {
     if( ! current_user_can( 'manage_shop_settings' ) || ! pdd_use_taxes() )
         return;
 
-	$exclusive = pdd_download_is_tax_exclusive( $post_id );
+	$exclusive = pdd_camp_is_tax_exclusive( $post_id );
 ?>
 	<p><strong><?php _e( 'Ignore Tax:', 'pdd' ); ?></strong></p>
-	<label for="_pdd_download_tax_exclusive">
+	<label for="_pdd_camp_tax_exclusive">
 		<?php echo PDD()->html->checkbox( array(
-			'name'    => '_pdd_download_tax_exclusive',
+			'name'    => '_pdd_camp_tax_exclusive',
 			'current' => $exclusive
 		) ); ?>
 		<?php _e( 'Mark this product as exclusive of tax', 'pdd' ); ?>
@@ -890,14 +860,14 @@ add_action( 'pdd_meta_box_settings_fields', 'pdd_render_accounting_options', 25 
  * @return void
  */
 function pdd_render_disable_button( $post_id ) {
-	$hide_button = get_post_meta( $post_id, '_pdd_hide_purchase_link', true ) ? 1 : 0;
+	$hide_button = get_post_meta( $post_id, '_pdd_hide_donate_link', true ) ? 1 : 0;
 	$behavior    = get_post_meta( $post_id, '_pdd_button_behavior', true );
 ?>
 	<p><strong><?php _e( 'Button Options:', 'pdd' ); ?></strong></p>
 	<p>
-		<label for="_pdd_hide_purchase_link">
+		<label for="_pdd_hide_donate_link">
 			<?php echo PDD()->html->checkbox( array(
-				'name'    => '_pdd_hide_purchase_link',
+				'name'    => '_pdd_hide_donate_link',
 				'current' => $hide_button
 			) ); ?>
 			<?php _e( 'Disable the automatic output of the purchase button', 'pdd' ); ?>
@@ -993,12 +963,8 @@ function pdd_render_stats_meta_box() {
 	</p>
 
 	<hr />
-
-	<p class="file-download-log">
-		<span><a href="<?php echo admin_url( 'edit.php?page=pdd-reports&view=file_downloads&post_type=download&tab=logs&download=' . $post->ID ); ?>"><?php _e( 'View File Download Log', 'pdd' ); ?></a></span><br/>
-	</p>
 	<p>
-		<span><a href="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-reports&view=downloads&download-id=' . $post->ID ); ?>"><?php _e( 'View Detailed Earnings Report', 'pdd' ); ?></a></span>
+		<span><a href="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports&view=downloads&download-id=' . $post->ID ); ?>"><?php _e( 'View Detailed Earnings Report', 'pdd' ); ?></a></span>
 	</p>
 <?php
 	do_action('pdd_stats_meta_box');

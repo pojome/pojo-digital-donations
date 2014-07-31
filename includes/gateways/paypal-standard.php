@@ -37,7 +37,7 @@ function pdd_process_paypal_purchase( $purchase_data ) {
 		'user_email'    => $purchase_data['user_email'],
 		'purchase_key'  => $purchase_data['purchase_key'],
 		'currency'      => pdd_get_currency(),
-		'downloads'     => $purchase_data['downloads'],
+		'campaigns'     => $purchase_data['campaigns'],
 		'user_info'     => $purchase_data['user_info'],
 		'cart_details'  => $purchase_data['cart_details'],
 		'gateway'       => 'paypal',

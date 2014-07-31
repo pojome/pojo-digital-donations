@@ -20,8 +20,8 @@ global $wpdb, $pdd_options, $wp_roles;
 if( pdd_get_option( 'uninstall_on_delete' ) ) {
 
 	/** Delete All the Custom Post Types */
-	$pdd_taxonomies = array( 'download_category', 'download_tag', 'pdd_log_type', );
-	$pdd_post_types = array( 'download', 'pdd_payment', 'pdd_discount', 'pdd_log' );
+	$pdd_taxonomies = array( 'camp_category', 'camp_tag', 'pdd_log_type', );
+	$pdd_post_types = array( 'pdd_camp', 'pdd_payment', 'pdd_discount', 'pdd_log' );
 	foreach ( $pdd_post_types as $post_type ) {
 	
 		$pdd_taxonomies = array_merge( $pdd_taxonomies, get_object_taxonomies( $post_type ) );

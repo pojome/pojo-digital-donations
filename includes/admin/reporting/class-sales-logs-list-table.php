@@ -64,19 +64,19 @@ class PDD_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ){
-			case 'download' :
-				return '<a href="' . add_query_arg( 'download', $item[ $column_name ] ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
+			case 'pdd_camp' :
+				return '<a href="' . add_query_arg( 'pdd_camp', $item[ $column_name ] ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
 
 			case 'user_id' :
 				return '<a href="' .
-					admin_url( 'edit.php?post_type=download&page=pdd-payment-history&user=' . urlencode( $item['user_id'] ) ) .
+					admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history&user=' . urlencode( $item['user_id'] ) ) .
 					 '">' . $item[ 'user_name' ] . '</a>';
 
 			case 'amount' :
 				return pdd_currency_filter( pdd_format_amount( $item['amount'] ) );
 
 			case 'payment_id' :
-				return '<a href="' . admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . pdd_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . pdd_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
 
 			default:
 				return $item[ $column_name ];
@@ -94,7 +94,7 @@ class PDD_Sales_Log_Table extends WP_List_Table {
 		$columns = array(
 			'ID'		=> __( 'Log ID', 'pdd' ),
 			'user_id'  	=> __( 'User', 'pdd' ),
-			'download'  => pdd_get_label_singular(),
+			'pdd_camp'  => pdd_get_label_singular(),
 			'amount'    => __( 'Item Amount', 'pdd' ),
 			'payment_id'=> __( 'Payment ID', 'pdd' ),
 			'date'  	=> __( 'Date', 'pdd' )
@@ -133,7 +133,7 @@ class PDD_Sales_Log_Table extends WP_List_Table {
 	 * @return int Download ID
 	 */
 	public function get_filtered_download() {
-		return ! empty( $_GET['download'] ) ? absint( $_GET['download'] ) : false;
+		return ! empty( $_GET['pdd_camp'] ) ? absint( $_GET['pdd_camp'] ) : false;
 	}
 
 	/**
@@ -240,7 +240,7 @@ class PDD_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function downloads_filter() {
 		$downloads = get_posts( array(
-			'post_type'      => 'download',
+			'post_type'      => 'pdd_camp',
 			'post_status'    => 'any',
 			'posts_per_page' => -1,
 			'orderby'        => 'title',
@@ -308,7 +308,7 @@ class PDD_Sales_Log_Table extends WP_List_Table {
 						$logs_data[] = array(
 							'ID' 		=> $log->ID,
 							'payment_id'=> $payment_id,
-							'download'  => $log->post_parent,
+							'pdd_camp'  => $log->post_parent,
 							'amount'    => $amount,
 							'user_id'	=> $user_info['id'],
 							'user_name'	=> $user_info['first_name'] . ' ' . $user_info['last_name'],

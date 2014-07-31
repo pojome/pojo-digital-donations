@@ -152,8 +152,8 @@ $status    = pdd_get_payment_status( $payment, true );
 
 									$download_url = pdd_get_download_file_url( $meta['key'], $email, $filekey, $item['id'], $price_id );
 									?>
-									<li class="pdd_download_file">
-										<a href="<?php echo esc_url( $download_url ); ?>" download="<?php echo pdd_get_file_name( $file ); ?>" class="pdd_download_file_link"><?php echo pdd_get_file_name( $file ); ?></a>
+									<li class="pdd_camp_file">
+										<a href="<?php echo esc_url( $download_url ); ?>" download="<?php echo pdd_get_file_name( $file ); ?>" class="pdd_camp_file_link"><?php echo pdd_get_file_name( $file ); ?></a>
 									</li>
 									<?php
 									do_action( 'pdd_receipt_files', $filekey, $file, $item['id'], $payment->ID, $meta );
@@ -175,8 +175,8 @@ $status    = pdd_get_payment_status( $payment, true );
 												foreach ( $download_files as $filekey => $file ) :
 
 													$download_url = pdd_get_download_file_url( $meta['key'], $email, $filekey, $bundle_item ); ?>
-													<li class="pdd_download_file">
-														<a href="<?php echo esc_url( $download_url ); ?>" class="pdd_download_file_link"><?php echo esc_html( $file['name'] ); ?></a>
+													<li class="pdd_camp_file">
+														<a href="<?php echo esc_url( $download_url ); ?>" class="pdd_camp_file_link"><?php echo esc_html( $file['name'] ); ?></a>
 													</li>
 													<?php
 													do_action( 'pdd_receipt_bundle_files', $filekey, $file, $item['id'], $bundle_item, $payment->ID, $meta );

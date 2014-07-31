@@ -148,7 +148,7 @@ function pdd_v131_upgrades() {
 		set_time_limit( 0 );
 
 	$args = array(
-		'post_type' 		=> 'download',
+		'post_type' 		=> 'pdd_camp',
 		'posts_per_page' 	=> -1,
 		'post_status' 		=> 'publish'
 	);
@@ -184,7 +184,7 @@ function pdd_v131_upgrades() {
 			$file_logs = pdd_get_file_download_log( $download->ID, false );
 
 			if ( $file_logs ) {
-				foreach ( $file_logs['downloads'] as $log ) {
+				foreach ( $file_logs['campaigns'] as $log ) {
 					$log_data = array(
 						'post_parent'	=> $download->ID,
 						'post_date'		=> $log['date'],

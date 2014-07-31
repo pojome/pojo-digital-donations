@@ -141,7 +141,7 @@ function pdd_insert_payment( $payment_data = array() ) {
 
 		$payment_meta = array(
 			'currency'     => $payment_data['currency'],
-			'downloads'    => $payment_data['downloads'],
+			'campaigns'    => $payment_data['campaigns'],
 			'user_info'    => $payment_data['user_info'],
 			'cart_details' => $payment_data['cart_details'],
 			'tax'          => $cart_tax,
@@ -776,7 +776,7 @@ function pdd_get_payment_meta_user_info( $payment_id ) {
  */
 function pdd_get_payment_meta_downloads( $payment_id ) {
 	$payment_meta = pdd_get_payment_meta( $payment_id );
-	$downloads    = isset( $payment_meta['downloads'] ) ? maybe_unserialize( $payment_meta['downloads'] ) : array();
+	$downloads    = isset( $payment_meta['campaigns'] ) ? maybe_unserialize( $payment_meta['campaigns'] ) : array();
 
 	return apply_filters( 'pdd_payment_meta_downloads', $downloads );
 }

@@ -248,7 +248,6 @@ final class Easy_Digital_Downloads {
 		require_once PDD_PLUGIN_DIR . 'includes/shortcodes.php';
 
 		if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-			require_once PDD_PLUGIN_DIR . 'includes/admin/add-ons.php';
 			require_once PDD_PLUGIN_DIR . 'includes/admin/admin-footer.php';
 			require_once PDD_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 			require_once PDD_PLUGIN_DIR . 'includes/admin/admin-notices.php';
@@ -262,7 +261,6 @@ final class Easy_Digital_Downloads {
 			require_once PDD_PLUGIN_DIR . 'includes/admin/downloads/contextual-help.php';
 			require_once PDD_PLUGIN_DIR . 'includes/admin/discounts/contextual-help.php';
 			require_once PDD_PLUGIN_DIR . 'includes/admin/discounts/discount-actions.php';
-			require_once PDD_PLUGIN_DIR . 'includes/admin/discounts/discount-codes.php';
 			require_once PDD_PLUGIN_DIR . 'includes/admin/payments/actions.php';
 			require_once PDD_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
 			require_once PDD_PLUGIN_DIR . 'includes/admin/payments/contextual-help.php';

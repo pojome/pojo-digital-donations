@@ -21,10 +21,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function pdd_setup_pdd_post_types() {
 
 	$archives = defined( 'PDD_DISABLE_ARCHIVE' ) && PDD_DISABLE_ARCHIVE ? false : true;
-	$slug     = defined( 'PDD_SLUG' ) ? PDD_SLUG : 'downloads';
+	$slug     = defined( 'PDD_SLUG' ) ? PDD_SLUG : 'campaign';
 	$rewrite  = defined( 'PDD_DISABLE_REWRITE' ) && PDD_DISABLE_REWRITE ? false : array('slug' => $slug, 'with_front' => false);
 
-	$download_labels =  apply_filters( 'pdd_download_labels', array(
+	$download_labels =  apply_filters( 'pdd_camp_labels', array(
 		'name' 				=> '%2$s',
 		'singular_name' 	=> '%1$s',
 		'add_new' 			=> __( 'Add New', 'pdd' ),
@@ -37,7 +37,7 @@ function pdd_setup_pdd_post_types() {
 		'not_found' 		=> __( 'No %2$s found', 'pdd' ),
 		'not_found_in_trash'=> __( 'No %2$s found in Trash', 'pdd' ),
 		'parent_item_colon' => '',
-		'menu_name' 		=> __( '%2$s', 'pdd' )
+		'menu_name' 		=> __( 'Donations', 'pdd' )
 	) );
 
 	foreach ( $download_labels as $key => $value ) {
@@ -56,15 +56,15 @@ function pdd_setup_pdd_post_types() {
 		'map_meta_cap'      => true,
 		'has_archive' 		=> $archives,
 		'hierarchical' 		=> false,
-		'supports' 			=> apply_filters( 'pdd_download_supports', array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'author' ) ),
+		'supports' 			=> apply_filters( 'pdd_camp_supports', array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'author' ) ),
 	);
-	register_post_type( 'download', apply_filters( 'pdd_download_post_type_args', $download_args ) );
+	register_post_type( 'pdd_camp', apply_filters( 'pdd_camp_post_type_args', $download_args ) );
 
 
 	/** Payment Post Type */
 	$payment_labels = array(
-		'name' 				=> _x('Payments', 'post type general name', 'pdd' ),
-		'singular_name' 	=> _x('Payment', 'post type singular name', 'pdd' ),
+		'name' 				=> _x( 'Payments', 'post type general name', 'pdd' ),
+		'singular_name' 	=> _x( 'Payment', 'post type singular name', 'pdd' ),
 		'add_new' 			=> __( 'Add New', 'pdd' ),
 		'add_new_item' 		=> __( 'Add New Payment', 'pdd' ),
 		'edit_item' 		=> __( 'Edit Payment', 'pdd' ),
@@ -72,7 +72,7 @@ function pdd_setup_pdd_post_types() {
 		'all_items' 		=> __( 'All Payments', 'pdd' ),
 		'view_item' 		=> __( 'View Payment', 'pdd' ),
 		'search_items' 		=> __( 'Search Payments', 'pdd' ),
-		'not_found' 		=>  __( 'No Payments found', 'pdd' ),
+		'not_found' 		=> __( 'No Payments found', 'pdd' ),
 		'not_found_in_trash'=> __( 'No Payments found in Trash', 'pdd' ),
 		'parent_item_colon' => '',
 		'menu_name' 		=> __( 'Payment History', 'pdd' )
@@ -89,37 +89,6 @@ function pdd_setup_pdd_post_types() {
 		'can_export'		=> true
 	);
 	register_post_type( 'pdd_payment', $payment_args );
-
-
-	/** Discounts Post Type */
-	$discount_labels = array(
-		'name' 				=> _x( 'Discounts', 'post type general name', 'pdd' ),
-		'singular_name' 	=> _x( 'Discount', 'post type singular name', 'pdd' ),
-		'add_new' 			=> __( 'Add New', 'pdd' ),
-		'add_new_item' 		=> __( 'Add New Discount', 'pdd' ),
-		'edit_item' 		=> __( 'Edit Discount', 'pdd' ),
-		'new_item' 			=> __( 'New Discount', 'pdd' ),
-		'all_items' 		=> __( 'All Discounts', 'pdd' ),
-		'view_item' 		=> __( 'View Discount', 'pdd' ),
-		'search_items' 		=> __( 'Search Discounts', 'pdd' ),
-		'not_found' 		=> __( 'No Discounts found', 'pdd' ),
-		'not_found_in_trash'=> __( 'No Discounts found in Trash', 'pdd' ),
-		'parent_item_colon' => '',
-		'menu_name' 		=> __( 'Discounts', 'pdd' )
-	);
-
-	$discount_args = array(
-		'labels' 			=> apply_filters( 'pdd_discount_labels', $discount_labels ),
-		'public' 			=> false,
-		'query_var' 		=> false,
-		'rewrite' 			=> false,
-		'show_ui'           => false,
-		'capability_type' 	=> 'shop_discount',
-		'map_meta_cap'      => true,
-		'supports' 			=> array( 'title' ),
-		'can_export'		=> true
-	);
-	register_post_type( 'pdd_discount', $discount_args );
 }
 add_action( 'init', 'pdd_setup_pdd_post_types', 1 );
 
@@ -131,10 +100,10 @@ add_action( 'init', 'pdd_setup_pdd_post_types', 1 );
  */
 function pdd_get_default_labels() {
 	$defaults = array(
-	   'singular' => __( 'Download', 'pdd' ),
-	   'plural' => __( 'Downloads', 'pdd')
+	   'singular' => __( 'Campaign', 'pdd' ),
+	   'plural' => __( 'Campaigns', 'pdd')
 	);
-	return apply_filters( 'pdd_default_downloads_name', $defaults );
+	return apply_filters( 'pdd_default_donations_name', $defaults );
 }
 
 /**
@@ -178,7 +147,7 @@ function pdd_change_default_title( $title ) {
      
      $screen = get_current_screen();
 
-     if  ( 'download' == $screen->post_type ) {
+     if  ( 'pdd_camp' == $screen->post_type ) {
      	$label = pdd_get_label_singular();
         $title = sprintf( __( 'Enter %s title here', 'pdd' ), $label );
      }
@@ -195,7 +164,7 @@ add_filter( 'enter_title_here', 'pdd_change_default_title' );
 */
 function pdd_setup_download_taxonomies() {
 
-	$slug     = defined( 'PDD_SLUG' ) ? PDD_SLUG : 'downloads';
+	$slug     = defined( 'PDD_SLUG' ) ? PDD_SLUG : 'campaigns';
 
 	/** Categories */
 	$category_labels = array(
@@ -213,17 +182,17 @@ function pdd_setup_download_taxonomies() {
 		'choose_from_most_used' => sprintf( __( 'Choose from most used %s categories', 'pdd'  ), pdd_get_label_singular() ),
 	);
 
-	$category_args = apply_filters( 'pdd_download_category_args', array(
+	$category_args = apply_filters( 'pdd_camp_category_args', array(
 			'hierarchical' 	=> true,
-			'labels' 		=> apply_filters('pdd_download_category_labels', $category_labels),
+			'labels' 		=> apply_filters('pdd_camp_category_labels', $category_labels),
 			'show_ui' 		=> true,
-			'query_var' 	=> 'download_category',
+			'query_var' 	=> 'camp_category',
 			'rewrite' 		=> array('slug' => $slug . '/category', 'with_front' => false, 'hierarchical' => true ),
 			'capabilities'  => array( 'manage_terms' => 'manage_product_terms','edit_terms' => 'edit_product_terms','assign_terms' => 'assign_product_terms','delete_terms' => 'delete_product_terms' )
 		)
 	);
-	register_taxonomy( 'download_category', array('download'), $category_args );
-	register_taxonomy_for_object_type( 'download_category', 'download' );
+	register_taxonomy( 'camp_category', array('pdd_camp'), $category_args );
+	register_taxonomy_for_object_type( 'camp_category', 'pdd_camp' );
 
 	/** Tags */
 	$tag_labels = array(
@@ -241,18 +210,18 @@ function pdd_setup_download_taxonomies() {
 		'choose_from_most_used' => sprintf( __( 'Choose from most used %s tags', 'pdd'  ), pdd_get_label_singular() ),
 	);
 
-	$tag_args = apply_filters( 'pdd_download_tag_args', array(
+	$tag_args = apply_filters( 'pdd_camp_tag_args', array(
 			'hierarchical' 	=> false,
-			'labels' 		=> apply_filters( 'pdd_download_tag_labels', $tag_labels ),
+			'labels' 		=> apply_filters( 'pdd_camp_tag_labels', $tag_labels ),
 			'show_ui' 		=> true,
-			'query_var' 	=> 'download_tag',
+			'query_var' 	=> 'camp_tag',
 			'rewrite' 		=> array( 'slug' => $slug . '/tag', 'with_front' => false, 'hierarchical' => true  ),
 			'capabilities'  => array( 'manage_terms' => 'manage_product_terms','edit_terms' => 'edit_product_terms','assign_terms' => 'assign_product_terms','delete_terms' => 'delete_product_terms' )
 
 		)
 	);
-	register_taxonomy( 'download_tag', array( 'download' ), $tag_args );
-	register_taxonomy_for_object_type( 'download_tag', 'download' );
+	register_taxonomy( 'camp_tag', array( 'pdd_camp' ), $tag_args );
+	register_taxonomy_for_object_type( 'camp_tag', 'pdd_camp' );
 }
 add_action( 'init', 'pdd_setup_download_taxonomies', 0 );
 
@@ -334,7 +303,7 @@ function pdd_updated_messages( $messages ) {
 	$url2 = pdd_get_label_singular();
 	$url3 = '</a>';
 
-	$messages['download'] = array(
+	$messages['pdd_camp'] = array(
 		1 => sprintf( __( '%2$s updated. %1$sView %2$s%3$s.', 'pdd' ), $url1, $url2, $url3 ),
 		4 => sprintf( __( '%2$s updated. %1$sView %2$s%3$s.', 'pdd' ), $url1, $url2, $url3 ),
 		6 => sprintf( __( '%2$s published. %1$sView %2$s%3$s.', 'pdd' ), $url1, $url2, $url3 ),

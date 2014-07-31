@@ -370,9 +370,9 @@ function pdd_ajax_download_search() {
 	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
 	$results = array();
 	if ( current_user_can( 'edit_products' ) ) {
-		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'download' AND `post_title` LIKE '%$search%' LIMIT 50" );
+		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'pdd_camp' AND `post_title` LIKE '%$search%' LIMIT 50" );
 	} else {
-		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'download' AND `post_status` = 'publish' AND `post_title` LIKE '%$search%' LIMIT 50" );
+		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'pdd_camp' AND `post_status` = 'publish' AND `post_title` LIKE '%$search%' LIMIT 50" );
 	}
 
 	if( $items ) {
@@ -398,8 +398,8 @@ function pdd_ajax_download_search() {
 
 	pdd_die();
 }
-add_action( 'wp_ajax_pdd_download_search', 'pdd_ajax_download_search' );
-add_action( 'wp_ajax_nopriv_pdd_download_search', 'pdd_ajax_download_search' );
+add_action( 'wp_ajax_pdd_camp_search', 'pdd_ajax_download_search' );
+add_action( 'wp_ajax_nopriv_pdd_camp_search', 'pdd_ajax_download_search' );
 
 /**
  * Check for Download Price Variations via AJAX (this function can only be used
@@ -421,7 +421,7 @@ function pdd_check_for_download_price_variations() {
 	$download_id = intval( $_POST['download_id'] );
 	$download    = get_post( $download_id );
 
-	if( 'download' != $download->post_type ) {
+	if( 'pdd_camp' != $download->post_type ) {
 		die( '-2' );
 	}
 

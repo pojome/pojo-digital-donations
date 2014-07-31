@@ -116,12 +116,12 @@ jQuery(document).ready(function ($) {
 
 				if ( 'bundle' === $( this ).val() ) {
 					$( '#pdd_products' ).show();
-					$( '#pdd_download_files' ).hide();
-					$( '#pdd_download_limit_wrap' ).hide();
+					$( '#pdd_camp_files' ).hide();
+					$( '#pdd_camp_limit_wrap' ).hide();
 				} else {
 					$( '#pdd_products' ).hide();
-					$( '#pdd_download_files' ).show();
-					$( '#pdd_download_limit_wrap' ).show();
+					$( '#pdd_camp_files' ).show();
+					$( '#pdd_camp_limit_wrap' ).show();
 				}
 
 			});
@@ -1005,7 +1005,7 @@ jQuery(document).ready(function ($) {
 					type: 'GET',
 					url: ajaxurl,
 					data: {
-						action: 'pdd_download_search',
+						action: 'pdd_camp_search',
 						s: val,
 					},
 					dataType: "json",

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Install
  *
  * Runs on plugin install by setting up the post types, custom taxonomies,
- * flushing rewrite rules to initiate the new 'downloads' slug and also
+ * flushing rewrite rules to initiate the new 'campaigns' slug and also
  * creates the plugin and populates the settings fields for those plugin
  * pages. After successful install, the user is redirected to the PDD Welcome
  * screen.
@@ -54,7 +54,7 @@ function pdd_install() {
 		$checkout = wp_insert_post(
 			array(
 				'post_title'     => __( 'Checkout', 'pdd' ),
-				'post_content'   => '[download_checkout]',
+				'post_content'   => '[donation_checkout]',
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -142,7 +142,7 @@ function pdd_install() {
 	}
 
 	// Add the transient to redirect
-	set_transient( '_pdd_activation_redirect', true, 30 );
+	//set_transient( '_pdd_activation_redirect', true, 30 );
 }
 register_activation_hook( PDD_PLUGIN_FILE, 'pdd_install' );
 

@@ -80,7 +80,7 @@ class PDD_Download_Reports_Table extends WP_List_Table {
 			case 'average_earnings' :
 				return pdd_currency_filter( pdd_format_amount( $item[ $column_name ] ) );
 			case 'details' :
-				return '<a href="' . admin_url( 'edit.php?post_type=download&page=pdd-reports&view=downloads&download-id=' . $item[ 'ID' ] ) . '">' . __( 'View Detailed Report', 'pdd' ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports&view=downloads&download-id=' . $item[ 'ID' ] ) . '">' . __( 'View Detailed Report', 'pdd' ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}
@@ -154,7 +154,7 @@ class PDD_Download_Reports_Table extends WP_List_Table {
 	 */
 	public function get_total_downloads() {
 		$total  = 0;
-		$counts = wp_count_posts( 'download', 'readable' );
+		$counts = wp_count_posts( 'pdd_camp', 'readable' );
 		foreach( $counts as $status => $count ) {
 			$total += $count;
 		}
@@ -182,7 +182,7 @@ class PDD_Download_Reports_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function category_filter() {
-		if( get_terms( 'download_category' ) ) {
+		if( get_terms( 'camp_category' ) ) {
 			echo PDD()->html->category_dropdown( 'category', $this->get_category() );
 		}
 	}
@@ -202,7 +202,7 @@ class PDD_Download_Reports_Table extends WP_List_Table {
 		$category = $this->get_category();
 
 		$args = array(
-			'post_type' 	=> 'download',
+			'post_type' 	=> 'pdd_camp',
 			'post_status'	=> 'publish',
 			'order'			=> $order,
 			'fields'        => 'ids',
@@ -214,7 +214,7 @@ class PDD_Download_Reports_Table extends WP_List_Table {
 		if( ! empty( $category ) ) {
 			$args['tax_query'] = array(
 				array(
-					'taxonomy' => 'download_category',
+					'taxonomy' => 'camp_category',
 					'terms'    => $category
 				)
 			);
@@ -227,16 +227,16 @@ class PDD_Download_Reports_Table extends WP_List_Table {
 
 			case 'sales' :
 				$args['orderby'] = 'meta_value_num';
-				$args['meta_key'] = '_pdd_download_sales';
+				$args['meta_key'] = '_pdd_camp_sales';
 				break;
 
 			case 'earnings' :
 				$args['orderby'] = 'meta_value_num';
-				$args['meta_key'] = '_pdd_download_earnings';
+				$args['meta_key'] = '_pdd_camp_earnings';
 				break;
 		endswitch;
 
-		$args = apply_filters( 'pdd_download_reports_prepare_items_args', $args, $this );
+		$args = apply_filters( 'pdd_camp_reports_prepare_items_args', $args, $this );
 
 		$this->products = new WP_Query( $args );
 

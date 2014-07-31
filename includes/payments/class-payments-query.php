@@ -69,7 +69,7 @@ class PDD_Payments_Query extends PDD_Stats {
 			'search_in_notes' => false,
 			'children'        => false,
 			'fields'          => null,
-			'download'        => null
+			'pdd_camp'        => null
 		);
 
 		$this->args = wp_parse_args( $args, $defaults );
@@ -121,7 +121,7 @@ class PDD_Payments_Query extends PDD_Stats {
 		add_action( 'pdd_pre_get_payments', array( $this, 'search' ) );
 		add_action( 'pdd_pre_get_payments', array( $this, 'mode' ) );
 		add_action( 'pdd_pre_get_payments', array( $this, 'children' ) );
-		add_action( 'pdd_pre_get_payments', array( $this, 'download' ) );
+		add_action( 'pdd_pre_get_payments', array( $this, 'pdd_camp' ) );
 	}
 
 	/**
@@ -430,7 +430,7 @@ class PDD_Payments_Query extends PDD_Stats {
 
 		} elseif ( '#' == substr( $search, 0, 1 ) ) {
 
-			$this->__set( 'download', str_replace( '#', '', $search ) );
+			$this->__set( 'pdd_camp', str_replace( '#', '', $search ) );
 			$this->__unset( 's' );
 
 		} else {
@@ -480,15 +480,15 @@ class PDD_Payments_Query extends PDD_Stats {
 	 * @since 1.8
 	 * @return void
 	 */
-	public function download() {
+	public function pdd_camp() {
 
-		if ( empty( $this->args[ 'download' ] ) )
+		if ( empty( $this->args[ 'pdd_camp' ] ) )
 			return;
 
 		global $pdd_logs;
 
 		$args = array(
-			'post_parent'            => $this->args[ 'download' ],
+			'post_parent'            => $this->args[ 'pdd_camp' ],
 			'log_type'               => 'sale',
 			'post_status'            => array( 'publish' ),
 			'nopaging'               => true,
@@ -499,9 +499,9 @@ class PDD_Payments_Query extends PDD_Stats {
 			'fields'                 => 'ids'
 		);
 
-		if ( is_array( $this->args[ 'download' ] ) ) {
+		if ( is_array( $this->args[ 'pdd_camp' ] ) ) {
 			unset( $args[ 'post_parent' ] );
-			$args[ 'post_parent__in' ] = $this->args[ 'download' ];
+			$args[ 'post_parent__in' ] = $this->args[ 'pdd_camp' ];
 		}
 
 		$sales = $pdd_logs->get_connected_logs( $args );
@@ -523,7 +523,7 @@ class PDD_Payments_Query extends PDD_Stats {
 
 		}
 
-		$this->__unset( 'download' );
+		$this->__unset( 'pdd_camp' );
 
 	}
 }

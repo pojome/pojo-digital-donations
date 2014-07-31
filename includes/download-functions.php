@@ -31,7 +31,7 @@ function pdd_get_download_by( $field = '', $value = '' ) {
 		case 'id':
 			$download = get_post( $value );
 
-			if( get_post_type( $download ) != 'download' ) {
+			if( get_post_type( $download ) != 'pdd_camp' ) {
 				return false;
 			}
 
@@ -40,7 +40,7 @@ function pdd_get_download_by( $field = '', $value = '' ) {
 		case 'slug':
 		case 'name':
 			$download = query_posts( array(
-				'post_type'      => 'download',
+				'post_type'      => 'pdd_camp',
 				'name'           => sanitize_title_for_query( $value ),
 				'posts_per_page' => 1,
 				'post_status'    => 'any'
@@ -54,7 +54,7 @@ function pdd_get_download_by( $field = '', $value = '' ) {
 
 		case 'sku':
 			$download = query_posts( array(
-				'post_type'      => 'download',
+				'post_type'      => 'pdd_camp',
 				'meta_key'       => 'pdd_sku',
 				'meta_value'     => $value,
 				'posts_per_page' => 1,
@@ -88,13 +88,13 @@ function pdd_get_download_by( $field = '', $value = '' ) {
 function pdd_get_download( $download ) {
 	if ( is_numeric( $download ) ) {
 		$download = get_post( $download );
-		if ( ! $download || 'download' !== $download->post_type )
+		if ( ! $download || 'pdd_camp' !== $download->post_type )
 			return null;
 		return $download;
 	}
 
 	$args = array(
-		'post_type'   => 'download',
+		'post_type'   => 'pdd_camp',
 		'name'        => $download,
 		'numberposts' => 1
 	);
@@ -146,7 +146,7 @@ function pdd_price( $download_id, $echo = true ) {
 		$price = pdd_get_download_price( $download_id );
 	}
 
-	$price = apply_filters( 'pdd_download_price', pdd_sanitize_amount( $price ), $download_id );
+	$price = apply_filters( 'pdd_camp_price', pdd_sanitize_amount( $price ), $download_id );
 
 	$price = '<span class="pdd_price" id="pdd_price_' . $download_id . '">' . $price . '</span>';
 
@@ -155,8 +155,8 @@ function pdd_price( $download_id, $echo = true ) {
 	else
 		return $price;
 }
-add_filter( 'pdd_download_price', 'pdd_format_amount', 10 );
-add_filter( 'pdd_download_price', 'pdd_currency_filter', 20 );
+add_filter( 'pdd_camp_price', 'pdd_format_amount', 10 );
+add_filter( 'pdd_camp_price', 'pdd_currency_filter', 20 );
 
 /**
  * Retrieves the final price of a downloadable product after purchase
@@ -374,7 +374,7 @@ function pdd_get_download_types() {
 		'bundle'  => __( 'Bundle', 'pdd' )
 	);
 
-	return apply_filters( 'pdd_download_types', $types );
+	return apply_filters( 'pdd_camp_types', $types );
 }
 
 /**
@@ -424,11 +424,11 @@ function pdd_get_bundled_products( $download_id = 0 ) {
  */
 function pdd_get_download_earnings_stats( $download_id ) {
 
-	if ( '' == get_post_meta( $download_id, '_pdd_download_earnings', true ) ) {
-		add_post_meta( $download_id, '_pdd_download_earnings', 0 );
+	if ( '' == get_post_meta( $download_id, '_pdd_camp_earnings', true ) ) {
+		add_post_meta( $download_id, '_pdd_camp_earnings', 0 );
 	}
 
-	$earnings = get_post_meta( $download_id, '_pdd_download_earnings', true );
+	$earnings = get_post_meta( $download_id, '_pdd_camp_earnings', true );
 
 	if( $earnings < 0 ) {
 		// Never let earnings be less than zero
@@ -447,11 +447,11 @@ function pdd_get_download_earnings_stats( $download_id ) {
  */
 function pdd_get_download_sales_stats( $download_id ) {
 
-	if ( '' == get_post_meta( $download_id, '_pdd_download_sales', true ) ) {
-		add_post_meta( $download_id, '_pdd_download_sales', 0 );
+	if ( '' == get_post_meta( $download_id, '_pdd_camp_sales', true ) ) {
+		add_post_meta( $download_id, '_pdd_camp_sales', 0 );
 	} // End if
 
-	$sales = get_post_meta( $download_id, '_pdd_download_sales', true );
+	$sales = get_post_meta( $download_id, '_pdd_camp_sales', true );
 
 	if ( $sales < 0 ) {
 		// Never let sales be less than zero
@@ -537,7 +537,7 @@ function pdd_record_download_in_log( $download_id, $file_id, $user_info, $ip, $p
  * @return void
  */
 function pdd_remove_download_logs_on_delete( $download_id = 0 ) {
-	if ( 'download' !== get_post_type( $download_id ) )
+	if ( 'pdd_camp' !== get_post_type( $download_id ) )
 		return;
 
 	global $pdd_logs;
@@ -558,7 +558,7 @@ add_action( 'delete_post', 'pdd_remove_download_logs_on_delete' );
 function pdd_increase_purchase_count( $download_id ) {
 	$sales = pdd_get_download_sales_stats( $download_id );
 	$sales = $sales + 1;
-	if ( update_post_meta( $download_id, '_pdd_download_sales', $sales ) )
+	if ( update_post_meta( $download_id, '_pdd_camp_sales', $sales ) )
 		return $sales;
 
 	return false;
@@ -577,7 +577,7 @@ function pdd_decrease_purchase_count( $download_id ) {
 	if ( $sales > 0 ) // Only decrease if not already zero
 		$sales = $sales - 1;
 
-	if ( update_post_meta( $download_id, '_pdd_download_sales', $sales ) )
+	if ( update_post_meta( $download_id, '_pdd_camp_sales', $sales ) )
 		return $sales;
 
 	return false;
@@ -595,7 +595,7 @@ function pdd_increase_earnings( $download_id, $amount ) {
 	$earnings = pdd_get_download_earnings_stats( $download_id );
 	$earnings = $earnings + $amount;
 
-	if ( update_post_meta( $download_id, '_pdd_download_earnings', $earnings ) )
+	if ( update_post_meta( $download_id, '_pdd_camp_earnings', $earnings ) )
 		return $earnings;
 
 	return false;
@@ -615,7 +615,7 @@ function pdd_decrease_earnings( $download_id, $amount ) {
 	if ( $earnings > 0 ) // Only decrease if greater than zero
 		$earnings = $earnings - $amount;
 
-	if ( update_post_meta( $download_id, '_pdd_download_earnings', $earnings ) )
+	if ( update_post_meta( $download_id, '_pdd_camp_earnings', $earnings ) )
 		return $earnings;
 
 	return false;
@@ -681,7 +681,7 @@ function pdd_get_download_files( $download_id = 0, $variable_price_id = null ) {
 	if( pdd_is_bundled_product( $download_id ) )
 		return $files;
 
-	$download_files = get_post_meta( $download_id, 'pdd_download_files', true );
+	$download_files = get_post_meta( $download_id, 'pdd_camp_files', true );
 
 	if ( $download_files ) {
 		if ( ! is_null( $variable_price_id ) && pdd_has_variable_prices( $download_id ) ) {
@@ -697,7 +697,7 @@ function pdd_get_download_files( $download_id = 0, $variable_price_id = null ) {
 		}
 	}
 
-	return apply_filters( 'pdd_download_files', $files, $download_id, $variable_price_id );
+	return apply_filters( 'pdd_camp_files', $files, $download_id, $variable_price_id );
 }
 
 /**
@@ -759,7 +759,7 @@ function pdd_get_file_download_limit( $download_id = 0 ) {
 	global $pdd_options;
 
 	$ret    = 0;
-	$limit  = get_post_meta( $download_id, '_pdd_download_limit', true );
+	$limit  = get_post_meta( $download_id, '_pdd_camp_limit', true );
 	$global = pdd_get_option( 'file_download_limit', 0 );
 
 	if ( ! empty( $limit ) || ( is_numeric( $limit ) && (int)$limit == 0 ) ) {
@@ -783,7 +783,7 @@ function pdd_get_file_download_limit( $download_id = 0 ) {
  * @return int $limit_override The new limit
 */
 function pdd_get_file_download_limit_override( $download_id = 0, $payment_id = 0 ) {
-	$limit_override = get_post_meta( $download_id, '_pdd_download_limit_override_' . $payment_id, true );
+	$limit_override = get_post_meta( $download_id, '_pdd_camp_limit_override_' . $payment_id, true );
 	if ( $limit_override ) {
 		return absint( $limit_override );
 	}
@@ -812,7 +812,7 @@ function pdd_set_file_download_limit_override( $download_id = 0, $payment_id = 0
 		$override = $limit += 1;
 	}
 
-	update_post_meta( $download_id, '_pdd_download_limit_override_' . $payment_id, $override );
+	update_post_meta( $download_id, '_pdd_camp_limit_override_' . $payment_id, $override );
 }
 
 /**
@@ -925,7 +925,7 @@ function pdd_get_download_file_url( $key, $email, $filekey, $download_id, $price
 		'expire' 		=> rawurlencode( base64_encode( $date ) )
 	);
 
-	$params = apply_filters( 'pdd_download_file_url_args', $params );
+	$params = apply_filters( 'pdd_camp_file_url_args', $params );
 
 	$download_url = add_query_arg( $params, home_url( 'index.php' ) );
 
@@ -981,7 +981,7 @@ function pdd_verify_download_link( $download_id = 0, $key = '', $email = '', $ex
 
 					// Check to see if the file download limit has been reached
 					if ( pdd_is_file_at_download_limit( $cart_item['id'], $payment->ID, $file_key, $price_id ) )
-						wp_die( apply_filters( 'pdd_download_limit_reached_text', __( 'Sorry but you have hit your download limit for this file.', 'pdd' ) ), __( 'Error', 'pdd' ) );
+						wp_die( apply_filters( 'pdd_camp_limit_reached_text', __( 'Sorry but you have hit your download limit for this file.', 'pdd' ) ), __( 'Error', 'pdd' ) );
 
 					// If this download has variable prices, we have to confirm that this file was included in their purchase
 					if ( ! empty( $price_options ) && $file_condition != 'all' && pdd_has_variable_prices( $cart_item['id'] ) ) {
@@ -991,7 +991,7 @@ function pdd_verify_download_link( $download_id = 0, $key = '', $email = '', $ex
 
 					// Make sure the link hasn't expired
 					if ( current_time( 'timestamp' ) > $expire ) {
-						wp_die( apply_filters( 'pdd_download_link_expired_text', __( 'Sorry but your download link has expired.', 'pdd' ) ), __( 'Error', 'pdd' ) );
+						wp_die( apply_filters( 'pdd_camp_link_expired_text', __( 'Sorry but your download link has expired.', 'pdd' ) ), __( 'Error', 'pdd' ) );
 					}
 					return $payment->ID; // Payment has been verified and link is still valid
 				}
@@ -1091,9 +1091,9 @@ function pdd_get_random_download( $post_ids = true ) {
  */
 function pdd_get_random_downloads( $num = 3, $post_ids = true ) {
 	if ( $post_ids ) {
-		$args = array( 'post_type' => 'download', 'orderby' => 'rand', 'post_count' => $num, 'fields' => 'ids' );
+		$args = array( 'post_type' => 'pdd_camp', 'orderby' => 'rand', 'post_count' => $num, 'fields' => 'ids' );
 	} else {
-		$args = array( 'post_type' => 'download', 'orderby' => 'rand', 'post_count' => $num );
+		$args = array( 'post_type' => 'pdd_camp', 'orderby' => 'rand', 'post_count' => $num );
 	}
 	$args  = apply_filters( 'pdd_get_random_downloads', $args );
 	return get_posts( $args );

@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function pdd_reports_page() {
 	global $pdd_options;
 
-	$current_page = admin_url( 'edit.php?post_type=download&page=pdd-reports' );
+	$current_page = admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports' );
 	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'reports';
 	?>
 	<div class="wrap">
@@ -55,7 +55,7 @@ function pdd_reports_page() {
 function pdd_reports_default_views() {
 	$views = array(
 		'earnings'	=> __( 'Earnings', 'pdd' ),
-		'downloads' => pdd_get_label_plural(),
+		'campaigns' => pdd_get_label_plural(),
 		'customers'	=> __( 'Customers', 'pdd' ),
 		'gateways'  => __( 'Payment Methods', 'pdd' ),
 		'taxes'		=> __( 'Taxes', 'pdd' )
@@ -193,7 +193,7 @@ function pdd_reports_customers_table() {
 	?>
 	<div class="wrap">
 		<?php do_action( 'pdd_logs_file_downloads_top' ); ?>
-		<form id="pdd-customers-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-reports&view=customers' ); ?>">
+		<form id="pdd-customers-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports&view=customers' ); ?>">
 			<?php
 			$downloads_table->search_box( __( 'Search', 'pdd' ), 'pdd-customers' );
 			$downloads_table->display();
@@ -354,7 +354,7 @@ function pdd_reports_tab_export() {
 									<select name="pdd_export_download" id="pdd_customer_export_download">
 										<option value="0"><?php printf( __( 'All %s', 'pdd' ), pdd_get_label_plural() ); ?></option>
 										<?php
-										$downloads = get_posts( array( 'post_type' => 'download', 'posts_per_page' => -1 ) );
+										$downloads = get_posts( array( 'post_type' => 'pdd_camp', 'posts_per_page' => -1 ) );
 										if( $downloads ) {
 											foreach( $downloads as $download ) {
 												echo '<option value="' . $download->ID . '">' . get_the_title( $download->ID ) . '</option>';
@@ -433,7 +433,7 @@ function pdd_estimated_monthly_stats() {
 			'sales'    => 0
 		);
 
-		$products = get_posts( array( 'post_type' => 'download', 'posts_per_page' => -1, 'fields' => 'ids' ) );
+		$products = get_posts( array( 'post_type' => 'pdd_camp', 'posts_per_page' => -1, 'fields' => 'ids' ) );
 		if ( $products ) {
 			foreach ( $products as $download ) {
 				$estimated['earnings'] += pdd_get_average_monthly_download_earnings( $download );

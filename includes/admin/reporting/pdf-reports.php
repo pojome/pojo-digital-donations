@@ -67,7 +67,7 @@ function pdd_generate_pdf( $data ) {
 		$pdf->Cell( 35, 6, utf8_decode( __( 'Earnings to Date', 'pdd' ) ), 1, 1, 'L', true );
 
 		$year = date('Y');
-		$downloads = get_posts( array( 'post_type' => 'download', 'year' => $year, 'posts_per_page' => -1 ) );
+		$downloads = get_posts( array( 'post_type' => 'pdd_camp', 'year' => $year, 'posts_per_page' => -1 ) );
 
 		if ( $downloads ):
 			$pdf->SetWidths( array( 70, 30, 50, 50, 45, 35 ) );
@@ -98,10 +98,10 @@ function pdd_generate_pdf( $data ) {
 					$price = html_entity_decode( pdd_currency_filter( pdd_get_download_price( $download->ID ) ) );
 				}
 
-				$categories = get_the_term_list( $download->ID, 'download_category', '', ', ', '' );
+				$categories = get_the_term_list( $download->ID, 'camp_category', '', ', ', '' );
 				$categories = $categories ? strip_tags( $categories ) : '';
 
-				$tags = get_the_term_list( $download->ID, 'download_tag', '', ', ', '' );
+				$tags = get_the_term_list( $download->ID, 'camp_tag', '', ', ', '' );
 				$tags = $tags ? strip_tags( $tags ) : '';
 
 				$sales = pdd_get_download_sales_stats( $download->ID );

@@ -23,12 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function pdd_process_download() {
 
-	if( ! isset( $_GET['download_id'] ) && isset( $_GET['download'] ) ) {
-		$_GET['download_id'] = $_GET['download'];
+	if( ! isset( $_GET['download_id'] ) && isset( $_GET['pdd_camp'] ) ) {
+		$_GET['download_id'] = $_GET['pdd_camp'];
 	}
 
 	$args = apply_filters( 'pdd_process_download_args', array(
-		'download' => ( isset( $_GET['download_id'] ) )  ? (int) $_GET['download_id']                    : '',
+		'pdd_camp' => ( isset( $_GET['download_id'] ) )  ? (int) $_GET['download_id']                    : '',
 		'email'    => ( isset( $_GET['email'] ) )        ? rawurldecode( $_GET['email'] )                   : '',
 		'expire'   => ( isset( $_GET['expire'] ) )       ? base64_decode( rawurldecode( $_GET['expire'] ) ) : '',
 		'file_key' => ( isset( $_GET['file'] ) )         ? (int) $_GET['file']                              : '',
@@ -36,12 +36,12 @@ function pdd_process_download() {
 		'key'      => ( isset( $_GET['download_key'] ) ) ? $_GET['download_key']                            : ''
 	) );
 
-	if( $args['download'] === '' || $args['email'] === '' || $args['file_key'] === '' ) {
+	if( $args['pdd_camp'] === '' || $args['email'] === '' || $args['file_key'] === '' ) {
 		return false;
 	}
 
     // Verify the payment
-	$payment = pdd_verify_download_link( $args['download'], $args['key'], $args['email'], $args['expire'], $args['file_key'] );
+	$payment = pdd_verify_download_link( $args['pdd_camp'], $args['key'], $args['email'], $args['expire'], $args['file_key'] );
 
 	// Determine the download method set in settings
 	$method  = pdd_get_file_download_method();
@@ -51,10 +51,10 @@ function pdd_process_download() {
 
 	//$has_access = ( pdd_logged_in_only() && is_user_logged_in() ) || !pdd_logged_in_only() ? true : false;
 	if ( $payment && $has_access ) {
-		do_action( 'pdd_process_verified_download', $args['download'], $args['email'], $payment );
+		do_action( 'pdd_process_verified_download', $args['pdd_camp'], $args['email'], $payment );
 
 		// Payment has been verified, setup the download
-		$download_files = pdd_get_download_files( $args['download'] );
+		$download_files = pdd_get_download_files( $args['pdd_camp'] );
 		$attachment_id  = ! empty( $download_files[ $file_key ]['attachment_id'] ) ? absint( $download_files[ $args['file_key'] ]['attachment_id'] ) : false;
 
 		/*
@@ -84,7 +84,7 @@ function pdd_process_download() {
 			$user_info['id']   = get_current_user_id();
 			$user_info['name'] = $user_data->display_name;
 		}
-		pdd_record_download_in_log( $args['download'], $args['file_key'], $user_info, pdd_get_ip(), $payment, $args['price_id'] );
+		pdd_record_download_in_log( $args['pdd_camp'], $args['file_key'], $user_info, pdd_get_ip(), $payment, $args['price_id'] );
 
 		$file_extension = pdd_get_file_extension( $requested_file );
 		$ctype          = pdd_get_file_ctype( $file_extension );
@@ -103,7 +103,7 @@ function pdd_process_download() {
 		}
 		@ini_set( 'zlib.output_compression', 'Off' );
 
-		do_action( 'pdd_process_download_headers', $requested_file, $args['download'], $args['email'], $payment );
+		do_action( 'pdd_process_download_headers', $requested_file, $args['pdd_camp'], $args['email'], $payment );
 
 		nocache_headers();
 		header("Robots: none");

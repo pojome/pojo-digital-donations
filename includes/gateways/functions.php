@@ -253,7 +253,7 @@ function pdd_build_straight_to_gateway_data( $download_id = 0, $options = array(
 
 	// Setup purchase information
 	$purchase_data = array(
-		'downloads'    => $downloads,
+		'campaigns'    => $downloads,
 		'fees'         => pdd_get_cart_fees(),
 		'subtotal'     => $price,
 		'discount'     => 0,

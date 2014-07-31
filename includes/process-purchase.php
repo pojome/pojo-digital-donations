@@ -73,7 +73,7 @@ function pdd_process_purchase_form() {
 
 	// Setup purchase information
 	$purchase_data = array(
-		'downloads'    => pdd_get_cart_contents(),
+		'campaigns'    => pdd_get_cart_contents(),
 		'fees'         => pdd_get_cart_fees(),        // Any arbitrary fees that have been added to the cart
 		'subtotal'     => pdd_get_cart_subtotal(),    // Amount before taxes and discounts
 		'discount'     => pdd_get_cart_discounted_amount(), // Discounted amount

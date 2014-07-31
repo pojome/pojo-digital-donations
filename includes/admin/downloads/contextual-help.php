@@ -18,10 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since 1.2.3
  * @return void
  */
-function pdd_downloads_contextual_help() {
+function pdd_camps_contextual_help() {
 	$screen = get_current_screen();
 
-	if ( $screen->id != 'download' )
+	if ( $screen->id != 'pdd_camp' )
 		return;
 
 	$screen->set_help_sidebar(
@@ -44,7 +44,7 @@ function pdd_downloads_contextual_help() {
 
 			'<p>' . __( '<strong>Accounting Options</strong> - If enabled, define an individual SKU or product number for this download.', 'pdd' ) . '</p>' .
 
-			'<p>' . __( '<strong>Button Options</strong> - Disable the automatic output the purchase button. If disabled, no button will be added to the download page unless the <code>[purchase_link]</code> shortcode is used.', 'pdd' ) . '</p>'
+			'<p>' . __( '<strong>Button Options</strong> - Disable the automatic output the purchase button. If disabled, no button will be added to the download page unless the <code>[donate_link]</code> shortcode is used.', 'pdd' ) . '</p>'
 	) );
 
 	$screen->add_help_tab( array(
@@ -81,7 +81,7 @@ function pdd_downloads_contextual_help() {
 		'title'	    => __( 'Purchase Shortcode', 'pdd' ),
 		'content'	=>
 			'<p>' . __( '<strong>Purchase Shortcode</strong> - If the automatic output of the purchase button has been disabled via the Download Configuration box, a shortcode can be used to output the button or link.', 'pdd' ) . '</p>' .
-			'<p><code>[purchase_link id="#" price="1" text="Add to Cart" color="blue"]</code></p>' .
+			'<p><code>[donate_link id="#" price="1" text="Add to Cart" color="blue"]</code></p>' .
 			'<ul>
 				<li><strong>id</strong> - ' . __( 'The ID of a specific download to purchase.', 'pdd' ) . '</li>
 				<li><strong>price</strong> - ' . __( 'Whether to show the price on the purchase button. 1 to show the price, 0 to disable it.', 'pdd' ) . '</li>
@@ -90,10 +90,10 @@ function pdd_downloads_contextual_help() {
 				<li><strong>color</strong> - <em>' . implode( '</em> | <em>', $colors ) . '</em></li>
 				<li><strong>class</strong> - ' . __( 'One or more custom CSS classes you want applied to the button.', 'pdd' ) . '</li>
 			</ul>' .
-			'<p>' . sprintf( __( 'For more information, see <a href="%s">using Shortcodes</a> on the WordPress.org Codex or <a href="%s">Pojo Digital Donations Documentation</a>', 'pdd' ), 'http://codex.wordpress.org/Shortcode', 'https://easydigitaldownloads.com/docs/display-purchase-buttons-purchase_link/' ) . '</p>'
+			'<p>' . sprintf( __( 'For more information, see <a href="%s">using Shortcodes</a> on the WordPress.org Codex or <a href="%s">Pojo Digital Donations Documentation</a>', 'pdd' ), 'http://codex.wordpress.org/Shortcode', 'https://easydigitaldownloads.com/docs/display-purchase-buttons-donate_link/' ) . '</p>'
 	) );
 
-	do_action( 'pdd_downloads_contextual_help', $screen );
+	do_action( 'pdd_camps_contextual_help', $screen );
 }
-add_action( 'load-post.php', 'pdd_downloads_contextual_help' );
-add_action( 'load-post-new.php', 'pdd_downloads_contextual_help' );
+add_action( 'load-post.php', 'pdd_camps_contextual_help' );
+add_action( 'load-post-new.php', 'pdd_camps_contextual_help' );

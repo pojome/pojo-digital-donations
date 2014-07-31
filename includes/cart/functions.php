@@ -100,7 +100,7 @@ function pdd_add_to_cart( $download_id, $options = array() ) {
 
 	$download = get_post( $download_id );
 
-	if( 'download' != $download->post_type )
+	if( 'pdd_camp' != $download->post_type )
 		return; // Not a download product
 
 	if ( ! current_user_can( 'edit_post', $download->ID ) && ( $download->post_status == 'draft' || $download->post_status == 'pending' ) )
@@ -390,7 +390,7 @@ function pdd_get_cart_item_price( $download_id = 0, $options = array(), $include
 		$price = pdd_get_download_price( $download_id );
 	}
 
-	if( ! pdd_download_is_tax_exclusive( $download_id ) ) {
+	if( ! pdd_camp_is_tax_exclusive( $download_id ) ) {
 
 		if( pdd_prices_include_tax() && ! $include_taxes ) {
 			// If price is entered with tax, we have to deduct the taxed amount from the price to determine the actual price
@@ -431,7 +431,7 @@ function pdd_get_cart_item_tax( $item = array() ) {
 	$tax   = 0;
 	$price = false;
 
-	if( ! pdd_download_is_tax_exclusive( $item['id'] ) ) {
+	if( ! pdd_camp_is_tax_exclusive( $item['id'] ) ) {
 
 		if ( pdd_has_variable_prices( $item['id'] ) && ! empty( $item['options'] ) ) {
 			$prices = pdd_get_variable_prices( $item['id'] );
@@ -709,7 +709,7 @@ function pdd_get_purchase_summary( $purchase_data, $email = true ) {
 		$summary .= $purchase_data['user_email'] . ' - ';
 	}
 
-	foreach ( $purchase_data['downloads'] as $download ) {
+	foreach ( $purchase_data['campaigns'] as $download ) {
 		$summary .= get_the_title( $download['id'] ) . ', ';
 	}
 
@@ -790,7 +790,7 @@ function pdd_add_collection_to_cart( $taxonomy, $terms ) {
 	$cart_item_ids = array();
 
 	$args = array(
-		'post_type' => 'download',
+		'post_type' => 'pdd_camp',
 		'posts_per_page' => -1,
 		$taxonomy => $terms
 	);

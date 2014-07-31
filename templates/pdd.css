@@ -247,11 +247,11 @@ table#pdd_purchase_receipt_products .pdd_bundled_product_name { font-style: ital
 /* =Purchase buttons
 -------------------------------------------------------------- */
 input.pdd_submit_plain { background: none !important; border: none !important; padding: 0 !important; display: inline; cursor: pointer; }
-.single-download .pdd_download_purchase_form { margin-bottom: 1.387em; }
-.pdd_download_purchase_form .pdd_price_options { margin: 0 0 15px; }
-.pdd_download_purchase_form .pdd_price_options ul { margin: 0; padding: 0; list-style: none; }
-.pdd_download_purchase_form .pdd_price_options li { display: block; padding: 0; margin: 0; }
-.pdd_download_purchase_form .pdd_price_options span { display: inline; padding: 0; margin: 0; }
+.single-download .pdd_camp_purchase_form { margin-bottom: 1.387em; }
+.pdd_camp_purchase_form .pdd_price_options { margin: 0 0 15px; }
+.pdd_camp_purchase_form .pdd_price_options ul { margin: 0; padding: 0; list-style: none; }
+.pdd_camp_purchase_form .pdd_price_options li { display: block; padding: 0; margin: 0; }
+.pdd_camp_purchase_form .pdd_price_options span { display: inline; padding: 0; margin: 0; }
 
 .pdd-submit, #pdd-purchase-button, input[type="submit"].pdd-submit {
   display: inline-block;
@@ -452,9 +452,9 @@ input[type="submit"].pdd-submit:focus,
 
 /* =Downloads Shortcode
 -------------------------------------------------------------- */
-.pdd_download_inner { padding: 0 8px 8px; margin: 0 0 10px; }
-.pdd_download_image { max-width:100%; }
-.pdd_download .pdd_price { margin-bottom: 10px; }
+.pdd_camp_inner { padding: 0 8px 8px; margin: 0 0 10px; }
+.pdd_camp_image { max-width:100%; }
+.pdd_camp .pdd_price { margin-bottom: 10px; }
 
 /* =Misc styles
 -------------------------------------------------------------- */

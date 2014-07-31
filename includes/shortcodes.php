@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @param string $content
  * @return string Fully formatted purchase link
  */
-function pdd_download_shortcode( $atts, $content = null ) {
+function pdd_camp_shortcode( $atts, $content = null ) {
 	global $post, $pdd_options;
 
 	$atts = shortcode_atts( array(
@@ -36,28 +36,28 @@ function pdd_download_shortcode( $atts, $content = null ) {
 		'class'         => 'pdd-submit',
 		'form_id'       => ''
 	),
-	$atts, 'purchase_link' );
+	$atts, 'donate_link' );
 
 	// Override color if color == inherit
-	if( isset( $atts['color'] )	)
+	if ( isset( $atts['color'] )	)
 		$atts['color'] = ( $atts['color'] == 'inherit' ) ? '' : $atts['color'];
 
-	if( isset( $atts['id'] ) ) {
-		// Edd_get_purchase_link() expects the ID to be download_id since v1.3
+	if ( isset( $atts['id'] ) ) {
+		// Edd_get_donate_link() expects the ID to be download_id since v1.3
 		$atts['download_id'] = $atts['id'];
 
 		$download = pdd_get_download( $atts['download_id'] );
-	} elseif( isset( $atts['sku'] ) ) {
+	} elseif ( isset( $atts['sku'] ) ) {
 		$download = pdd_get_download_by( 'sku', $atts['sku'] );
 
 		$atts['download_id'] = $download->ID;
 	}
 
 	if ( $download ) {
-		return pdd_get_purchase_link( $atts );
+		return pdd_get_donate_link( $atts );
 	}
 }
-add_shortcode( 'purchase_link', 'pdd_download_shortcode' );
+add_shortcode( 'donate_link', 'pdd_camp_shortcode' );
 
 /**
  * Download History Shortcode
@@ -67,14 +67,14 @@ add_shortcode( 'purchase_link', 'pdd_download_shortcode' );
  * @since 1.0
  * @return string
  */
-function pdd_download_history() {
+function pdd_camp_history() {
 	if ( is_user_logged_in() ) {
 		ob_start();
-		pdd_get_template_part( 'history', 'downloads' );
+		pdd_get_template_part( 'history', 'campaigns' );
 		return ob_get_clean();
 	}
 }
-add_shortcode( 'download_history', 'pdd_download_history' );
+add_shortcode( 'download_history', 'pdd_camp_history' );
 
 /**
  * Purchase History Shortcode
@@ -106,7 +106,7 @@ add_shortcode( 'purchase_history', 'pdd_purchase_history' );
 function pdd_checkout_form_shortcode( $atts, $content = null ) {
 	return pdd_checkout_form();
 }
-add_shortcode( 'download_checkout', 'pdd_checkout_form_shortcode' );
+add_shortcode( 'donation_checkout', 'pdd_checkout_form_shortcode' );
 
 /**
  * Download Cart Shortcode
@@ -121,7 +121,7 @@ add_shortcode( 'download_checkout', 'pdd_checkout_form_shortcode' );
 function pdd_cart_shortcode( $atts, $content = null ) {
 	return pdd_shopping_cart();
 }
-add_shortcode( 'download_cart', 'pdd_cart_shortcode' );
+add_shortcode( 'donation_cart', 'pdd_cart_shortcode' );
 
 /**
  * Login Shortcode
@@ -161,51 +161,6 @@ function pdd_register_form_shortcode( $atts, $content = null ) {
 	return pdd_register_form( $args['redirect'] );
 }
 add_shortcode( 'pdd_register', 'pdd_register_form_shortcode' );
-
-/**
- * Discounts short code
- *
- * Displays a list of all the active discounts. The active discounts can be configured
- * from the Discount Codes admin screen.
- *
- * @since 1.0.8.2
- * @param array $atts Shortcode attributes
- * @param string $content
- * @uses pdd_get_discounts()
- * @return string $discounts_lists List of all the active discount codes
- */
-function pdd_discounts_shortcode( $atts, $content = null ) {
-	$discounts = pdd_get_discounts();
-
-	$discounts_list = '<ul id="pdd_discounts_list">';
-
-	if ( ! empty( $discounts ) && pdd_has_active_discounts() ) {
-
-		foreach ( $discounts as $discount ) {
-
-			if ( pdd_is_discount_active( $discount->ID ) ) {
-
-				$discounts_list .= '<li class="pdd_discount">';
-
-					$discounts_list .= '<span class="pdd_discount_name">' . pdd_get_discount_code( $discount->ID ) . '</span>';
-					$discounts_list .= '<span class="pdd_discount_separator"> - </span>';
-					$discounts_list .= '<span class="pdd_discount_amount">' . pdd_format_discount_rate( pdd_get_discount_type( $discount->ID ), pdd_get_discount_amount( $discount->ID ) ) . '</span>';
-
-				$discounts_list .= '</li>';
-
-			}
-
-		}
-
-	} else {
-		$discounts_list .= '<li class="pdd_discount">' . __( 'No discounts found', 'pdd' ) . '</li>';
-	}
-
-	$discounts_list .= '</ul>';
-
-	return $discounts_list;
-}
-add_shortcode( 'download_discounts', 'pdd_discounts_shortcode' );
 
 /**
  * Purchase Collection Shortcode
@@ -250,7 +205,7 @@ add_shortcode( 'purchase_collection', 'pdd_purchase_collection_shortcode' );
  * @param string $content
  * @return string $display Output generated from the downloads queried
  */
-function pdd_downloads_query( $atts, $content = null ) {
+function pdd_camps_query( $atts, $content = null ) {
 	
 	$atts = shortcode_atts( array(
 		'category'         => '',
@@ -268,10 +223,10 @@ function pdd_downloads_query( $atts, $content = null ) {
 		'orderby'          => 'post_date',
 		'order'            => 'DESC',
 		'ids'              => ''
-	), $atts, 'downloads' );
+	), $atts, 'campaigns' );
 
 	$query = array(
-		'post_type'      => 'download',
+		'post_type'      => 'pdd_camp',
 		'posts_per_page' => (int) $atts['number'],
 		'orderby'        => $atts['orderby'],
 		'order'          => $atts['order']
@@ -312,7 +267,7 @@ function pdd_downloads_query( $atts, $content = null ) {
 
 		if ( $atts['tags'] ) {
 			$query['tax_query'][] = array(
-				'taxonomy' => 'download_tag',
+				'taxonomy' => 'camp_tag',
 				'terms'    => explode( ',', $atts['tags'] ),
 				'field'    => 'slug'
 			);
@@ -320,7 +275,7 @@ function pdd_downloads_query( $atts, $content = null ) {
 
 		if ( $atts['category'] ) {
 			$query['tax_query'][] = array(
-				'taxonomy' => 'download_category',
+				'taxonomy' => 'camp_category',
 				'terms'    => explode( ',', $atts['category'] ),
 				'field'    => 'slug'
 			);
@@ -328,7 +283,7 @@ function pdd_downloads_query( $atts, $content = null ) {
 
 		if ( $atts['exclude_category'] ) {
 			$query['tax_query'][] = array(
-				'taxonomy' => 'download_category',
+				'taxonomy' => 'camp_category',
 				'terms'    => explode( ',', $atts['exclude_category'] ),
 				'field'    => 'slug',
 				'operator' => 'NOT IN',
@@ -337,7 +292,7 @@ function pdd_downloads_query( $atts, $content = null ) {
 
 		if ( $atts['exclude_tags'] ) {
 			$query['tax_query'][] = array(
-				'taxonomy' => 'download_tag',
+				'taxonomy' => 'camp_tag',
 				'terms'    => explode( ',', $atts['exclude_tags'] ),
 				'field'    => 'slug',
 				'operator' => 'NOT IN',
@@ -373,20 +328,20 @@ function pdd_downloads_query( $atts, $content = null ) {
 	endswitch;
 
 	// Allow the query to be manipulated by other plugins
-	$query = apply_filters( 'pdd_downloads_query', $query, $atts );
+	$query = apply_filters( 'pdd_camps_query', $query, $atts );
 
 	$downloads = new WP_Query( $query );
 	if ( $downloads->have_posts() ) :
 		$i = 1;
-		$wrapper_class = 'pdd_download_columns_' . $atts['columns'];
+		$wrapper_class = 'pdd_camp_columns_' . $atts['columns'];
 		ob_start(); ?>
-		<div class="pdd_downloads_list <?php echo apply_filters( 'pdd_downloads_list_wrapper_class', $wrapper_class, $atts ); ?>">
+		<div class="pdd_camps_list <?php echo apply_filters( 'pdd_camps_list_wrapper_class', $wrapper_class, $atts ); ?>">
 			<?php while ( $downloads->have_posts() ) : $downloads->the_post(); ?>
-				<div itemscope itemtype="http://schema.org/Product" class="<?php echo apply_filters( 'pdd_download_class', 'pdd_download', get_the_ID(), $atts, $i ); ?>" id="pdd_download_<?php echo get_the_ID(); ?>" style="width: <?php echo $column_width; ?>; float: left;">
-					<div class="pdd_download_inner">
+				<div itemscope itemtype="http://schema.org/Product" class="<?php echo apply_filters( 'pdd_camp_class', 'pdd_camp', get_the_ID(), $atts, $i ); ?>" id="pdd_camp_<?php echo get_the_ID(); ?>" style="width: <?php echo $column_width; ?>; float: left;">
+					<div class="pdd_camp_inner">
 						<?php
 
-						do_action( 'pdd_download_before' );
+						do_action( 'pdd_camp_before' );
 
 						if ( 'false' != $atts['thumbnails'] ) :
 							pdd_get_template_part( 'shortcode', 'content-image' );
@@ -405,7 +360,7 @@ function pdd_downloads_query( $atts, $content = null ) {
 						if ( $atts['buy_button'] == 'yes' )
 							pdd_get_template_part( 'shortcode', 'content-cart-button' );
 
-						do_action( 'pdd_download_after' );
+						do_action( 'pdd_camp_after' );
 
 						?>
 					</div>
@@ -417,7 +372,7 @@ function pdd_downloads_query( $atts, $content = null ) {
 
 			<?php wp_reset_postdata(); ?>
 
-			<div id="pdd_download_pagination" class="navigation">
+			<div id="pdd_camp_pagination" class="navigation">
 				<?php
 				if ( is_single() ) {
 					echo paginate_links( array(
@@ -447,7 +402,7 @@ function pdd_downloads_query( $atts, $content = null ) {
 
 	return apply_filters( 'downloads_shortcode', $display, $atts, $atts['buy_button'], $atts['columns'], $column_width, $downloads, $atts['excerpt'], $atts['full_content'], $atts['price'], $atts['thumbnails'], $query );
 }
-add_shortcode( 'downloads', 'pdd_downloads_query' );
+add_shortcode( 'campaigns', 'pdd_camps_query' );
 
 /**
  * Price Shortcode
@@ -459,7 +414,7 @@ add_shortcode( 'downloads', 'pdd_downloads_query' );
  * @param string $content
  * @return string
  */
-function pdd_download_price_shortcode( $atts, $content = null ) {
+function pdd_camp_price_shortcode( $atts, $content = null ) {
 	$atts = shortcode_atts( array(
 		'id' => NULL,
 	), $atts, 'pdd_price' );
@@ -470,7 +425,7 @@ function pdd_download_price_shortcode( $atts, $content = null ) {
 
 	return pdd_price( $atts['id'], false );
 }
-add_shortcode( 'pdd_price', 'pdd_download_price_shortcode' );
+add_shortcode( 'pdd_price', 'pdd_camp_price_shortcode' );
 
 /**
  * Receipt Shortcode

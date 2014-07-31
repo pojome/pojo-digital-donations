@@ -33,7 +33,7 @@ function pdd_manual_payment( $purchase_data ) {
 	* Purchase data comes in like this
 	*
 	$purchase_data = array(
-		'downloads' => array of download IDs,
+		'campaigns' => array of download IDs,
 		'price' => total price of cart contents,
 		'purchase_key' =>  // Random key
 		'user_email' => $user_email,
@@ -51,7 +51,7 @@ function pdd_manual_payment( $purchase_data ) {
 		'user_email' 	=> $purchase_data['user_email'],
 		'purchase_key' 	=> $purchase_data['purchase_key'],
 		'currency' 		=> pdd_get_currency(),
-		'downloads' 	=> $purchase_data['downloads'],
+		'campaigns' 	=> $purchase_data['campaigns'],
 		'user_info' 	=> $purchase_data['user_info'],
 		'cart_details' 	=> $purchase_data['cart_details'],
 		'status' 		=> 'pending'

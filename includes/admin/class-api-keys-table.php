@@ -86,7 +86,7 @@ class PDD_API_Keys_Table extends WP_List_Table {
 		if( apply_filters( 'pdd_api_log_requests', true ) ) {
 			$actions['view'] = sprintf(
 				'<a href="%s">%s</a>',
-				esc_url( add_query_arg( array( 'view' => 'api_requests', 'post_type' => 'download', 'page' => 'pdd-reports', 'tab' => 'logs', 's' => $item['email'] ), 'edit.php' ) ),
+				esc_url( add_query_arg( array( 'view' => 'api_requests', 'post_type' => 'pdd_camp', 'page' => 'pdd-reports', 'tab' => 'logs', 's' => $item['email'] ), 'edit.php' ) ),
 				__( 'View API Log', 'pdd' )
 			);
 		}
@@ -140,7 +140,7 @@ class PDD_API_Keys_Table extends WP_List_Table {
 			return;
 		}
 		?>
-		<form method="post" action="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-tools&tab=api_keys' ); ?>">
+		<form method="post" action="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-tools&tab=api_keys' ); ?>">
 			<input type="hidden" name="pdd_action" value="process_api_key" />
 			<input type="hidden" name="pdd_api_process" value="generate" />
 			<?php echo PDD()->html->ajax_user_search(); ?>

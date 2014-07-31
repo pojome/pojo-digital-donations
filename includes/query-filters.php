@@ -34,7 +34,7 @@ function pdd_block_attachments() {
 		return;
 	}
 
-	if ( 'download' != get_post_type( $parent ) && false === $pdd_file ) {
+	if ( 'pdd_camp' != get_post_type( $parent ) && false === $pdd_file ) {
 		return;
 	}
 

@@ -27,16 +27,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return void
  */
 function pdd_add_options_link() {
-	global $pdd_discounts_page, $pdd_payments_page, $pdd_settings_page, $pdd_reports_page, $pdd_add_ons_page, $pdd_settings_export, $pdd_upgrades_screen, $pdd_tools_page;
+	global $pdd_discounts_page, $pdd_payments_page, $pdd_settings_page, $pdd_reports_page, $pdd_settings_export, $pdd_upgrades_screen, $pdd_tools_page;
 
 	$pdd_payment            = get_post_type_object( 'pdd_payment' );
 
-	$pdd_payments_page      = add_submenu_page( 'edit.php?post_type=download', $pdd_payment->labels->name, $pdd_payment->labels->menu_name, 'edit_shop_payments', 'pdd-payment-history', 'pdd_payment_history_page' );
-	$pdd_discounts_page     = add_submenu_page( 'edit.php?post_type=download', __( 'Discount Codes', 'pdd' ), __( 'Discount Codes', 'pdd' ), 'manage_shop_discounts', 'pdd-discounts', 'pdd_discounts_page' );
-	$pdd_reports_page 	    = add_submenu_page( 'edit.php?post_type=download', __( 'Earnings and Sales Reports', 'pdd' ), __( 'Reports', 'pdd' ), 'view_shop_reports', 'pdd-reports', 'pdd_reports_page' );
-	$pdd_settings_page 	    = add_submenu_page( 'edit.php?post_type=download', __( 'Easy Digital Download Settings', 'pdd' ), __( 'Settings', 'pdd' ), 'manage_shop_settings', 'pdd-settings', 'pdd_options_page' );
-	$pdd_tools_page         = add_submenu_page( 'edit.php?post_type=download', __( 'Easy Digital Download Info and Tools', 'pdd' ), __( 'Tools', 'pdd' ), 'install_plugins', 'pdd-tools', 'pdd_tools_page' );
-	$pdd_add_ons_page 	    = add_submenu_page( 'edit.php?post_type=download', __( 'Easy Digital Download Add Ons', 'pdd' ), __( 'Add Ons', 'pdd' ), 'install_plugins', 'pdd-addons', 'pdd_add_ons_page' );
+	$pdd_payments_page      = add_submenu_page( 'edit.php?post_type=pdd_camp', $pdd_payment->labels->name, $pdd_payment->labels->menu_name, 'edit_shop_payments', 'pdd-payment-history', 'pdd_payment_history_page' );
+	$pdd_reports_page 	    = add_submenu_page( 'edit.php?post_type=pdd_camp', __( 'Earnings and Sales Reports', 'pdd' ), __( 'Reports', 'pdd' ), 'view_shop_reports', 'pdd-reports', 'pdd_reports_page' );
+	$pdd_settings_page 	    = add_submenu_page( 'edit.php?post_type=pdd_camp', __( 'Pojo Digital Donations Settings', 'pdd' ), __( 'Settings', 'pdd' ), 'manage_shop_settings', 'pdd-settings', 'pdd_options_page' );
+	$pdd_tools_page         = add_submenu_page( 'edit.php?post_type=pdd_camp', __( 'Pojo Digital Donations Info and Tools', 'pdd' ), __( 'Tools', 'pdd' ), 'install_plugins', 'pdd-tools', 'pdd_tools_page' );
 	$pdd_upgrades_screen    = add_submenu_page( null, __( 'PDD Upgrades', 'pdd' ), __( 'PDD Upgrades', 'pdd' ), 'install_plugins', 'pdd-upgrades', 'pdd_upgrades_screen' );
 }
 add_action( 'admin_menu', 'pdd_add_options_link', 10 );
@@ -56,13 +54,13 @@ function pdd_is_admin_page() {
 		return false;
 	}
 	
-	global $pagenow, $typenow, $pdd_discounts_page, $pdd_payments_page, $pdd_settings_page, $pdd_reports_page, $pdd_system_info_page, $pdd_add_ons_page, $pdd_settings_export, $pdd_upgrades_screen;
+	global $pagenow, $typenow, $pdd_payments_page, $pdd_settings_page, $pdd_reports_page, $pdd_system_info_page, $pdd_settings_export, $pdd_upgrades_screen;
 
-	if ( 'download' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
+	if ( 'pdd_camp' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
 		return true;
 	}
 	
-	$pdd_admin_pages = apply_filters( 'pdd_admin_pages', array( $pdd_discounts_page, $pdd_payments_page, $pdd_settings_page, $pdd_reports_page, $pdd_system_info_page, $pdd_add_ons_page, $pdd_settings_export, $pdd_upgrades_screen, ) );
+	$pdd_admin_pages = apply_filters( 'pdd_admin_pages', array( $pdd_payments_page, $pdd_settings_page, $pdd_reports_page, $pdd_system_info_page, $pdd_settings_export, $pdd_upgrades_screen, ) );
 	
 	if ( in_array( $pagenow, $pdd_admin_pages ) ) {
 		return true;

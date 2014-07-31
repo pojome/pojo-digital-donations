@@ -11,9 +11,9 @@
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
-$downloads = get_posts( array( 'post_type' => 'download', 'nopaging' => true ) );
+$downloads = get_posts( array( 'post_type' => 'pdd_camp', 'nopaging' => true ) );
 ?>
-<h2><?php _e( 'Add New Discount', 'pdd' ); ?> - <a href="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-discounts' ); ?>" class="button-secondary"><?php _e( 'Go Back', 'pdd' ); ?></a></h2>
+<h2><?php _e( 'Add New Discount', 'pdd' ); ?> - <a href="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-discounts' ); ?>" class="button-secondary"><?php _e( 'Go Back', 'pdd' ); ?></a></h2>
 <form id="pdd-add-discount" action="" method="POST">
 	<?php do_action( 'pdd_add_discount_form_top' ); ?>
 	<table class="form-table">
@@ -157,7 +157,7 @@ $downloads = get_posts( array( 'post_type' => 'download', 'nopaging' => true ) )
 	<?php do_action( 'pdd_add_discount_form_bottom' ); ?>
 	<p class="submit">
 		<input type="hidden" name="pdd-action" value="add_discount"/>
-		<input type="hidden" name="pdd-redirect" value="<?php echo esc_url( admin_url( 'edit.php?post_type=download&page=pdd-discounts' ) ); ?>"/>
+		<input type="hidden" name="pdd-redirect" value="<?php echo esc_url( admin_url( 'edit.php?post_type=pdd_camp&page=pdd-discounts' ) ); ?>"/>
 		<input type="hidden" name="pdd-discount-nonce" value="<?php echo wp_create_nonce( 'pdd_discount_nonce' ); ?>"/>
 		<input type="submit" value="<?php _e( 'Add Discount Code', 'pdd' ); ?>" class="button-primary"/>
 	</p>

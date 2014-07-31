@@ -199,7 +199,7 @@ $address      = ! empty( $user_info['address'] ) ? $user_info['address'] : array
 	
 										<div class="pdd-admin-box-inside">
 
-											<p><a href="<?php echo admin_url( '/edit.php?post_type=download&page=pdd-reports&tab=logs&payment=' . $payment_id ); ?>"><?php _e( 'View file download log for purchase', 'pdd' ); ?></a></p>
+											<p><a href="<?php echo admin_url( '/edit.php?post_type=pdd_camp&page=pdd-reports&tab=logs&payment=' . $payment_id ); ?>"><?php _e( 'View file download log for purchase', 'pdd' ); ?></a></p>
 	
 										</div>
 

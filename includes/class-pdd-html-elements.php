@@ -45,7 +45,7 @@ class PDD_HTML_Elements {
 		$args = wp_parse_args( $args, $defaults );
 
 		$products = get_posts( array(
-			'post_type'      => 'download',
+			'post_type'      => 'pdd_camp',
 			'orderby'        => 'title',
 			'order'          => 'ASC',
 			'posts_per_page' => $args['number']
@@ -137,7 +137,7 @@ class PDD_HTML_Elements {
 	 * @return string $output Category dropdown
 	 */
 	public function category_dropdown( $name = 'pdd_categories', $selected = 0 ) {
-		$categories = get_terms( 'download_category', apply_filters( 'pdd_category_dropdown', array() ) );
+		$categories = get_terms( 'camp_category', apply_filters( 'pdd_category_dropdown', array() ) );
 		$options    = array();
 
 		foreach ( $categories as $category ) {

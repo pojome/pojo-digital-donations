@@ -27,14 +27,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function pdd_responsive_download_post_class( $classes = array(), $class = '', $post_id = 0 ) {
 	if (
-		! is_singular( 'download' ) &&
-		! is_post_type_archive( 'download' ) &&
-		! is_tax( 'download_category' ) &&
-		! is_tax( 'download_tag' )
+		! is_singular( 'pdd_camp' ) &&
+		! is_post_type_archive( 'pdd_camp' ) &&
+		! is_tax( 'camp_category' ) &&
+		! is_tax( 'camp_tag' )
 	)
 		return $classes;
 
-	if ( ( $key = array_search( 'download', $classes ) ) )
+	if ( ( $key = array_search( 'pdd_camp', $classes ) ) )
 		unset( $classes[ $key ] );
 
 	return $classes;

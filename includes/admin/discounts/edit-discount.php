@@ -26,7 +26,7 @@ $flat_display      = pdd_get_discount_type( $discount_id ) == 'percentage' ? '' 
 $percent_display   = pdd_get_discount_type( $discount_id ) == 'percentage' ? ' style="display:none;"' : '';
 $condition_display = empty( $product_reqs ) ? ' style="display:none;"' : '';
 ?>
-<h2><?php _e( 'Edit Discount', 'pdd' ); ?> - <a href="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-discounts' ); ?>" class="button-secondary"><?php _e( 'Go Back', 'pdd' ); ?></a></h2>
+<h2><?php _e( 'Edit Discount', 'pdd' ); ?> - <a href="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-discounts' ); ?>" class="button-secondary"><?php _e( 'Go Back', 'pdd' ); ?></a></h2>
 <form id="pdd-edit-discount" action="" method="post">
 	<?php do_action( 'pdd_edit_discount_form_top', $discount_id, $discount ); ?>
 	<table class="form-table">
@@ -184,7 +184,7 @@ $condition_display = empty( $product_reqs ) ? ' style="display:none;"' : '';
 	<p class="submit">
 		<input type="hidden" name="pdd-action" value="edit_discount"/>
 		<input type="hidden" name="discount-id" value="<?php echo absint( $_GET['discount'] ); ?>"/>
-		<input type="hidden" name="pdd-redirect" value="<?php echo esc_url( admin_url( 'edit.php?post_type=download&page=pdd-discounts' ) ); ?>"/>
+		<input type="hidden" name="pdd-redirect" value="<?php echo esc_url( admin_url( 'edit.php?post_type=pdd_camp&page=pdd-discounts' ) ); ?>"/>
 		<input type="hidden" name="pdd-discount-nonce" value="<?php echo wp_create_nonce( 'pdd_discount_nonce' ); ?>"/>
 		<input type="submit" value="<?php _e( 'Update Discount Code', 'pdd' ); ?>" class="button-primary"/>
 	</p>

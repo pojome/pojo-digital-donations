@@ -137,7 +137,7 @@ function pdd_get_registered_settings() {
 				'purchase_page' => array(
 					'id' => 'purchase_page',
 					'name' => __( 'Checkout Page', 'pdd' ),
-					'desc' => __( 'This is the checkout page where buyers will complete their purchases. The [download_checkout] short code must be on this page.', 'pdd' ),
+					'desc' => __( 'This is the checkout page where buyers will complete their purchases. The [donation_checkout] short code must be on this page.', 'pdd' ),
 					'type' => 'select',
 					'options' => pdd_get_pages()
 				),

@@ -22,12 +22,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return void
  */
 
-function pdd_append_purchase_link( $download_id ) {
-	if ( ! get_post_meta( $download_id, '_pdd_hide_purchase_link', true ) ) {
-		echo pdd_get_purchase_link( array( 'download_id' => $download_id ) );
+function pdd_append_donate_link( $download_id ) {
+	if ( ! get_post_meta( $download_id, '_pdd_hide_donate_link', true ) ) {
+		echo pdd_get_donate_link( array( 'download_id' => $download_id ) );
 	}
 }
-add_action( 'pdd_after_download_content', 'pdd_append_purchase_link' );
+add_action( 'pdd_after_download_content', 'pdd_append_donate_link' );
 
 
 /**
@@ -46,18 +46,18 @@ add_action( 'pdd_after_download_content', 'pdd_append_purchase_link' );
  * @param array $args Arguments for display
  * @return string $purchase_form
  */
-function pdd_get_purchase_link( $args = array() ) {
+function pdd_get_donate_link( $args = array() ) {
 	global $pdd_options, $post;
 
 	if ( ! isset( $pdd_options['purchase_page'] ) || $pdd_options['purchase_page'] == 0 ) {
-		pdd_set_error( 'set_checkout', sprintf( __( 'No checkout page has been configured. Visit <a href="%s">Settings</a> to set one.', 'pdd' ), admin_url( 'edit.php?post_type=download&page=pdd-settings' ) ) );
+		pdd_set_error( 'set_checkout', sprintf( __( 'No checkout page has been configured. Visit <a href="%s">Settings</a> to set one.', 'pdd' ), admin_url( 'edit.php?post_type=pdd_camp&page=pdd-settings' ) ) );
 		pdd_print_errors();
 		return false;
 	}
 
 	$post_id = is_object( $post ) ? $post->ID : 0;
 
-	$defaults = apply_filters( 'pdd_purchase_link_defaults', array(
+	$defaults = apply_filters( 'pdd_donate_link_defaults', array(
 		'download_id' => $post_id,
 		'price'       => (bool) true,
 		'direct'      => pdd_get_download_button_behavior( $post_id ) == 'direct' ? true : false,
@@ -115,13 +115,13 @@ function pdd_get_purchase_link( $args = array() ) {
 		$form_id .= '-' . $pdd_displayed_form_ids[$args['download_id']];
 	}
 
-	$args = apply_filters( 'pdd_purchase_link_args', $args );
+	$args = apply_filters( 'pdd_donate_link_args', $args );
 
 	ob_start();
 ?>
-	<form id="<?php echo $form_id; ?>" class="pdd_download_purchase_form" method="post">
+	<form id="<?php echo $form_id; ?>" class="pdd_camp_purchase_form" method="post">
 
-		<?php do_action( 'pdd_purchase_link_top', $args['download_id'] ); ?>
+		<?php do_action( 'pdd_donate_link_top', $args['download_id'] ); ?>
 
 		<?php if ( pdd_has_custom_amount( $args['download_id'] ) ) :
 			$min_amount = get_post_meta( $args['download_id'], 'pdd_min_custom_amount', true );
@@ -196,7 +196,7 @@ function pdd_get_purchase_link( $args = array() ) {
 			<input type="hidden" name="pdd_action" class="pdd_action_input" value="add_to_cart">
 		<?php } ?>
 
-		<?php do_action( 'pdd_purchase_link_end', $args['download_id'] ); ?>
+		<?php do_action( 'pdd_donate_link_end', $args['download_id'] ); ?>
 
 	</form><!--end #<?php echo esc_attr( $form_id ); ?>-->
 <?php
@@ -269,7 +269,7 @@ function pdd_purchase_variable_pricing( $download_id = 0 ) {
 <?php
 	do_action( 'pdd_after_price_options', $download_id );
 }
-add_action( 'pdd_purchase_link_top', 'pdd_purchase_variable_pricing', 10 );
+add_action( 'pdd_donate_link_top', 'pdd_purchase_variable_pricing', 10 );
 
 /**
  * Before Download Content
@@ -286,7 +286,7 @@ add_action( 'pdd_purchase_link_top', 'pdd_purchase_variable_pricing', 10 );
 function pdd_before_download_content( $content ) {
 	global $post;
 
-	if ( $post && $post->post_type == 'download' && is_singular( 'download' ) && is_main_query() && !post_password_required() ) {
+	if ( $post && $post->post_type == 'pdd_camp' && is_singular( 'pdd_camp' ) && is_main_query() && !post_password_required() ) {
 		ob_start();
 		do_action( 'pdd_before_download_content', $post->ID );
 		$content = ob_get_clean() . $content;
@@ -311,7 +311,7 @@ add_filter( 'the_content', 'pdd_before_download_content' );
 function pdd_after_download_content( $content ) {
 	global $post;
 
-	if ( $post && $post->post_type == 'download' && is_singular( 'download' ) && is_main_query() && !post_password_required() ) {
+	if ( $post && $post->post_type == 'pdd_camp' && is_singular( 'pdd_camp' ) && is_main_query() && !post_password_required() ) {
 		ob_start();
 		do_action( 'pdd_after_download_content', $post->ID );
 		$content .= ob_get_clean();
@@ -399,10 +399,10 @@ function pdd_get_button_styles() {
  * @return string $excerpt Content after filtering
  * @return string
  */
-function pdd_downloads_default_excerpt( $excerpt ) {
+function pdd_camps_default_excerpt( $excerpt ) {
 	return do_shortcode( wpautop( $excerpt ) );
 }
-add_filter( 'pdd_downloads_excerpt', 'pdd_downloads_default_excerpt' );
+add_filter( 'pdd_camps_excerpt', 'pdd_camps_default_excerpt' );
 
 /**
  * Default formatting for full download content
@@ -413,10 +413,10 @@ add_filter( 'pdd_downloads_excerpt', 'pdd_downloads_default_excerpt' );
  * @param string $content Content before filtering
  * @return string $content Content after filtering
  */
-function pdd_downloads_default_content( $content ) {
+function pdd_camps_default_content( $content ) {
 	return do_shortcode( wpautop( $content ) );
 }
-add_filter( 'pdd_downloads_content', 'pdd_downloads_default_content' );
+add_filter( 'pdd_camps_content', 'pdd_camps_default_content' );
 
 /**
  * Gets the download links for each item purchased
@@ -430,16 +430,16 @@ function pdd_get_purchase_download_links( $payment_id = 0 ) {
 	$downloads   = pdd_get_payment_meta_cart_details( $payment_id, true );
 	$payment_key = pdd_get_payment_key( $payment_id );
 	$email       = pdd_get_payment_user_email( $payment_id );
-	$links       = '<ul class="pdd_download_links">';
+	$links       = '<ul class="pdd_camp_links">';
 
 	foreach ( $downloads as $download ) {
 		$links .= '<li>';
-			$links .= '<h3 class="pdd_download_link_title">' . esc_html( get_the_title( $download['id'] ) ) . '</h3>';
+			$links .= '<h3 class="pdd_camp_link_title">' . esc_html( get_the_title( $download['id'] ) ) . '</h3>';
 			$price_id = isset( $download['options'] ) && isset( $download['options']['price_id'] ) ? $download['options']['price_id'] : null;
 			$files    = pdd_get_download_files( $download['id'], $price_id );
 			if ( is_array( $files ) ) {
 				foreach ( $files as $filekey => $file ) {
-					$links .= '<div class="pdd_download_link_file">';
+					$links .= '<div class="pdd_camp_link_file">';
 						$links .= '<a href="' . esc_url( pdd_get_download_file_url( $payment_key, $email, $filekey, $download['id'], $price_id ) ) . '">';
 							if ( isset( $file['name'] ) )
 								$links .= esc_html( $file['name'] );
@@ -620,7 +620,7 @@ function pdd_microdata_title( $title, $id = 0 ) {
 		return $title;
 	}
 
-	if ( is_singular( 'download' ) && 'download' == get_post_type( intval( $id ) ) ) {
+	if ( is_singular( 'pdd_camp' ) && 'pdd_camp' == get_post_type( intval( $id ) ) ) {
 		$title = '<span itemprop="name">' . $title . '</span>';
 	}
 
@@ -644,7 +644,7 @@ function pdd_microdata_wrapper( $content ) {
 		return $content;
 	}
 
-	if ( $post && $post->post_type == 'download' && is_singular() && is_main_query() ) {
+	if ( $post && $post->post_type == 'pdd_camp' && is_singular() && is_main_query() ) {
 		$content = apply_filters( 'pdd_microdata_wrapper', '<div itemscope itemtype="http://schema.org/Product" itemprop="description">' . $content . '</div>' );
 	}
 	return $content;

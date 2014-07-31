@@ -89,7 +89,7 @@ Would you like to help translate the plugin into more languages? [Join our WP-Tr
 
 There are three ways you can show the downloads shopping cart:
 
-1. Use the short code and simply place [download_cart] on a page or within a text widget.
+1. Use the short code and simply place [donation_cart] on a page or within a text widget.
 
 2. Use the included widget. Go to Appearance > Widgets and place the "Downloads Cart" widget into any widget area available.
 
@@ -263,13 +263,13 @@ Yes, through the addition of one or more of the add-on payment gateways, you can
 * Tweak: Reversed some of the checkbox anti-patterns
 * Tweak: Added support showing all Download products in the [downloads] short code
 * Tweak: Log the reason a payment is marked as failed from PayPal
-* Tweak: Added a columns variable to the pdd_download_class filter
+* Tweak: Added a columns variable to the pdd_camp_class filter
 * Tweak: Added tax settings to the System Info
 * Tweak: Added improved hooks to the pdd_shopping_cart() function
 * Tweak: Added a link to the product edit screens for each Download in the Purchased Downloads section of View Order Details
 * Tweak: Added $payment_id to the pdd_view_order_details_form_top action
 * Tweak: Modified the way that the global file download limit affects individual file download limits
-* Tweak: Add support for identifying products in [purchase_link] by an SKU
+* Tweak: Add support for identifying products in [donate_link] by an SKU
 * Tweak: Added support for hiding the credit card form if a 100% discount code is redeemed
 * Tweak: Added support for moving the checkout cart to the bottom of the checkout screen
 * Tweak: Improved the Product Requirements section of the discount edit screen
@@ -355,7 +355,7 @@ Yes, through the addition of one or more of the add-on payment gateways, you can
 * Fix: Improper HTML for text fields through PDD_HTML_Elements class
 * Fix: Improper HTML for checkbox fields through PDD_HTML_Elements class
 * Fix: Broken cache key in PDD_Payment_Stats
-* Fix: Properly account for when global $post isn't available in pdd_get_purchase_link()
+* Fix: Properly account for when global $post isn't available in pdd_get_donate_link()
 * Fix: Cart quantity could go negative, that's silly
 * Fix: Deprecated notices from usage of wp_editor() with WordPress 3.9
 * Fix: Improper cursor behavior on Dashboard widgets
@@ -689,7 +689,7 @@ _REQUIRES WordPress 3.7 or later_
 * Fix: price option name not displayed on purchase confirmation
 * Fix: add to cart redirects incorrectly when ajax is disabled
 * Fix: price assignment for download files doesn't work correctly with Buy Now
-* Fix: pdd_download_history_row_end action passed wrong variable
+* Fix: pdd_camp_history_row_end action passed wrong variable
 * Fix: tax calculation incorrect when Prices entered with tax set to "Yes, I will enter prices inclusive of tax"
 * Fix: PHP notices for settings descriptions
 * Fix: incorrect label ending HTML tags
@@ -708,7 +708,7 @@ _REQUIRES WordPress 3.7 or later_
 * Tweak: added host detection to System Info
 * Tweak: added a filter to product types to allow new product types to be registered
 * Tweak: added hex values to pdd_get_button_colors()
-* Tweak: added form_id attribute to [pdd_purchase_link]
+* Tweak: added form_id attribute to [pdd_donate_link]
 * Tweak: dramatically improved the PDD settings API
 * Tweak: added a column class to the [downloads] short code
 * Tweak: added SPAN tags around checkoug LEGEND tags
@@ -934,7 +934,7 @@ _REQUIRES WordPress 3.7 or later_
 * New: Added ability to export file download history by date
 * New: Added category filtering to Downloads > Reports > Downloads
 * New: Added option to disable admin sales notices
-* Tweaked: Better options to disable the price in the [purchase_link] short code
+* Tweaked: Better options to disable the price in the [donate_link] short code
 * Tweaked: Improved the checkout error fields
 * Fix: Issue with purchase receipt CSS
 * Fix: SQL error with comments_clauses
@@ -1238,7 +1238,7 @@ _REQUIRES WordPress 3.7 or later_
 
 * New: Option for defining the emails that receive admin sale notifications
 * New: pdd_item_in_cart filter
-* New: Added prices to the [purchase_link] short code so that the product price is shown on the button
+* New: Added prices to the [donate_link] short code so that the product price is shown on the button
 * New: Added payment history search
 * New: Added exclude_category and exclude_tags parameters to the [downloads] short code
 * New: Added date parameters to pdd_get_payments() to allow payments of specific dates to be queried
@@ -1342,7 +1342,7 @@ _REQUIRES WordPress 3.7 or later_
 * New: Added a new function for tracking deprecated function calls
 * New: Added a check to ensure items in the cart are of post_type "download"
 * Fix: Bug with creating the blank index.php in wp-content/uploads/pdd/
-* Fix: Bug with an HTML class name in pdd_get_purchase_link()
+* Fix: Bug with an HTML class name in pdd_get_donate_link()
 * Fix: Some text strings that were missing localization
 * Tweak: Updated German translation files
 * Tweak: Removed unnecessary parameters for register_post_type()
@@ -1439,7 +1439,7 @@ _REQUIRES WordPress 3.7 or later_
 * New: Added new pdd_payments_page_date_format filter to allow date format in Payment History to be changed
 * New: Added a new meta key for payment total so that payments can be sorted by amount
 * New: Added a new option to export all customer emails from Payment History
-* New: Added new pdd_download_post_type_args filter
+* New: Added new pdd_camp_post_type_args filter
 * Fix: Problem with the auto-generated short code on the All Downloads page
 * Fix: Problem with new downloads not being able to add download files
 * Fix: Incorrect variable name in register-settings.php
@@ -1449,7 +1449,7 @@ _REQUIRES WordPress 3.7 or later_
 * Fix: Discrepancy with the sales per month graph
 * Fix: Bug with radio button toggling in Download Configuration
 * Fix: Bug in the email template preview
-* Tweak: Improved the pdd_append_purchase_link() function
+* Tweak: Improved the pdd_append_donate_link() function
 * Tweak: Removed "Deleted" from the payment hsitory filter options
 * Tweak: Made improvements to script loading
 * Tweak: Minor improvements to the add-ons page
@@ -1490,7 +1490,7 @@ _REQUIRES WordPress 3.7 or later_
 * New: Added the name of the buyer to the admin purchase notifications
 * New: Added a new setting for "Complete Purchase" button text
 * New: Added pre_ and post_ actions to the add to cart function
-* New: Added a new pdd_download_price filter to the pdd_price() function
+* New: Added a new pdd_camp_price filter to the pdd_price() function
 * New: Added new actions to top and bottom of payment history page
 * New: Added class names to all table rows and cells in the checkout template
 * Fix: Misnamed class on the empty cart element
@@ -1643,14 +1643,14 @@ _REQUIRES WordPress 3.7 or later_
 * New: Added an option to disable the PayPal IPN verification
 * New: Added a new feature that allows source files to be restricted to specific price options
 * New: Added an option in Settings > Misc to define the expiration length for download links - default is 24 hours
-* New: Added a new filter, pdd_download_file_url_args,  for changing the arguments passed to the function that generages download URLs
+* New: Added a new filter, pdd_camp_file_url_args,  for changing the arguments passed to the function that generages download URLs
 * New: Added a new filter to allow developers to change the redirect URL for the pdd_login form
 * Fix: Bug with the PDD_READ_FILE_MODE constant
 * Fix: Bug with the file upload meta box fields
 * Tweak: Updated the "View Purchase Details" modal to include the price option purchased, if any
 * Tweak: Updated the purchase/download history short codes to only show files for the price options the user has purchased
 * Tweak: Made improvements to the checkout registration form layout
-* Tweak: Updated the [purchase_link] short code in the Download Configuration meta box to reflect the chosen button color
+* Tweak: Updated the [donate_link] short code in the Download Configuration meta box to reflect the chosen button color
 * Tweak: Updated the "Short Code" column in the list table to include the correct button color option
 * Tweak: Improved some file / function organization
 
@@ -1764,7 +1764,7 @@ _REQUIRES WordPress 3.7 or later_
 * Fix: Bug with the Media Uploader when adding media to the content of a Download. Props to Sksmatt
 * Fix: Small error notice present in the checkout form short code. Props to Sksmatt
 * Fix: Small bug wit the pdd_remove_item_url() present when on a 404 error page. Props to Sksmatt
-* Tweak: Updated the pdd_purchase_link() function to automatically detect chosen link styles and colors
+* Tweak: Updated the pdd_donate_link() function to automatically detect chosen link styles and colors
 
 = 1.0.7: May 08, 2012 =
 

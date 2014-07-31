@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return array $links
  */
 function pdd_plugin_action_links( $links, $file ) {
-	$settings_link = '<a href="' . admin_url( 'edit.php?post_type=download&page=pdd-settings' ) . '">' . esc_html__( 'General Settings', 'pdd' ) . '</a>';
+	$settings_link = '<a href="' . admin_url( 'edit.php?post_type=pdd_camp&page=pdd-settings' ) . '">' . esc_html__( 'General Settings', 'pdd' ) . '</a>';
 	if ( $file == 'easy-digital-downloads/easy-digital-downloads.php' )
 		array_unshift( $links, $settings_link );
 

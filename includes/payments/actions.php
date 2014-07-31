@@ -175,7 +175,7 @@ function pdd_trigger_purchase_delete( $data ) {
 	if ( wp_verify_nonce( $data['_wpnonce'], 'pdd_payment_nonce' ) ) {
 		$payment_id = absint( $data['purchase_id'] );
 		pdd_delete_purchase( $payment_id );
-		wp_redirect( admin_url( '/edit.php?post_type=download&page=pdd-payment-history&pdd-message=payment_deleted' ) );
+		wp_redirect( admin_url( '/edit.php?post_type=pdd_camp&page=pdd-payment-history&pdd-message=payment_deleted' ) );
 		pdd_die();
 	}
 }

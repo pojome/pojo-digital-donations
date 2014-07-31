@@ -146,7 +146,7 @@ function pdd_dashboard_sales_widget() {
 					<tr>
 						<td colspan="2">
 							<?php _e( 'Recent Purchases', 'pdd' ); ?>
-							<a href="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-payment-history' ); ?>">&nbsp;&ndash;&nbsp;<?php _e( 'View All', 'pdd' ); ?></a>
+							<a href="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history' ); ?>">&nbsp;&ndash;&nbsp;<?php _e( 'View All', 'pdd' ); ?></a>
 						</td>
 					</tr>
 				</thead>
@@ -155,7 +155,7 @@ function pdd_dashboard_sales_widget() {
 					foreach ( $payments as $payment ) { ?>
 						<tr>
 							<td class="pdd_order_label">
-								<a href="<?php echo add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details' ) ); ?>" title="<?php printf( __( 'Purchase Details for Payment #%s', 'pdd' ), $payment->ID ); ?> ">
+								<a href="<?php echo add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history&view=view-order-details' ) ); ?>" title="<?php printf( __( 'Purchase Details for Payment #%s', 'pdd' ), $payment->ID ); ?> ">
 									<?php echo get_the_title( $payment->ID ) ?>
 									&mdash; <?php echo $payment->user_info['email'] ?>
 								</a>
@@ -167,7 +167,7 @@ function pdd_dashboard_sales_widget() {
 								} ?>
 							</td>
 							<td class="pdd_order_price">
-								<a href="<?php echo add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details' ) ); ?>" title="<?php printf( __( 'Purchase Details for Payment #%s', 'pdd' ), $payment->ID ); ?> ">
+								<a href="<?php echo add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history&view=view-order-details' ) ); ?>" title="<?php printf( __( 'Purchase Details for Payment #%s', 'pdd' ), $payment->ID ); ?> ">
 									<span class="pdd_price_label"><?php echo pdd_currency_filter( pdd_format_amount( $payment->total ) ); ?></span>
 								</a>
 							</td>

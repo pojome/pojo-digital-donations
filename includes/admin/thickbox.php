@@ -23,7 +23,7 @@ function pdd_media_button() {
 	$output = '';
 
 	/** Only run in post/page creation and edit screens */
-	if ( in_array( $pagenow, array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' ) ) && $typenow != 'download' ) {
+	if ( in_array( $pagenow, array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' ) ) && $typenow != 'pdd_camp' ) {
 		/* check current WP version */
 		if ( version_compare( $wp_version, '3.5', '<' ) ) {
 			$img = '<img src="' . PDD_PLUGIN_URL . 'assets/images/pdd-media.png" alt="' . sprintf( __( 'Insert %s', 'pdd' ), pdd_get_label_singular() ) . '"/>';
@@ -52,7 +52,7 @@ function pdd_admin_footer_for_thickbox() {
 	global $pagenow, $typenow;
 
 	// Only run in post/page creation and edit screens
-	if ( in_array( $pagenow, array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' ) ) && $typenow != 'download' ) { ?>
+	if ( in_array( $pagenow, array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' ) ) && $typenow != 'pdd_camp' ) { ?>
 		<script type="text/javascript">
             function insertDownload() {
                 var id = jQuery('#products').val(),
@@ -74,7 +74,7 @@ function pdd_admin_footer_for_thickbox() {
                 }
 
                 // Send the shortcode to the editor
-                window.send_to_editor('[purchase_link id="' + id + '" style="' + style + '" color="' + color + '" text="' + text + '"' + direct +']');
+                window.send_to_editor('[donate_link id="' + id + '" style="' + style + '" color="' + color + '" text="' + text + '"' + direct +']');
             }
             jQuery(document).ready(function ($) {
                 $('#select-pdd-style').change(function () {

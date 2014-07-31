@@ -87,7 +87,7 @@ function pdd_tools_banned_emails_display() {
 		<h3><span><?php _e( 'Banned Emails', 'pdd' ); ?></span></h3>
 		<div class="inside">
 			<p><?php _e( 'Emails placed in the box below will not be allowed to make purchases.', 'pdd' ); ?></p>
-			<form method="post" action="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-tools&tab=general' ); ?>">
+			<form method="post" action="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-tools&tab=general' ); ?>">
 				<p>
 					<textarea name="banned_emails" rows="10" class="large-text"><?php echo implode( "\n", pdd_get_banned_emails() ); ?></textarea>
 					<span class="description"><?php _e( 'Enter emails to disallow, one per line', 'pdd' ); ?></span>
@@ -171,8 +171,8 @@ function pdd_tools_import_export_display() {
 		<h3><span><?php _e( 'Export Settings', 'pdd' ); ?></span></h3>
 		<div class="inside">
 			<p><?php _e( 'Export the Pojo Digital Donations settings for this site as a .json file. This allows you to easily import the configuration into another site.', 'pdd' ); ?></p>
-			<p><?php printf( __( 'To export shop data (purchases, customers, etc), visit the <a href="%s">Reports</a> page.', 'pdd' ), admin_url( 'edit.php?post_type=download&page=pdd-reports&tab=export' ) ); ?></p>
-			<form method="post" action="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-tools&tab=import_export' ); ?>">
+			<p><?php printf( __( 'To export shop data (purchases, customers, etc), visit the <a href="%s">Reports</a> page.', 'pdd' ), admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports&tab=export' ) ); ?></p>
+			<form method="post" action="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-tools&tab=import_export' ); ?>">
 				<p><input type="hidden" name="pdd_action" value="export_settings" /></p>
 				<p>
 					<?php wp_nonce_field( 'pdd_export_nonce', 'pdd_export_nonce' ); ?>
@@ -186,7 +186,7 @@ function pdd_tools_import_export_display() {
 		<h3><span><?php _e( 'Import Settings', 'pdd' ); ?></span></h3>
 		<div class="inside">
 			<p><?php _e( 'Import the Pojo Digital Donations settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'pdd' ); ?></p>
-			<form method="post" enctype="multipart/form-data" action="<?php echo admin_url( 'edit.php?post_type=download&page=pdd-tools&tab=import_export' ); ?>">
+			<form method="post" enctype="multipart/form-data" action="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-tools&tab=import_export' ); ?>">
 				<p>
 					<input type="file" name="import_file"/>
 				</p>
@@ -272,7 +272,7 @@ function pdd_tools_import_export_process_import() {
 
 	update_option( 'pdd_settings', $settings );
 
-	wp_safe_redirect( admin_url( 'edit.php?post_type=download&page=pdd-tools&pdd-message=settings-imported' ) ); exit;
+	wp_safe_redirect( admin_url( 'edit.php?post_type=pdd_camp&page=pdd-tools&pdd-message=settings-imported' ) ); exit;
 
 }
 add_action( 'pdd_import_settings', 'pdd_tools_import_export_process_import' );
@@ -286,7 +286,7 @@ add_action( 'pdd_import_settings', 'pdd_tools_import_export_process_import' );
  */
 function pdd_tools_sysinfo_display() {
 ?>
-	<form action="<?php echo esc_url( admin_url( 'edit.php?post_type=download&page=pdd-tools&tab=system_info' ) ); ?>" method="post" dir="ltr">
+	<form action="<?php echo esc_url( admin_url( 'edit.php?post_type=pdd_camp&page=pdd-tools&tab=system_info' ) ); ?>" method="post" dir="ltr">
 		<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="pdd-sysinfo" title="To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac)."><?php echo pdd_tools_sysinfo_get(); ?></textarea>
 		<p class="submit">
 			<input type="hidden" name="pdd-action" value="download_sysinfo" />
@@ -588,4 +588,4 @@ function pdd_tools_sysinfo_download() {
 	echo wp_strip_all_tags( $_POST['pdd-sysinfo'] );
 	pdd_die();
 }
-add_action( 'pdd_download_sysinfo', 'pdd_tools_sysinfo_download' );
+add_action( 'pdd_camp_sysinfo', 'pdd_tools_sysinfo_download' );

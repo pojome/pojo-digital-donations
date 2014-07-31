@@ -172,8 +172,8 @@ jQuery( document ).ready( function( $ ) {
 						}
 
 						// Update all buttons for same download
-						if ( $( '.pdd_download_purchase_form' ).length ) {
-							var parent_form = $( '.pdd_download_purchase_form *[data-download-id="' + download + '"]' ).parents( 'form' );
+						if ( $( '.pdd_camp_purchase_form' ).length ) {
+							var parent_form = $( '.pdd_camp_purchase_form *[data-download-id="' + download + '"]' ).parents( 'form' );
 							$( 'a.pdd-add-to-cart', parent_form ).hide();
 							$( '.pdd_go_to_checkout', parent_form ).show().removeAttr( 'data-pdd-loading' );
 						}
@@ -202,7 +202,7 @@ jQuery( document ).ready( function( $ ) {
 		} );
 
 	$( 'div.pdd_price_options :input' ).on( 'change', function() {
-		var $this_form = $( this ).closest( 'form.pdd_download_purchase_form' ),
+		var $this_form = $( this ).closest( 'form.pdd_camp_purchase_form' ),
 			$custom_amount_radio = $( 'input.pdd_custom_amount_radio', $this_form );
 
 		if ( $custom_amount_radio.prop( 'checked' ) ) {
@@ -216,7 +216,7 @@ jQuery( document ).ready( function( $ ) {
 	$( '.pdd-add-to-cart' ).on( 'click', function( e ) {
 		$( 'div.pdd_errors.pdd_custom_amount_error' ).remove();
 		
-		var $this_form = $( this ).closest( 'form.pdd_download_purchase_form' ),
+		var $this_form = $( this ).closest( 'form.pdd_camp_purchase_form' ),
 			$custom_amount_radio = $( 'input.pdd_custom_amount_radio', $this_form ),
 			$custom_amount = $( 'input.pdd_custom_amount', $this_form );
 

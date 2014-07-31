@@ -144,7 +144,7 @@ class pdd_categories_tags_widget extends WP_Widget {
 		// Set up some default widget settings.
 		$defaults = array(
 			'title'         => '',
-			'taxonomy'      => 'download_category',
+			'taxonomy'      => 'camp_category',
 			'count'         => 'off',
 			'hide_empty'    => 'off'
 		);
@@ -158,8 +158,8 @@ class pdd_categories_tags_widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'taxonomy' ) ); ?>"><?php _e( 'Taxonomy:', 'pdd' ); ?></label>
 			<select name="<?php echo esc_attr( $this->get_field_name( 'taxonomy' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'taxonomy' ) ); ?>">
-				<option value="download_category" <?php selected( 'download_category', $instance['taxonomy'] ); ?>><?php _e( 'Categories', 'pdd' ); ?></option>
-				<option value="download_tag" <?php selected( 'download_tag', $instance['taxonomy'] ); ?>><?php _e( 'Tags', 'pdd' ); ?></option>
+				<option value="download_category" <?php selected( 'camp_category', $instance['taxonomy'] ); ?>><?php _e( 'Categories', 'pdd' ); ?></option>
+				<option value="download_tag" <?php selected( 'camp_tag', $instance['taxonomy'] ); ?>><?php _e( 'Tags', 'pdd' ); ?></option>
 			</select>
 		</p>
 		<p>
@@ -200,15 +200,15 @@ class PDD_Product_Details_Widget extends WP_Widget {
     public function widget( $args, $instance ) {
 
     	if( ! isset( $args['id'] ) ) {
-			$args['id'] = 'pdd_download_details_widget';
+			$args['id'] = 'pdd_camp_details_widget';
 		}
 
-        if ( 'current' == $instance['download_id'] && ! is_singular( 'download' ) ) {
+        if ( 'current' == $instance['download_id'] && ! is_singular( 'pdd_camp' ) ) {
         	return;
         }
 
        	// set correct download ID
-        if ( 'current' == $instance['download_id'] && is_singular( 'download' ) ) {
+        if ( 'current' == $instance['download_id'] && is_singular( 'pdd_camp' ) ) {
         	$download_id = get_the_ID();
         } else {
         	$download_id = absint( $instance['download_id'] );
@@ -217,7 +217,7 @@ class PDD_Product_Details_Widget extends WP_Widget {
         // Variables from widget settings
 		$title              = apply_filters( 'widget_title', $instance[ 'title' ], $instance, $args['id'] );
       	$download_title 	= $instance['download_title'] ? apply_filters( 'pdd_product_details_widget_download_title', '<h3>' . get_the_title( $download_id ) . '</h3>', $download_id ) : '';
-       	$purchase_button 	= $instance['purchase_button'] ? apply_filters( 'pdd_product_details_widget_purchase_button', pdd_get_purchase_link( array( 'download_id' => $download_id ) ), $download_id ) : '';
+       	$purchase_button 	= $instance['purchase_button'] ? apply_filters( 'pdd_product_details_widget_purchase_button', pdd_get_donate_link( array( 'download_id' => $download_id ) ), $download_id ) : '';
     	$categories 		= $instance['categories'] ? $instance['categories'] : '';
     	$tags 				= $instance['tags'] ? $instance['tags'] : '';
 	
@@ -239,8 +239,8 @@ class PDD_Product_Details_Widget extends WP_Widget {
         echo $purchase_button;
 
       	// categories and tags
-    	$category_list = $categories ? get_the_term_list( $download_id, 'download_category', '', ', ' ) : '';
-    	$tag_list = $tags ? get_the_term_list( $download_id, 'download_tag', '', ', ' ) : '';
+    	$category_list = $categories ? get_the_term_list( $download_id, 'camp_category', '', ', ' ) : '';
+    	$tag_list = $tags ? get_the_term_list( $download_id, 'camp_tag', '', ', ' ) : '';
 
         $text = '';
 
@@ -289,7 +289,7 @@ class PDD_Product_Details_Widget extends WP_Widget {
 			<!-- Download -->
          <?php 
             $args = array( 
-	            'post_type'      => 'download', 
+	            'post_type'      => 'pdd_camp', 
 	            'posts_per_page' => -1, 
 	            'post_status'    => 'publish', 
 	        );

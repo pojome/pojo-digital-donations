@@ -109,12 +109,12 @@ class PDD_File_Downloads_Log_Table extends WP_List_Table {
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
-			case 'download' :
-				return '<a href="' . add_query_arg( 'download', $item[ $column_name ] ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
+			case 'pdd_camp' :
+				return '<a href="' . add_query_arg( 'pdd_camp', $item[ $column_name ] ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
 			case 'user_id' :
 				return '<a href="' . add_query_arg( 'user', $item[ $column_name ] ) . '">' . $item[ 'user_name' ] . '</a>';
 			case 'payment_id' :
-				return '<a href="' . admin_url( 'edit.php?post_type=download&page=pdd-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . pdd_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . pdd_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}
@@ -130,7 +130,7 @@ class PDD_File_Downloads_Log_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'ID'		=> __( 'Log ID', 'pdd' ),
-			'download'	=> pdd_get_label_singular(),
+			'pdd_camp'	=> pdd_get_label_singular(),
 			'user_id'  	=> __( 'User', 'pdd' ),
 			'payment_id'=> __( 'Payment ID', 'pdd' ),
 			'file'  	=> __( 'File', 'pdd' ),
@@ -169,7 +169,7 @@ class PDD_File_Downloads_Log_Table extends WP_List_Table {
 	 * @return int Download ID
 	 */
 	public function get_filtered_download() {
-		return ! empty( $_GET['download'] ) ? absint( $_GET['download'] ) : false;
+		return ! empty( $_GET['pdd_camp'] ) ? absint( $_GET['pdd_camp'] ) : false;
 	}
 
 	/**
@@ -321,7 +321,7 @@ class PDD_File_Downloads_Log_Table extends WP_List_Table {
 	 */
 	public function downloads_filter() {
 		$downloads = get_posts( array(
-			'post_type'      => 'download',
+			'post_type'      => 'pdd_camp',
 			'post_status'    => 'any',
 			'posts_per_page' => -1,
 			'orderby'        => 'title',
@@ -381,7 +381,7 @@ class PDD_File_Downloads_Log_Table extends WP_List_Table {
 				$user_id 	 = isset( $user_info['id'] ) ? $user_info['id'] : false;
 
 				if( ! array_key_exists( $log->post_parent, $this->queried_files ) ) {
-					$files   = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value from $wpdb->postmeta WHERE post_id = %d and meta_key = 'pdd_download_files'", $log->post_parent ) ) );
+					$files   = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value from $wpdb->postmeta WHERE post_id = %d and meta_key = 'pdd_camp_files'", $log->post_parent ) ) );
 					$this->queried_files[ $log->post_parent ] = $files;
 				} else {
 					$files   = $this->queried_files[ $log->post_parent ];
@@ -394,7 +394,7 @@ class PDD_File_Downloads_Log_Table extends WP_List_Table {
 				if ( ( $this->file_search && strpos( strtolower( $file_name ), strtolower( $this->get_search() ) ) !== false ) || ! $this->file_search ) {
 					$logs_data[] = array(
 						'ID' 		=> $log->ID,
-						'download'	=> $log->post_parent,
+						'pdd_camp'	=> $log->post_parent,
 						'payment_id'=> $payment_id,
 						'user_id'	=> $user_id ? $user_id : $user_info['email'],
 						'user_name'	=> $user_info['email'],

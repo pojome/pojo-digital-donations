@@ -213,7 +213,7 @@ function pdd_get_sale_notification_body_content( $payment_id = 0, $payment_data 
 	}
 
 	$download_list = '';
-	$downloads = maybe_unserialize( $payment_data['downloads'] );
+	$downloads = maybe_unserialize( $payment_data['campaigns'] );
 
 	if( is_array( $downloads ) ) {
 		foreach( $downloads as $download ) {

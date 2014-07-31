@@ -714,7 +714,7 @@ class PDD_API {
 			$products['products'] = array();
 
 			$product_list = get_posts( array(
-				'post_type'        => 'download',
+				'post_type'        => 'pdd_camp',
 				'posts_per_page'   => $this->per_page(),
 				'suppress_filters' => true,
 				'paged'            => $this->get_paged()
@@ -733,8 +733,8 @@ class PDD_API {
 					$products['products'][$i]['info']['content']                      = $product_info->post_content;
 					$products['products'][$i]['info']['excerpt']                      = $product_info->post_excerpt;
 					$products['products'][$i]['info']['thumbnail']                    = wp_get_attachment_url( get_post_thumbnail_id( $product_info->ID ) );
-					$products['products'][$i]['info']['category']                     = get_the_terms( $product_info, 'download_category' );
-					$products['products'][$i]['info']['tags']                         = get_the_terms( $product_info, 'download_tag' );
+					$products['products'][$i]['info']['category']                     = get_the_terms( $product_info, 'camp_category' );
+					$products['products'][$i]['info']['tags']                         = get_the_terms( $product_info, 'camp_tag' );
 
 					if( user_can( $this->user_id, 'view_shop_reports' ) || $this->override) {
 						$products['products'][$i]['stats']['total']['sales']              = pdd_get_download_sales_stats( $product_info->ID );
@@ -762,7 +762,7 @@ class PDD_API {
 				}
 			}
 		} else {
-			if ( get_post_type( $product ) == 'download' ) {
+			if ( get_post_type( $product ) == 'pdd_camp' ) {
 				$product_info = get_post( $product );
 
 				$products['products'][0]['info']['id']                           = $product_info->ID;
@@ -774,8 +774,8 @@ class PDD_API {
 				$products['products'][0]['info']['link']                         = html_entity_decode( $product_info->guid );
 				$products['products'][0]['info']['content']                      = $product_info->post_content;
 				$products['products'][0]['info']['thumbnail']                    = wp_get_attachment_url( get_post_thumbnail_id( $product_info->ID ) );
-				$products['products'][0]['info']['category']                     = get_the_terms( $product_info, 'download_category' );
-				$products['products'][0]['info']['tags']                         = get_the_terms( $product_info, 'download_tag' );
+				$products['products'][0]['info']['category']                     = get_the_terms( $product_info, 'camp_category' );
+				$products['products'][0]['info']['tags']                         = get_the_terms( $product_info, 'camp_tag' );
 
 				if( user_can( $this->user_id, 'view_shop_reports' ) || $this->override ) {
 					$products['products'][0]['stats']['total']['sales']              = pdd_get_download_sales_stats( $product_info->ID );
@@ -923,14 +923,14 @@ class PDD_API {
    					}
 				}
 			} elseif ( $args['product'] == 'all' ) {
-				$products = get_posts( array( 'post_type' => 'download', 'nopaging' => true ) );
+				$products = get_posts( array( 'post_type' => 'pdd_camp', 'nopaging' => true ) );
 				$i = 0;
 				foreach ( $products as $product_info ) {
 					$sales['sales'][$i] = array( $product_info->post_name => pdd_get_download_sales_stats( $product_info->ID ) );
 					$i++;
 				}
 			} else {
-				if ( get_post_type( $args['product'] ) == 'download' ) {
+				if ( get_post_type( $args['product'] ) == 'pdd_camp' ) {
 					$product_info = get_post( $args['product'] );
 					$sales['sales'][0] = array( $product_info->post_name => pdd_get_download_sales_stats( $args['product'] ) );
 				} else {
@@ -1024,7 +1024,7 @@ class PDD_API {
    					}
 				}
 			} elseif ( $args['product'] == 'all' ) {
-				$products = get_posts( array( 'post_type' => 'download', 'nopaging' => true ) );
+				$products = get_posts( array( 'post_type' => 'pdd_camp', 'nopaging' => true ) );
 
 				$i = 0;
 				foreach ( $products as $product_info ) {
@@ -1032,7 +1032,7 @@ class PDD_API {
 					$i++;
 				}
 			} else {
-				if ( get_post_type( $args['product'] ) == 'download' ) {
+				if ( get_post_type( $args['product'] ) == 'pdd_camp' ) {
 					$product_info = get_post( $args['product'] );
 					$earnings['earnings'][0] = array( $product_info->post_name => pdd_get_download_earnings_stats( $args['product'] ) );
 				} else {
@@ -1409,20 +1409,20 @@ class PDD_API {
 			case 'generate':
 				if( $this->generate_api_key( $user_id ) ) {
 					delete_transient( 'pdd-total-api-keys' );
-					wp_redirect( add_query_arg( 'pdd-message', 'api-key-generated', 'edit.php?post_type=download&page=pdd-tools&tab=api_keys' ) ); exit();
+					wp_redirect( add_query_arg( 'pdd-message', 'api-key-generated', 'edit.php?post_type=pdd_camp&page=pdd-tools&tab=api_keys' ) ); exit();
 				} else {
-					wp_redirect( add_query_arg( 'pdd-message', 'api-key-exists', 'edit.php?post_type=download&page=pdd-tools&tab=api_keys' ) ); exit();	
+					wp_redirect( add_query_arg( 'pdd-message', 'api-key-exists', 'edit.php?post_type=pdd_camp&page=pdd-tools&tab=api_keys' ) ); exit();	
 				}
 				break;
 			case 'regenerate':
 				$this->generate_api_key( $user_id, true );
 				delete_transient( 'pdd-total-api-keys' );
-				wp_redirect( add_query_arg( 'pdd-message', 'api-key-regenerated', 'edit.php?post_type=download&page=pdd-tools&tab=api_keys' ) ); exit();
+				wp_redirect( add_query_arg( 'pdd-message', 'api-key-regenerated', 'edit.php?post_type=pdd_camp&page=pdd-tools&tab=api_keys' ) ); exit();
 				break;
 			case 'revoke':
 				$this->revoke_api_key( $user_id );
 				delete_transient( 'pdd-total-api-keys' );
-				wp_redirect( add_query_arg( 'pdd-message', 'api-key-revoked', 'edit.php?post_type=download&page=pdd-tools&tab=api_keys' ) ); exit();
+				wp_redirect( add_query_arg( 'pdd-message', 'api-key-revoked', 'edit.php?post_type=pdd_camp&page=pdd-tools&tab=api_keys' ) ); exit();
 				break;
 			default;
 				break;

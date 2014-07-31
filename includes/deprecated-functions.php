@@ -78,10 +78,10 @@ function pdd_get_file_download_log( $download_id, $paginate = false, $number = 1
 		$download_log = array_reverse( $download_log );
 		$log = array();
 		$log['number'] = count( $download_log );
-		$log['downloads'] = $download_log;
+		$log['campaigns'] = $download_log;
 
 		if ( $paginate ) {
-			$log['downloads'] = array_slice( $download_log, $offset, $number );
+			$log['campaigns'] = array_slice( $download_log, $offset, $number );
 		}
 
 		return $log;
@@ -111,7 +111,7 @@ function pdd_get_downloads_of_purchase( $payment_id, $payment_meta = null ) {
 		$payment_meta = pdd_get_payment_meta( $payment_id );
 	}
 
-	$downloads = maybe_unserialize( $payment_meta['downloads'] );
+	$downloads = maybe_unserialize( $payment_meta['campaigns'] );
 
 	if ( $downloads )
 		return $downloads;

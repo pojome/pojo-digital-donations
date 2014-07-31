@@ -51,12 +51,12 @@ function pdd_admin_messages() {
     }
 
 	if ( isset( $_GET['page'] ) && 'pdd-payment-history' == $_GET['page'] && current_user_can( 'view_shop_reports' ) && pdd_is_test_mode() ) {
-		add_settings_error( 'pdd-notices', 'pdd-payment-sent', sprintf( __( 'Note: Test Mode is enabled, only test payments are shown below. <a href="%s">Settings</a>.', 'pdd' ), admin_url( 'edit.php?post_type=download&page=pdd-settings' ) ), 'updated' );
+		add_settings_error( 'pdd-notices', 'pdd-payment-sent', sprintf( __( 'Note: Test Mode is enabled, only test payments are shown below. <a href="%s">Settings</a>.', 'pdd' ), admin_url( 'edit.php?post_type=pdd_camp&page=pdd-settings' ) ), 'updated' );
 	}
 
 	if ( ( empty( $pdd_options['purchase_page'] ) || 'trash' == get_post_status( $pdd_options['purchase_page'] ) ) && current_user_can( 'edit_pages' ) && ! get_user_meta( get_current_user_id(), '_pdd_set_checkout_dismissed' ) ) {
 		echo '<div class="error">';
-			echo '<p>' . sprintf( __( 'No checkout page has been configured. Visit <a href="%s">Settings</a> to set one.', 'pdd' ), admin_url( 'edit.php?post_type=download&page=pdd-settings' ) ) . '</p>';
+			echo '<p>' . sprintf( __( 'No checkout page has been configured. Visit <a href="%s">Settings</a> to set one.', 'pdd' ), admin_url( 'edit.php?post_type=pdd_camp&page=pdd-settings' ) ) . '</p>';
 			echo '<p><a href="' . add_query_arg( array( 'pdd_action' => 'dismiss_notices', 'pdd_notice' => 'set_checkout' ) ) . '">' . __( 'Dismiss Notice', 'pdd' ) . '</a></p>';
 		echo '</div>';
 	}

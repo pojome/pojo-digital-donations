@@ -24,7 +24,7 @@ function pdd_upgrades_screen() {
 	$total  = isset( $_GET['total'] )       ? absint( $_GET['total'] )                    : false;
 	$custom = isset( $_GET['custom'] )      ? absint( $_GET['custom'] )                   : 0;
 	$steps  = round( ( $total / 100 ), 0 );
-	?> 
+	?>
 	<div class="wrap">
 		<h2><?php _e( 'Pojo Digital Donations - Upgrades', 'pdd' ); ?></h2>
 	

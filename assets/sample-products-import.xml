@@ -88,7 +88,7 @@
 			<wp:meta_value><![CDATA[a:1:{i:0;a:2:{s:4:"name";s:0:"";s:6:"amount";s:0:"";}}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
-			<wp:meta_key>pdd_download_files</wp:meta_key>
+			<wp:meta_key>pdd_camp_files</wp:meta_key>
 			<wp:meta_value><![CDATA[a:1:{i:0;a:2:{s:4:"name";s:14:"Download Files";s:4:"file";s:70:"http://easydigitaldownloads.com/demo/files/pdd/2012/05/wpmini-grey.png";}}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
@@ -174,7 +174,7 @@
 			<wp:meta_value><![CDATA[a:3:{i:0;a:2:{s:4:"name";s:5:"Basic";s:6:"amount";s:2:"10";}i:1;a:2:{s:4:"name";s:6:"Medium";s:6:"amount";s:2:"20";}i:2;a:2:{s:4:"name";s:8:"Advanced";s:6:"amount";s:2:"30";}}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
-			<wp:meta_key>pdd_download_files</wp:meta_key>
+			<wp:meta_key>pdd_camp_files</wp:meta_key>
 			<wp:meta_value><![CDATA[a:1:{i:0;a:3:{s:4:"name";s:5:"Files";s:4:"file";s:70:"http://easydigitaldownloads.com/demo/files/pdd/2012/05/wpmini-grey.png";s:9:"condition";s:3:"all";}}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
@@ -186,7 +186,7 @@
 			<wp:meta_value><![CDATA[0.00]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
-			<wp:meta_key>_pdd_download_limit</wp:meta_key>
+			<wp:meta_key>_pdd_camp_limit</wp:meta_key>
 			<wp:meta_value><![CDATA[0]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
@@ -334,7 +334,7 @@
 			<wp:meta_value><![CDATA[a:3:{i:0;a:2:{s:4:"name";s:5:"Basic";s:6:"amount";s:2:"10";}i:1;a:2:{s:4:"name";s:6:"Medium";s:6:"amount";s:2:"20";}i:2;a:2:{s:4:"name";s:8:"Advanced";s:6:"amount";s:2:"30";}}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
-			<wp:meta_key>pdd_download_files</wp:meta_key>
+			<wp:meta_key>pdd_camp_files</wp:meta_key>
 			<wp:meta_value><![CDATA[a:1:{i:0;a:3:{s:4:"name";s:5:"Files";s:4:"file";s:70:"http://easydigitaldownloads.com/demo/files/pdd/2012/05/wpmini-grey.png";s:9:"condition";s:3:"all";}}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
@@ -350,7 +350,7 @@
 			<wp:meta_value><![CDATA[687]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
-			<wp:meta_key>_pdd_download_limit</wp:meta_key>
+			<wp:meta_key>_pdd_camp_limit</wp:meta_key>
 			<wp:meta_value><![CDATA[0]]></wp:meta_value>
 		</wp:postmeta>
 	</item>
@@ -388,7 +388,7 @@
 			<wp:meta_value><![CDATA[a:3:{i:0;a:2:{s:4:"name";s:5:"Basic";s:6:"amount";s:2:"10";}i:1;a:2:{s:4:"name";s:6:"Medium";s:6:"amount";s:2:"20";}i:2;a:2:{s:4:"name";s:8:"Advanced";s:6:"amount";s:2:"30";}}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
-			<wp:meta_key>pdd_download_files</wp:meta_key>
+			<wp:meta_key>pdd_camp_files</wp:meta_key>
 			<wp:meta_value><![CDATA[a:1:{i:0;a:3:{s:4:"name";s:5:"Files";s:4:"file";s:70:"http://easydigitaldownloads.com/demo/files/pdd/2012/05/wpmini-grey.png";s:9:"condition";s:3:"all";}}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
@@ -462,11 +462,11 @@
 			<wp:meta_value><![CDATA[a:0:{}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
-			<wp:meta_key>pdd_download_files</wp:meta_key>
+			<wp:meta_key>pdd_camp_files</wp:meta_key>
 			<wp:meta_value><![CDATA[a:1:{i:0;a:3:{s:4:"name";s:10:"Free Image";s:4:"file";s:63:"http://easydigitaldownloads.com/demo/files/pdd/2012/11/free.jpg";s:9:"condition";s:3:"all";}}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
-			<wp:meta_key>_pdd_download_limit</wp:meta_key>
+			<wp:meta_key>_pdd_camp_limit</wp:meta_key>
 			<wp:meta_value><![CDATA[0]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
@@ -547,11 +547,11 @@ You can easily setup price options to purchase individual songs or the entire al
 			<wp:meta_value><![CDATA[a:4:{i:0;a:2:{s:4:"name";s:6:"Song 1";s:6:"amount";s:4:"1.00";}i:1;a:2:{s:4:"name";s:6:"Song 2";s:6:"amount";s:4:"1.00";}i:2;a:2:{s:4:"name";s:6:"Song 3";s:6:"amount";s:4:"1.00";}i:3;a:2:{s:4:"name";s:11:"Whole Album";s:6:"amount";s:4:"3.00";}}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
-			<wp:meta_key>pdd_download_files</wp:meta_key>
+			<wp:meta_key>pdd_camp_files</wp:meta_key>
 			<wp:meta_value><![CDATA[a:0:{}]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
-			<wp:meta_key>_pdd_download_limit</wp:meta_key>
+			<wp:meta_key>_pdd_camp_limit</wp:meta_key>
 			<wp:meta_value><![CDATA[0]]></wp:meta_value>
 		</wp:postmeta>
 		<wp:postmeta>
@@ -694,7 +694,7 @@ You can easily setup price options to purchase individual songs or the entire al
 		<dc:creator>pippin</dc:creator>
 		<guid isPermaLink="false">http://easydigitaldownloads.com/demo/checkout/</guid>
 		<description></description>
-		<content:encoded><![CDATA[[download_checkout]]]></content:encoded>
+		<content:encoded><![CDATA[[donation_checkout]]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
 		<wp:post_id>4</wp:post_id>
 		<wp:post_date>2012-05-21 15:59:39</wp:post_date>

@@ -47,7 +47,7 @@ class PDD_Download_History_Export extends PDD_Export {
 
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'pdd_download_history_export_filename', 'pdd-export-' . $this->export_type . '-' . $month . '-' . $year ) . '.csv' );
+		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'pdd_camp_history_export_filename', 'pdd-export-' . $this->export_type . '-' . $month . '-' . $year ) . '.csv' );
 		header( "Expires: 0" );
 	}
 
@@ -64,7 +64,7 @@ class PDD_Download_History_Export extends PDD_Export {
 			'date'     => __( 'Date',   'pdd' ),
 			'user'     => __( 'Downloaded by', 'pdd' ),
 			'ip'       => __( 'IP Address', 'pdd' ),
-			'download' => __( 'Product', 'pdd' ),
+			'pdd_camp' => __( 'Product', 'pdd' ),
 			'file'     => __( 'File', 'pdd' )
 		);
 		return $cols;
@@ -105,7 +105,7 @@ class PDD_Download_History_Export extends PDD_Export {
 					'date'     => $log->post_date,
 					'user'     => $user,
 					'ip'       => get_post_meta( $log->ID, '_pdd_log_ip', true ),
-					'download' => get_the_title( $log->post_parent ),
+					'pdd_camp' => get_the_title( $log->post_parent ),
 					'file'     => $file_name
 				);
 			}
