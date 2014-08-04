@@ -50,7 +50,7 @@ function pdd_email_purchase_receipt( $payment_id, $admin_notice = true ) {
 
 	$subject = apply_filters( 'pdd_purchase_subject', ! empty( $pdd_options['purchase_subject'] )
 		? wp_strip_all_tags( $pdd_options['purchase_subject'], true )
-		: __( 'Purchase Receipt', 'pdd' ), $payment_id );
+		: __( 'Donation Receipt', 'pdd' ), $payment_id );
 
 	$subject = pdd_do_email_tags( $subject, $payment_id );
 
@@ -82,8 +82,7 @@ function pdd_email_test_purchase_receipt() {
 	global $pdd_options;
 
 	$default_email_body = __( "Dear", "pdd" ) . " {name},\n\n";
-	$default_email_body .= __( "Thank you for your purchase. Please click on the link(s) below to download your files.", "pdd" ) . "\n\n";
-	$default_email_body .= "{download_list}\n\n";
+	$default_email_body .= __( "Thank you for your donation. We appreciate it so much.", "pdd" ) . "\n\n";
 	$default_email_body .= "{sitename}";
 
 	$email = isset( $pdd_options['purchase_receipt'] ) ? $pdd_options['purchase_receipt'] : $default_email_body;
@@ -97,7 +96,7 @@ function pdd_email_test_purchase_receipt() {
 
 	$subject = apply_filters( 'pdd_purchase_subject', isset( $pdd_options['purchase_subject'] )
 		? trim( $pdd_options['purchase_subject'] )
-		: __( 'Purchase Receipt', 'pdd' ), 0 );
+		: __( 'Donation Receipt', 'pdd' ), 0 );
 
 	$headers = "From: " . stripslashes_deep( html_entity_decode( $from_name, ENT_COMPAT, 'UTF-8' ) ) . " <$from_email>\r\n";
 	$headers .= "Reply-To: ". $from_email . "\r\n";
@@ -140,7 +139,7 @@ function pdd_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	if( ! empty( $pdd_options['sale_notification_subject'] ) ) {
 		$admin_subject = wp_strip_all_tags( $pdd_options['sale_notification_subject'], true );
 	} else {
-		$admin_subject = sprintf( __( 'New download purchase - Order #%1$s', 'pdd' ), $payment_id );
+		$admin_subject = sprintf( __( 'New donation submitted - Order #%1$s', 'pdd' ), $payment_id );
 	}
 
 	$admin_subject = pdd_do_email_tags( $admin_subject, $payment_id );
@@ -204,10 +203,9 @@ function pdd_admin_notices_disabled( $payment_id = 0 ) {
 function pdd_get_default_sale_notification_email() {
 	global $pdd_options;
 
-	$default_email_body = __( 'Hello', 'pdd' ) . "\n\n" . sprintf( __( 'A %s purchase has been made', 'pdd' ), pdd_get_label_plural() ) . ".\n\n";
+	$default_email_body = __( 'Hello', 'pdd' ) . "\n\n" . sprintf( __( 'A %s payment has been made', 'pdd' ), pdd_get_label_plural() ) . ".\n\n";
 	$default_email_body .= sprintf( __( '%s sold:', 'pdd' ), pdd_get_label_plural() ) . "\n\n";
-	$default_email_body .= '{download_list}' . "\n\n";
-	$default_email_body .= __( 'Purchased by: ', 'pdd' ) . ' {name}' . "\n";
+	$default_email_body .= __( 'Donated by: ', 'pdd' ) . ' {name}' . "\n";
 	$default_email_body .= __( 'Amount: ', 'pdd' ) . ' {price}' . "\n";
 	$default_email_body .= __( 'Payment Method: ', 'pdd' ) . ' {payment_method}' . "\n\n";
 	$default_email_body .= __( 'Thank you', 'pdd' );

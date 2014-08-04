@@ -298,7 +298,7 @@ function pdd_get_registered_settings() {
 				'email_template' => array(
 					'id' => 'email_template',
 					'name' => __( 'Email Template', 'pdd' ),
-					'desc' => __( 'Choose a template. Click "Save Changes" then "Preview Purchase Receipt" to see the new template.', 'pdd' ),
+					'desc' => __( 'Choose a template. Click "Save Changes" then "Preview Donation Receipt" to see the new template.', 'pdd' ),
 					'type' => 'select',
 					'options' => pdd_get_email_templates()
 				),
@@ -311,30 +311,30 @@ function pdd_get_registered_settings() {
 				'from_name' => array(
 					'id' => 'from_name',
 					'name' => __( 'From Name', 'pdd' ),
-					'desc' => __( 'The name purchase receipts are said to come from. This should probably be your site or shop name.', 'pdd' ),
+					'desc' => __( 'The name donation receipts are said to come from. This should probably be your site or shop name.', 'pdd' ),
 					'type' => 'text',
 					'std'  => get_bloginfo( 'name' )
 				),
 				'from_email' => array(
 					'id' => 'from_email',
 					'name' => __( 'From Email', 'pdd' ),
-					'desc' => __( 'Email to send purchase receipts from. This will act as the "from" and "reply-to" address.', 'pdd' ),
+					'desc' => __( 'Email to send donation receipts from. This will act as the "from" and "reply-to" address.', 'pdd' ),
 					'type' => 'text',
 					'std'  => get_bloginfo( 'admin_email' )
 				),
 				'purchase_subject' => array(
 					'id' => 'purchase_subject',
-					'name' => __( 'Purchase Email Subject', 'pdd' ),
-					'desc' => __( 'Enter the subject line for the purchase receipt email', 'pdd' ),
+					'name' => __( 'Donation Email Subject', 'pdd' ),
+					'desc' => __( 'Enter the subject line for the donation receipt email', 'pdd' ),
 					'type' => 'text',
-					'std'  => __( 'Purchase Receipt', 'pdd' )
+					'std'  => __( 'Donation Receipt', 'pdd' )
 				),
 				'purchase_receipt' => array(
 					'id' => 'purchase_receipt',
-					'name' => __( 'Purchase Receipt', 'pdd' ),
-					'desc' => __('Enter the email that is sent to users after completing a successful purchase. HTML is accepted. Available template tags:', 'pdd') . '<br/>' . pdd_get_emails_tags_list(),
+					'name' => __( 'Donation Receipt', 'pdd' ),
+					'desc' => __('Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags:', 'pdd') . '<br/>' . pdd_get_emails_tags_list(),
 					'type' => 'rich_editor',
-					'std'  => __( "Dear", "pdd" ) . " {name},\n\n" . __( "Thank you for your purchase. Please click on the link(s) below to download your files.", "pdd" ) . "\n\n{download_list}\n\n{sitename}"
+					'std'  => __( "Dear", "pdd" ) . " {name},\n\n" . __( "Thank you for your donation. Please click on the link(s) below to download your files.", "pdd" ) . "\n\n{download_list}\n\n{sitename}"
 				),
 				'sale_notification_header' => array(
 					'id' => 'sale_notification_header',
@@ -347,12 +347,12 @@ function pdd_get_registered_settings() {
 					'name' => __( 'Sale Notification Subject', 'pdd' ),
 					'desc' => __( 'Enter the subject line for the sale notification email', 'pdd' ),
 					'type' => 'text',
-					'std' => 'New download purchase - Order #{payment_id}'
+					'std' => 'New donation submitted - Order #{payment_id}'
 				),
 				'sale_notification' => array(
 					'id' => 'sale_notification',
 					'name' => __( 'Sale Notification', 'pdd' ),
-					'desc' => __( 'Enter the email that is sent to sale notification emails after completion of a purchase. HTML is accepted. Available template tags:', 'pdd' ) . '<br/>' . pdd_get_emails_tags_list(),
+					'desc' => __( 'Enter the email that is sent to sale notification emails after completion of a donation. HTML is accepted. Available template tags:', 'pdd' ) . '<br/>' . pdd_get_emails_tags_list(),
 					'type' => 'rich_editor',
 					'std' => pdd_get_default_sale_notification_email()
 				),
@@ -383,7 +383,7 @@ function pdd_get_registered_settings() {
 				'button_header' => array(
 					'id' => 'button_header',
 					'name' => '<strong>' . __( 'Buttons', 'pdd' ) . '</strong>',
-					'desc' => __( 'Options for add to cart and purchase buttons', 'pdd' ),
+					'desc' => __( 'Options for add to cart and donation buttons', 'pdd' ),
 					'type' => 'header'
 				),
 				'button_style' => array(
@@ -408,7 +408,7 @@ function pdd_get_registered_settings() {
 				'enable_taxes' => array(
 					'id' => 'enable_taxes',
 					'name' => __( 'Enable Taxes', 'pdd' ),
-					'desc' => __( 'Check this to enable taxes on purchases.', 'pdd' ),
+					'desc' => __( 'Check this to enable taxes on donations.', 'pdd' ),
 					'type' => 'checkbox',
 				),
 				'tax_rate' => array(
@@ -505,7 +505,7 @@ function pdd_get_registered_settings() {
 				'logged_in_only' => array(
 					'id' => 'logged_in_only',
 					'name' => __( 'Disable Guest Checkout', 'pdd' ),
-					'desc' => __( 'Require that users be logged-in to purchase files.', 'pdd' ),
+					'desc' => __( 'Require that users be logged-in to donation files.', 'pdd' ),
 					'type' => 'checkbox'
 				),
 				'show_register_form' => array(
@@ -530,7 +530,7 @@ function pdd_get_registered_settings() {
 				'allow_multiple_discounts' => array(
 					'id' => 'allow_multiple_discounts',
 					'name' => __('Multiple Discounts', 'pdd'),
-					'desc' => __('Allow customers to use multiple discounts on the same purchase?', 'pdd'),
+					'desc' => __('Allow customers to use multiple discounts on the same donation?', 'pdd'),
 					'type' => 'checkbox'
 				),
 				'enable_cart_saving' => array(
