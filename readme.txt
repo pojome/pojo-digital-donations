@@ -3,11 +3,11 @@ Author URI: http://pippinsplugins.com
 Plugin URI: http://easydigitaldownloads.com
 Contributors: mordauk, sunnyratilal, chriscct7, section214, sumobi, sksmatt, SpencerFinnell
 Donate link: http://pippinsplugins.com/support-the-site
-Tags: download, downloads, e-store, eshop, digital downloads, e-downloads, ecommerce, e commerce, e-commerce, selling, wp-ecommerce, wp ecommerce, mordauk, Pippin Williamson, pippinsplugins
+Tags: download, downloads, e-store, eshop, digital downloads, e-downloads, ecommerce, e commerce, e-commerce, selling, wp-ecommerce, wp ecommerce, mordauk
 Requires at least: 3.7
 Tested up to: 4.0
 
-Stable Tag: 2.0.4
+Stable Tag: 1.0.0
 
 License: GNU Version 2 or Any Later Version
 
