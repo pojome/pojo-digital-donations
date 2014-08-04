@@ -188,6 +188,8 @@ $address      = ! empty( $user_info['address'] ) ? $user_info['address'] : array
 								</div><!-- /.pdd-order-update-box -->
 	
 							</div><!-- /#pdd-order-data -->
+							
+							<?php do_action( 'pdd_order_update_after', $payment_id ); ?>
 
 							<div id="pdd-order-logs" class="postbox pdd-order-logs">
 								
