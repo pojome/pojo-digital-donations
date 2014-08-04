@@ -125,15 +125,14 @@ function pdd_email_template_preview() {
 	global $pdd_options;
 
 	$default_email_body = __( "Dear", "pdd" ) . " {name},\n\n";
-	$default_email_body .= __( "Thank you for your purchase. Please click on the link(s) below to download your files.", "pdd" ) . "\n\n";
-	$default_email_body .= "{download_list}\n\n";
+	$default_email_body .= __( "Thank you for your donation. We appreciate it so much.", "pdd" ) . "\n\n";
 	$default_email_body .= "{sitename}";
 
 	$email_body = isset( $pdd_options['purchase_receipt'] ) ? stripslashes( $pdd_options['purchase_receipt'] ) : $default_email_body;
 	ob_start();
 	?>
-	<a href="#email-preview" id="open-email-preview" class="button-secondary" title="<?php _e( 'Purchase Receipt Preview', 'pdd' ); ?> "><?php _e( 'Preview Purchase Receipt', 'pdd' ); ?></a>
-	<a href="<?php echo wp_nonce_url( add_query_arg( array( 'pdd_action' => 'send_test_email' ) ), 'pdd-test-email' ); ?>" title="<?php _e( 'This will send a demo purchase receipt to the emails listed below.', 'pdd' ); ?>" class="button-secondary"><?php _e( 'Send Test Email', 'pdd' ); ?></a>
+	<a href="#email-preview" id="open-email-preview" class="button-secondary" title="<?php _e( 'Donation Receipt Preview', 'pdd' ); ?> "><?php _e( 'Preview Donation Receipt', 'pdd' ); ?></a>
+	<a href="<?php echo wp_nonce_url( add_query_arg( array( 'pdd_action' => 'send_test_email' ) ), 'pdd-test-email' ); ?>" title="<?php _e( 'This will send a demo donation receipt to the emails listed below.', 'pdd' ); ?>" class="button-secondary"><?php _e( 'Send Test Email', 'pdd' ); ?></a>
 
 	<div id="email-preview-wrap" style="display:none;">
 		<div id="email-preview">
@@ -177,7 +176,7 @@ function pdd_get_email_body_content( $payment_id = 0, $payment_data = array() ) 
 	global $pdd_options;
 
 	$default_email_body = __( "Dear", "pdd" ) . " {name},\n\n";
-	$default_email_body .= __( "Thank you for your purchase. Please click on the link(s) below to download your files.", "pdd" ) . "\n\n";
+	$default_email_body .= __( "Thank you for your donation. We appreciate it so much.", "pdd" ) . "\n\n";
 	$default_email_body .= "{download_list}\n\n";
 	$default_email_body .= "{sitename}";
 
@@ -230,10 +229,10 @@ function pdd_get_sale_notification_body_content( $payment_id = 0, $payment_data 
 
 	$gateway = pdd_get_gateway_admin_label( get_post_meta( $payment_id, '_pdd_payment_gateway', true ) );
 
-	$default_email_body = __( 'Hello', 'pdd' ) . "\n\n" . sprintf( __( 'A %s purchase has been made', 'pdd' ), pdd_get_label_plural() ) . ".\n\n";
+	$default_email_body = __( 'Hello', 'pdd' ) . "\n\n" . sprintf( __( 'A %s payment has been made', 'pdd' ), pdd_get_label_plural() ) . ".\n\n";
 	$default_email_body .= sprintf( __( '%s sold:', 'pdd' ), pdd_get_label_plural() ) . "\n\n";
 	$default_email_body .= $download_list . "\n\n";
-	$default_email_body .= __( 'Purchased by: ', 'pdd' ) . " " . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
+	$default_email_body .= __( 'Donated by: ', 'pdd' ) . " " . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
 	$default_email_body .= __( 'Amount: ', 'pdd' ) . " " . html_entity_decode( pdd_currency_filter( pdd_format_amount( pdd_get_payment_amount( $payment_id ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
 	$default_email_body .= __( 'Payment Method: ', 'pdd' ) . " " . $gateway . "\n\n";
 	$default_email_body .= __( 'Thank you', 'pdd' );

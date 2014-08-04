@@ -266,89 +266,69 @@ function pdd_setup_email_tags() {
 	// Setup default tags array
 	$email_tags = array(
 		array(
-			'tag'         => 'download_list',
-			'description' => __( 'A list of download links for each download purchased', 'pdd' ),
-			'function'    => 'pdd_email_tag_download_list'
-		),
-		array(
-			'tag'         => 'file_urls',
-			'description' => __( 'A plain-text list of download URLs for each download purchased', 'pdd' ),
-			'function'    => 'pdd_email_tag_file_urls'
-		),
-		array(
 			'tag'         => 'name',
-			'description' => __( "The buyer's first name", 'pdd' ),
+			'description' => __( "The donor's first name", 'pdd' ),
 			'function'    => 'pdd_email_tag_first_name'
 		),
 		array(
 			'tag'         => 'fullname',
-			'description' => __( "The buyer's full name, first and last", 'pdd' ),
+			'description' => __( "The donor's full name, first and last", 'pdd' ),
 			'function'    => 'pdd_email_tag_fullname'
 		),
 		array(
 			'tag'         => 'username',
-			'description' => __( "The buyer's user name on the site, if they registered an account", 'pdd' ),
+			'description' => __( "The donor's user name on the site, if they registered an account", 'pdd' ),
 			'function'    => 'pdd_email_tag_username'
 		),
 		array(
 			'tag'         => 'user_email',
-			'description' => __( "The buyer's email address", 'pdd' ),
+			'description' => __( "The donor's email address", 'pdd' ),
 			'function'    => 'pdd_email_tag_user_email'
 		),
 		array(
 			'tag'         => 'billing_address',
-			'description' => __( 'The buyer\'s billing address', 'pdd' ),
+			'description' => __( "The donor's billing address", 'pdd' ),
 			'function'    => 'pdd_email_tag_billing_address'
 		),
 		array(
 			'tag'         => 'date',
-			'description' => __( 'The date of the purchase', 'pdd' ),
+			'description' => __( "The date of the payment", 'pdd' ),
 			'function'    => 'pdd_email_tag_date'
 		),
 		array(
 			'tag'         => 'subtotal',
-			'description' => __( 'The price of the purchase before taxes', 'pdd' ),
+			'description' => __( "The amount of the payment before taxes", 'pdd' ),
 			'function'    => 'pdd_email_tag_subtotal'
 		),
 		array(
-			'tag'         => 'tax',
-			'description' => __( 'The taxed amount of the purchase', 'pdd' ),
-			'function'    => 'pdd_email_tag_tax'
-		),
-		array(
 			'tag'         => 'price',
-			'description' => __( 'The total price of the purchase', 'pdd' ),
+			'description' => __( "The total amount of the payment", 'pdd' ),
 			'function'    => 'pdd_email_tag_price'
 		),
 		array(
 			'tag'         => 'payment_id',
-			'description' => __( 'The unique ID number for this purchase', 'pdd' ),
+			'description' => __( "The unique ID number for this payment", 'pdd' ),
 			'function'    => 'pdd_email_tag_payment_id'
 		),
 		array(
 			'tag'         => 'receipt_id',
-			'description' => __( 'The unique ID number for this purchase receipt', 'pdd' ),
+			'description' => __( "The unique ID number for this payment receipt", 'pdd' ),
 			'function'    => 'pdd_email_tag_receipt_id'
 		),
 		array(
 			'tag'         => 'payment_method',
-			'description' => __( 'The method of payment used for this purchase', 'pdd' ),
+			'description' => __( "The method of payment used for this payment", 'pdd' ),
 			'function'    => 'pdd_email_tag_payment_method'
 		),
 		array(
 			'tag'         => 'sitename',
-			'description' => __( 'Your site name', 'pdd' ),
+			'description' => __( "Your site name", 'pdd' ),
 			'function'    => 'pdd_email_tag_sitename'
 		),
 		array(
 			'tag'         => 'receipt_link',
 			'description' => __( 'Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.', 'pdd' ),
 			'function'    => 'pdd_email_tag_receipt_link'
-		),
-		array(
-			'tag'         => 'discount_codes',
-			'description' => __( 'Adds a list of any discount codes applied to this purchase', 'pdd' ),
-			'function'    => 'pdd_email_tag_discount_codes'
 		),
 	);
 
