@@ -201,18 +201,6 @@ function pdd_get_registered_settings() {
 					'size' => 'small',
 					'std' => '.'
 				),
-				'api_settings' => array(
-					'id' => 'api_settings',
-					'name' => '<strong>' . __( 'API Settings', 'pdd' ) . '</strong>',
-					'desc' => '',
-					'type' => 'header'
-				),
-				'api_allow_user_keys' => array(
-					'id' => 'api_allow_user_keys',
-					'name' => __( 'Allow User Keys', 'pdd' ),
-					'desc' => __( 'Check this box to allow all users to generate API keys. Users with the \'manage_shop_settings\' capability are always allowed to generate keys.', 'pdd' ),
-					'type' => 'checkbox'
-				),
 				'tracking_settings' => array(
 					'id' => 'tracking_settings',
 					'name' => '<strong>' . __( 'Tracking Settings', 'pdd' ) . '</strong>',
