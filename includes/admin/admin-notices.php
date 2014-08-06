@@ -73,22 +73,6 @@ function pdd_admin_messages() {
 		add_settings_error( 'pdd-notices', 'pdd-payment-updated', __( 'The payment has been successfully updated.', 'pdd' ), 'updated' );
 	}
 
-	if ( isset( $_GET['pdd-message'] ) && 'api-key-generated' == $_GET['pdd-message'] && current_user_can( 'manage_shop_settings' ) ) {
-		add_settings_error( 'pdd-notices', 'pdd-api-key-generated', __( 'API keys successfully generated.', 'pdd' ), 'updated' );
-	}
-
-	if ( isset( $_GET['pdd-message'] ) && 'api-key-exists' == $_GET['pdd-message'] && current_user_can( 'manage_shop_settings' ) ) {
-		add_settings_error( 'pdd-notices', 'pdd-api-key-exists', __( 'The specified user already has API keys.', 'pdd' ), 'error' );
-	}
-
-	if ( isset( $_GET['pdd-message'] ) && 'api-key-regenerated' == $_GET['pdd-message'] && current_user_can( 'manage_shop_settings' ) ) {
-		add_settings_error( 'pdd-notices', 'pdd-api-key-regenerated', __( 'API keys successfully regenerated.', 'pdd' ), 'updated' );
-	}
-
-	if ( isset( $_GET['pdd-message'] ) && 'api-key-revoked' == $_GET['pdd-message'] && current_user_can( 'manage_shop_settings' ) ) {
-		add_settings_error( 'pdd-notices', 'pdd-api-key-revoked', __( 'API keys successfully revoked.', 'pdd' ), 'updated' );
-	}
-
     if( ! pdd_htaccess_exists() && ! get_user_meta( get_current_user_id(), '_pdd_htaccess_missing_dismissed', true ) ) {
         if( ! stristr( $_SERVER['SERVER_SOFTWARE'], 'apache' ) )
             return; // Bail if we aren't using Apache... nginx doesn't use htaccess!

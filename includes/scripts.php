@@ -170,8 +170,6 @@ function pdd_load_admin_scripts( $hook ) {
 		'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'pdd' ),
 		'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'pdd' ),
 		'delete_tax_rate'         => __( 'Are you sure you wish to delete this tax rate?', 'pdd' ),
-		'revoke_api_key'          => __( 'Are you sure you wish to revoke this API key?', 'pdd' ),
-		'regenerate_api_key'      => __( 'Are you sure you wish to regenerate this API key?', 'pdd' ),
 		'resend_receipt'          => __( 'Are you sure you wish to resend the purchase receipt?', 'pdd' ),
 		'copy_download_link_text' => __( 'Copy these links to your clip board and give them to your customer', 'pdd' ),
 		'delete_payment_download' => sprintf( __( 'Are you sure you wish to delete this %s?', 'pdd' ), pdd_get_label_singular() ),

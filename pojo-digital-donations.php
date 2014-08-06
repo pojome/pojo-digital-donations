@@ -64,14 +64,6 @@ final class Easy_Digital_Downloads {
 	public $fees;
 
 	/**
-	 * PDD API Object
-	 *
-	 * @var object
-	 * @since 1.5
-	 */
-	public $api;
-
-	/**
 	 * PDD HTML Session Object
 	 *
 	 * This holds cart items, purchase sessions, and anything else stored in the session
@@ -121,7 +113,6 @@ final class Easy_Digital_Downloads {
 			self::$instance->load_textdomain();
 			self::$instance->roles      = new PDD_Roles();
 			self::$instance->fees       = new PDD_Fees();
-			self::$instance->api        = new PDD_API();
 			self::$instance->session    = new PDD_Session();
 			self::$instance->html       = new PDD_HTML_Elements();
 			self::$instance->email_tags = new PDD_Email_Template_Tags();
@@ -207,7 +198,6 @@ final class Easy_Digital_Downloads {
 		require_once PDD_PLUGIN_DIR . 'includes/cart/functions.php';
 		require_once PDD_PLUGIN_DIR . 'includes/cart/template.php';
 		require_once PDD_PLUGIN_DIR . 'includes/cart/actions.php';
-		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-api.php';
 		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-cache-helper.php';
 		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-cron.php';
 		require_once PDD_PLUGIN_DIR . 'includes/class-pdd-fees.php';

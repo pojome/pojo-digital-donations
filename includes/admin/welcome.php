@@ -241,9 +241,6 @@ class PDD_Welcome {
 
 				<div class="feature-section col three-col">
 					<div>
-						<h4><?php _e( 'API Keys', 'pdd' );?></h4>
-						<p><?php _e( 'PDD has a complete REST API for interfacing with 3rd party systems, such as mobile devices. Granting users access to the API data was always a bit cumbersome, so in version 2.0 we have introduced a completely new API Keys table under the Tools page.', 'pdd' );?></p>
-
 						<h4><?php _e( 'Tools Page', 'pdd' );?></h4>
 						<p><?php _e( 'As more and more tools have been developed to assist with managing your store, the Tools page got a bit cluttered. We have now taken the time to introduce a proper tabbed interface to keep things neat and tidy.', 'pdd' );?></p>
 					</div>

@@ -66,7 +66,6 @@ function pdd_get_tools_tabs() {
 
 	$tabs                  = array();
 	$tabs['general']       = __( 'General', 'pdd' );
-	$tabs['api_keys']      = __( 'API Keys', 'pdd' );
 	$tabs['system_info']   = __( 'System Info', 'pdd' );
 	$tabs['import_export'] = __( 'Import/Export', 'pdd' );
 
@@ -105,35 +104,6 @@ function pdd_tools_banned_emails_display() {
 	do_action( 'pdd_tools_after' );
 }
 add_action( 'pdd_tools_tab_general', 'pdd_tools_banned_emails_display' );
-
-
-/**
- * Display the API Keys
- *
- * @since       2.0
- * @return      void
- */
-function pdd_tools_api_keys_display() {
-	do_action( 'pdd_tools_api_keys_before' );
-
-	require_once PDD_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
-
-	$api_keys_table = new PDD_API_Keys_Table();
-	$api_keys_table->prepare_items();
-	$api_keys_table->display();
-?>
-	<p>
-	<?php printf(
-		__( 'These API keys allow you to use the <a href="%s">PDD REST API</a> to retrieve store data in JSON or XML for external applications or devices, such as the <a href="%s">PDD mobile apps</a>.', 'pdd' ),
-		'https://easydigitaldownloads.com/docs/pdd-api-reference/',
-		'https://easydigitaldownloads.com/blog/extensions/categories/mobile/'
-	); ?>
-	</p>
-<?php
-
-	do_action( 'pdd_tools_api_keys_after' );
-}
-add_action( 'pdd_tools_tab_api_keys', 'pdd_tools_api_keys_display' );
 
 
 /**
