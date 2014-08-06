@@ -201,18 +201,6 @@ function pdd_get_registered_settings() {
 					'size' => 'small',
 					'std' => '.'
 				),
-				'api_settings' => array(
-					'id' => 'api_settings',
-					'name' => '<strong>' . __( 'API Settings', 'pdd' ) . '</strong>',
-					'desc' => '',
-					'type' => 'header'
-				),
-				'api_allow_user_keys' => array(
-					'id' => 'api_allow_user_keys',
-					'name' => __( 'Allow User Keys', 'pdd' ),
-					'desc' => __( 'Check this box to allow all users to generate API keys. Users with the \'manage_shop_settings\' capability are always allowed to generate keys.', 'pdd' ),
-					'type' => 'checkbox'
-				),
 				'tracking_settings' => array(
 					'id' => 'tracking_settings',
 					'name' => '<strong>' . __( 'Tracking Settings', 'pdd' ) . '</strong>',
@@ -287,7 +275,7 @@ function pdd_get_registered_settings() {
 				'disable_paypal_verification' => array(
 					'id' => 'disable_paypal_verification',
 					'name' => __( 'Disable PayPal IPN Verification', 'pdd' ),
-					'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying purchases.', 'pdd' ),
+					'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying payments.', 'pdd' ),
 					'type' => 'checkbox'
 				)
 			)
@@ -334,7 +322,7 @@ function pdd_get_registered_settings() {
 					'name' => __( 'Donation Receipt', 'pdd' ),
 					'desc' => __('Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags:', 'pdd') . '<br/>' . pdd_get_emails_tags_list(),
 					'type' => 'rich_editor',
-					'std'  => __( "Dear", "pdd" ) . " {name},\n\n" . __( "Thank you for your donation. Please click on the link(s) below to download your files.", "pdd" ) . "\n\n{download_list}\n\n{sitename}"
+					'std'  => __( "Dear", "pdd" ) . " {name},\n\n" . __( "Thank you for your donation.", "pdd" ) . "\n\n{sitename}"
 				),
 				'sale_notification_header' => array(
 					'id' => 'sale_notification_header',
@@ -539,50 +527,6 @@ function pdd_get_registered_settings() {
 					'desc' => __( 'Check this to enable cart saving on the checkout', 'pdd' ),
 					'type' => 'checkbox'
 				),
-				'field_downloads' => array(
-					'id' => 'field_downloads',
-					'name' => '<strong>' . __( 'File Downloads', 'pdd' ) . '</strong>',
-					'desc' => '',
-					'type' => 'header'
-				),
-				'download_method' => array(
-					'id' => 'download_method',
-					'name' => __( 'Download Method', 'pdd' ),
-					'desc' => sprintf( __( 'Select the file download method. Note, not all methods work on all servers.', 'pdd' ), pdd_get_label_singular() ),
-					'type' => 'select',
-					'options' => array(
-						'direct' => __( 'Forced', 'pdd' ),
-						'redirect' => __( 'Redirect', 'pdd' )
-					)
-				),
-				'symlink_file_downloads' => array(
-					'id' => 'symlink_file_downloads',
-					'name' => __( 'Symlink File Downloads?', 'pdd' ),
-					'desc' => __( 'Check this if you are delivering really large files or having problems with file downloads completing.', 'pdd' ),
-					'type' => 'checkbox'
-				),
-				'file_download_limit' => array(
-					'id' => 'file_download_limit',
-					'name' => __( 'File Download Limit', 'pdd' ),
-					'desc' => sprintf( __( 'The maximum number of times files can be downloaded for purchases. Can be overwritten for each %s.', 'pdd' ), pdd_get_label_singular() ),
-					'type' => 'number',
-					'size' => 'small'
-				),
-				'download_link_expiration' => array(
-					'id' => 'download_link_expiration',
-					'name' => __( 'Download Link Expiration', 'pdd' ),
-					'desc' => __( 'How long should download links be valid for? Default is 24 hours from the time they are generated. Enter a time in hours.', 'pdd' ),
-					'type' => 'number',
-					'size' => 'small',
-					'std'  => '24',
-					'min'  => '0'
-				),
-				'disable_redownload' => array(
-					'id' => 'disable_redownload',
-					'name' => __( 'Disable Redownload?', 'pdd' ),
-					'desc' => __( 'Check this if you do not want to allow users to redownload items from their purchase history.', 'pdd' ),
-					'type' => 'checkbox'
-				),
 				'accounting_settings' => array(
 					'id' => 'accounting_settings',
 					'name' => '<strong>' . __( 'Accounting Settings', 'pdd' ) . '</strong>',
@@ -592,7 +536,7 @@ function pdd_get_registered_settings() {
 				'enable_skus' => array(
 					'id' => 'enable_skus',
 					'name' => __( 'Enable SKU Entry', 'pdd' ),
-					'desc' => __( 'Check this box to allow entry of product SKUs. SKUs will be shown on purchase receipt and exported purchase histories.', 'pdd' ),
+					'desc' => __( 'Check this box to allow entry of product SKUs. SKUs will be shown on donation receipt and exported payments histories.', 'pdd' ),
 					'type' => 'checkbox'
 				),
 				'enable_sequential' => array(
@@ -648,17 +592,17 @@ function pdd_get_registered_settings() {
 				),
 				'checkout_label' => array(
 					'id' => 'checkout_label',
-					'name' => __( 'Complete Purchase Text', 'pdd' ),
-					'desc' => __( 'The button label for completing a purchase.', 'pdd' ),
+					'name' => __( 'Complete Donate Now Text', 'pdd' ),
+					'desc' => __( 'The button label for completing a donation.', 'pdd' ),
 					'type' => 'text',
-					'std' => __( 'Purchase', 'pdd' )
+					'std' => __( 'Donate Now', 'pdd' )
 				),
 				'add_to_cart_text' => array(
 					'id' => 'add_to_cart_text',
 					'name' => __( 'Add to Cart Text', 'pdd' ),
 					'desc' => __( 'Text shown on the Add to Cart Buttons', 'pdd' ),
 					'type' => 'text',
-					'std'  => __( 'Add to Cart', 'pdd' )
+					'std'  => __( 'Donate', 'pdd' )
 				)
 			)
 		)
