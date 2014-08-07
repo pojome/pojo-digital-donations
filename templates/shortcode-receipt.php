@@ -50,46 +50,8 @@ $status    = pdd_get_payment_status( $payment, true );
 		</tr>
 		<?php endif; ?>
 
-		<?php if ( ( $fees = pdd_get_payment_fees( $payment->ID, 'fee' ) ) ) : ?>
-		<tr>
-			<td><strong><?php _e( 'Fees', 'pdd' ); ?>:</strong></td>
-			<td>
-				<ul class="pdd_receipt_fees">
-				<?php foreach( $fees as $fee ) : ?>
-					<li>
-						<span class="pdd_fee_label"><?php echo esc_html( $fee['label'] ); ?></span>
-						<span class="pdd_fee_sep">&nbsp;&ndash;&nbsp;</span>
-						<span class="pdd_fee_amount"><?php echo pdd_currency_filter( pdd_format_amount( $fee['amount'] ) ); ?></span>
-					</li>
-				<?php endforeach; ?>
-				</ul>
-			</td>
-		</tr>
-		<?php endif; ?>
-
-		<?php if ( $pdd_receipt_args['discount'] && $user['discount'] != 'none' ) : ?>
-			<tr>
-				<td><strong><?php _e( 'Discount(s)', 'pdd' ); ?>:</strong></td>
-				<td><?php echo $user['discount']; ?></td>
-			</tr>
-		<?php endif; ?>
-
-		<?php if( pdd_use_taxes() ) : ?>
-			<tr>
-				<td><strong><?php _e( 'Tax', 'pdd' ); ?></strong></td>
-				<td><?php echo pdd_payment_tax( $payment->ID ); ?></td>
-			</tr>
-		<?php endif; ?>
-
 		<?php if ( $pdd_receipt_args[ 'price' ] ) : ?>
-
-			<tr>
-				<td><strong><?php _e( 'Subtotal', 'pdd' ); ?></strong></td>
-				<td>
-					<?php echo pdd_payment_subtotal( $payment->ID ); ?>
-				</td>
-			</tr>
-
+			
 			<tr>
 				<td><strong><?php _e( 'Total Price', 'pdd' ); ?>:</strong></td>
 				<td><?php echo pdd_payment_amount( $payment->ID ); ?></td>

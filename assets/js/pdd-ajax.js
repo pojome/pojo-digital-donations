@@ -349,6 +349,7 @@ function pdd_load_gateway( payment_mode ) {
 		function( response ) {
 			jQuery( '#pdd_purchase_form_wrap' ).html( response );
 			jQuery( '.pdd-no-js' ).hide();
+			jQuery( '#pdd_checkout_wrap' ).trigger( 'pdd_purchase_form_updated' );
 		}
 	);
 
