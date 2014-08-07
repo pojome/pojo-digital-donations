@@ -168,7 +168,7 @@ function pdd_add_to_cart( $download_id, $options = array() ) {
 
 	$new_item[] = $to_add;
 
-	if ( is_array( $cart ) ) {
+	if ( is_array( $cart ) && ! pdd_get_option( 'disable_cart' ) ) {
 		$cart = array_merge( $cart, $new_item );
 	} else {
 		$cart = $new_item;

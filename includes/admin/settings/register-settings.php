@@ -471,6 +471,12 @@ function pdd_get_registered_settings() {
 		/** Misc Settings */
 		'misc' => apply_filters('pdd_settings_misc',
 			array(
+				'disable_cart' => array(
+					'id' => 'disable_cart',
+					'name' => __( 'Disable Cart', 'pdd' ),
+					'desc' => __( 'Check this to disable shopping cart.', 'pdd' ),
+					'type' => 'checkbox',
+				),
 				'enable_ajax_cart' => array(
 					'id' => 'enable_ajax_cart',
 					'name' => __( 'Enable Ajax', 'pdd' ),
@@ -482,19 +488,19 @@ function pdd_get_registered_settings() {
 					'id' => 'redirect_on_add',
 					'name' => __( 'Redirect to Checkout', 'pdd' ),
 					'desc' => __( 'Immediately redirect to checkout after adding an item to the cart?', 'pdd' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'enforce_ssl' => array(
 					'id' => 'enforce_ssl',
 					'name' => __( 'Enforce SSL on Checkout', 'pdd' ),
 					'desc' => __( 'Check this to force users to be redirected to the secure checkout page. You must have an SSL certificate installed to use this option.', 'pdd' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'logged_in_only' => array(
 					'id' => 'logged_in_only',
 					'name' => __( 'Disable Guest Checkout', 'pdd' ),
 					'desc' => __( 'Require that users be logged-in to donation files.', 'pdd' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'show_register_form' => array(
 					'id' => 'show_register_form',
@@ -507,37 +513,37 @@ function pdd_get_registered_settings() {
 						'login' => __( 'Login Form Only', 'pdd' ),
 						'none' => __( 'None', 'pdd' )
 					),
-					'std' => 'none'
+					'std' => 'none',
 				),
 				'item_quantities' => array(
 					'id' => 'item_quantities',
 					'name' => __('Item Quantities', 'pdd'),
 					'desc' => __('Allow item quantities to be changed at checkout.', 'pdd'),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'allow_multiple_discounts' => array(
 					'id' => 'allow_multiple_discounts',
 					'name' => __('Multiple Discounts', 'pdd'),
 					'desc' => __('Allow customers to use multiple discounts on the same donation?', 'pdd'),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'enable_cart_saving' => array(
 					'id' => 'enable_cart_saving',
 					'name' => __( 'Enable Cart Saving', 'pdd' ),
 					'desc' => __( 'Check this to enable cart saving on the checkout', 'pdd' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'accounting_settings' => array(
 					'id' => 'accounting_settings',
 					'name' => '<strong>' . __( 'Accounting Settings', 'pdd' ) . '</strong>',
 					'desc' => '',
-					'type' => 'header'
+					'type' => 'header',
 				),
 				'enable_skus' => array(
 					'id' => 'enable_skus',
 					'name' => __( 'Enable SKU Entry', 'pdd' ),
 					'desc' => __( 'Check this box to allow entry of product SKUs. SKUs will be shown on donation receipt and exported payments histories.', 'pdd' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'enable_sequential' => array(
 					'id' => 'enable_sequential',
@@ -551,7 +557,7 @@ function pdd_get_registered_settings() {
 					'desc' => __( 'The number that sequential order numbers should start at.', 'pdd' ),
 					'type' => 'number',
 					'size' => 'small',
-					'std'  => '1'
+					'std'  => '1',
 				),
 				'sequential_prefix' => array(
 					'id' => 'sequential_prefix',
@@ -603,7 +609,7 @@ function pdd_get_registered_settings() {
 					'desc' => __( 'Text shown on the Add to Cart Buttons', 'pdd' ),
 					'type' => 'text',
 					'std'  => __( 'Donate', 'pdd' )
-				)
+				),
 			)
 		)
 	);
@@ -686,13 +692,6 @@ function pdd_settings_sanitize( $input = array() ) {
  * @return string $input Sanitizied value
  */
 function pdd_settings_sanitize_misc( $input ) {
-
-	global $pdd_options;
-
-	if( pdd_get_file_download_method() != $input['download_method'] || ! pdd_htaccess_exists() ) {
-		// Force the .htaccess files to be updated if the Download method was changed.
-		pdd_create_protection_files( true, $input['download_method'] );
-	}
 
 	if( ! empty( $input['enable_sequential'] ) && ! pdd_get_option( 'enable_sequential' ) ) {
 
