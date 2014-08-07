@@ -44,21 +44,7 @@
 			<?php endforeach; ?>
 		<?php endif; ?>
 		<?php do_action( 'pdd_cart_items_middle' ); ?>
-		<!-- Show any cart fees, both positive and negative fees -->
-		<?php if( pdd_cart_has_fees() ) : ?>
-			<?php foreach( pdd_get_cart_fees() as $fee_id => $fee ) : ?>
-				<tr class="pdd_cart_fee" id="pdd_cart_fee_<?php echo $fee_id; ?>">
-					<td class="pdd_cart_fee_label"><?php echo esc_html( $fee['label'] ); ?></td>
-					<td class="pdd_cart_fee_amount"><?php echo esc_html( pdd_currency_filter( pdd_format_amount( $fee['amount'] ) ) ); ?></td>
-					<td>
-						<?php if( ! empty( $fee['type'] ) && 'item' == $fee['type'] ) : ?>
-							<a href="<?php echo esc_url( pdd_remove_cart_fee_url( $fee_id ) ); ?>"><?php _e( 'Remove', 'pdd' ); ?></a>
-						<?php endif; ?>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-		<?php endif; ?>
-
+		<?php // TODO: What do here? ?>
 		<?php do_action( 'pdd_cart_items_after' ); ?>
 	</tbody>
 	<tfoot>
