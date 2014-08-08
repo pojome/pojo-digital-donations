@@ -444,7 +444,6 @@ function pdd_receipt_shortcode( $atts, $content = null ) {
 		'error'           => __( 'Sorry, trouble retrieving payment receipt.', 'pdd' ),
 		'price'           => true,
 		'discount'        => true,
-		'products'        => true,
 		'date'            => true,
 		'notes'           => true,
 		'payment_key'     => false,
