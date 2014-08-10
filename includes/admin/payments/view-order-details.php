@@ -59,32 +59,6 @@ $address      = ! empty( $user_info['address'] ) ? $user_info['address'] : array
 								<div class="inside">
 									<div class="pdd-order-totals-box pdd-admin-box">
 										<?php do_action( 'pdd_view_order_details_totals_before', $payment_id ); ?>
-										<div class="pdd-order-discount pdd-admin-box-inside">
-											<p>
-												<span class="label"><?php _e( 'Discount Code', 'pdd' ); ?>:</span>&nbsp;
-												<span class="right"><?php if ( isset( $user_info['discount'] ) && $user_info['discount'] !== 'none' ) { echo '<code>' . $user_info['discount'] . '</code>'; } else { _e( 'None', 'pdd' ); } ?></span>
-											</p>
-										</div>
-										<?php if ( pdd_use_taxes() ) : ?>
-										<div class="pdd-order-taxes pdd-admin-box-inside">
-											<p>
-												<span class="label"><?php _e( 'Tax', 'pdd' ); ?>:</span>&nbsp;
-												<input name="pdd-payment-tax" type="number" step="0.01" class="small-text right " value="<?php echo esc_attr( pdd_get_payment_tax( $payment_id ) ); ?>"/>
-											</p>
-										</div>
-										<?php endif; ?>
-										<?php
-										$fees = pdd_get_payment_fees( $payment_id );
-										if ( ! empty( $fees ) ) : ?>
-										<div class="pdd-order-fees pdd-admin-box-inside">
-											<p class="strong"><?php _e( 'Fees', 'pdd' ); ?>:</p>
-											<ul class="pdd-payment-fees">
-												<?php foreach( $fees as $fee ) : ?>
-												<li><span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="right fee-amount" data-fee="' . esc_attr( $fee['amount'] ) . '">' . pdd_currency_filter( $fee['amount'] ); ?></span></li>
-												<?php endforeach; ?>
-											</ul>
-										</div>
-										<?php endif; ?>
 										<div class="pdd-order-payment pdd-admin-box-inside">
 											<p>
 												<span class="label"><?php _e( 'Total Price', 'pdd' ); ?>:</span>&nbsp;
@@ -158,14 +132,6 @@ $address      = ! empty( $user_info['address'] ) ? $user_info['address'] : array
 												<input type="number" step="1" max="59" name="pdd-payment-time-min" value="<?php esc_attr_e( date( 'i', $payment_date ) ); ?>" class="small-text pdd-payment-time-min"/>
 											</p>
 										</div>
-	
-										<div class="pdd-admin-box-inside pdd-unlimited-downloads">
-											<p>
-												<span class="label" title="<?php _e( 'Grants the customer unlimited file downloads for this purchase, regardless of other limits set.', 'pdd' ); ?>"><i data-code="f316" class="dashicons dashicons-download"></i></span>&nbsp;
-												<input type="checkbox" name="pdd-unlimited-downloads" id="pdd_unlimited_downloads" value="1"<?php checked( true, $unlimited, true ); ?>/>
-												<label class="description" for="pdd_unlimited_downloads"><?php _e( 'Unlimited file downloads', 'pdd' ); ?></label>
-											</p>
-										</div>
 
 										<?php do_action( 'pdd_view_order_details_update_inner', $payment_id ); ?>
 	
@@ -190,29 +156,6 @@ $address      = ! empty( $user_info['address'] ) ? $user_info['address'] : array
 							</div><!-- /#pdd-order-data -->
 							
 							<?php do_action( 'pdd_order_update_after', $payment_id ); ?>
-
-							<div id="pdd-order-logs" class="postbox pdd-order-logs">
-								
-								<h3 class="hndle">
-									<span><?php _e( 'Logs', 'pdd' ); ?></span>
-								</h3>
-								<div class="inside">
-									<div class="pdd-admin-box">
-	
-										<div class="pdd-admin-box-inside">
-
-											<p><a href="<?php echo admin_url( '/edit.php?post_type=pdd_camp&page=pdd-reports&tab=logs&payment=' . $payment_id ); ?>"><?php _e( 'View file download log for purchase', 'pdd' ); ?></a></p>
-	
-										</div>
-
-										<?php do_action( 'pdd_view_order_details_logs_inner', $payment_id ); ?>
-	
-									</div><!-- /.column-container -->
-	
-								</div><!-- /.inside -->
-
-	
-							</div><!-- /#pdd-order-logs -->
 	
 							<?php do_action( 'pdd_view_order_details_sidebar_after', $payment_id ); ?>
 						</div><!-- /#side-sortables -->
