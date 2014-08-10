@@ -68,7 +68,7 @@ $address      = ! empty( $user_info['address'] ) ? $user_info['address'] : array
 										<div class="pdd-order-payment-recalc-totals pdd-admin-box-inside" style="display:none">
 											<p>
 												<span class="label"><?php _e( 'Recalculate Totals', 'pdd' ); ?>:</span>&nbsp;
-												<a href="" id="pdd-order-recalc-total" class="button button-secondary right"><?php _e( 'Recalculate', 'pdd' ); ?></a>
+												<a href="#" id="pdd-order-recalc-total" class="button button-secondary right"><?php _e( 'Recalculate', 'pdd' ); ?></a>
 											</p>
 										</div>
 										<?php do_action( 'pdd_view_order_details_totals_after', $payment_id ); ?>

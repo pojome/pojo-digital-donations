@@ -818,7 +818,7 @@ function pdd_render_dowwn_tax_options( $post_id = 0 ) {
 	</label>
 <?php
 }
-add_action( 'pdd_meta_box_settings_fields', 'pdd_render_dowwn_tax_options', 30 );
+//add_action( 'pdd_meta_box_settings_fields', 'pdd_render_dowwn_tax_options', 30 );
 
 /**
  * Render Accounting Options

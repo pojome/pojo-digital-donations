@@ -590,47 +590,6 @@ function pdd_show_payment_icons() {
 add_action( 'pdd_payment_mode_top', 'pdd_show_payment_icons' );
 add_action( 'pdd_checkout_form_top', 'pdd_show_payment_icons' );
 
-
-/**
- * Renders the Discount Code field which allows users to enter a discount code.
- * This field is only displayed if there are any active discounts on the site else
- * it's not displayed.
- *
- * @since 1.2.2
- * @return void
-*/
-function pdd_discount_field() {
-
-	if( isset( $_GET['payment-mode'] ) && pdd_is_ajax_disabled() ) {
-		return; // Only show before a payment method has been selected if ajax is disabled
-	}
-
-	if ( pdd_has_active_discounts() && pdd_get_cart_total() ) :
-
-		$color = pdd_get_option( 'checkout_color', 'blue' );
-		$color = ( $color == 'inherit' ) ? '' : $color;
-		$style = pdd_get_option( 'button_style', 'button' );
-?>
-		<fieldset id="pdd_discount_code">
-			<p id="pdd_show_discount" style="display:none;">
-				<?php _e( 'Have a discount code?', 'pdd' ); ?> <a href="#" class="pdd_discount_link"><?php echo _x( 'Click to enter it', 'Entering a discount code', 'pdd' ); ?></a>
-			</p>
-			<p id="pdd-discount-code-wrap">
-				<label class="pdd-label" for="pdd-discount">
-					<?php _e( 'Discount', 'pdd' ); ?>
-					<img src="<?php echo PDD_PLUGIN_URL; ?>assets/images/loading.gif" id="pdd-discount-loader" style="display:none;"/>
-				</label>
-				<span class="pdd-description"><?php _e( 'Enter a coupon code if you have one.', 'pdd' ); ?></span>
-				<input class="pdd-input" type="text" id="pdd-discount" name="pdd-discount" placeholder="<?php _e( 'Enter discount', 'pdd' ); ?>"/>
-				<input type="submit" class="pdd-apply-discount pdd-submit button <?php echo $color . ' ' . $style; ?>" value="<?php echo _x( 'Apply', 'Apply discount at checkout', 'pdd' ); ?>"/>
-				<span id="pdd-discount-error-wrap" class="pdd_errors" style="display:none;"></span>
-			</p>
-		</fieldset>
-<?php
-	endif;
-}
-add_action( 'pdd_checkout_form_top', 'pdd_discount_field', -1 );
-
 /**
  * Renders the Checkout Agree to Terms, this displays a checkbox for users to
  * agree the T&Cs set in the PDD Settings. This is only displayed if T&Cs are

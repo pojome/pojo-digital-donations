@@ -1237,15 +1237,6 @@ function pdd_custom_amount_cart_item_price( $price, $item_id, $options = array()
 		} elseif ( ( empty( $min_amount ) || 0 >= $min_amount ) && is_numeric( $options['custom_amount'] ) ) {
 			$price = $options['custom_amount'];
 		}
-		
-		if ( $tax ) {
-			if (
-				( pdd_prices_include_tax() && ! pdd_is_cart_taxed() && pdd_use_taxes() ) ||
-				( pdd_is_cart_taxed() && pdd_prices_show_tax_on_checkout() || ( ! pdd_prices_show_tax_on_checkout() && pdd_prices_include_tax() ) )
-			) {
-				$price = pdd_calculate_tax( $price );
-			}
-		}
 	}
 
 	return $price;
