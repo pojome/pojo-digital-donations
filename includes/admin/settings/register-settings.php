@@ -390,77 +390,6 @@ function pdd_get_registered_settings() {
 				)
 			)
 		),
-		/** Taxes Settings */
-		'taxes' => apply_filters('pdd_settings_taxes',
-			array(
-				'enable_taxes' => array(
-					'id' => 'enable_taxes',
-					'name' => __( 'Enable Taxes', 'pdd' ),
-					'desc' => __( 'Check this to enable taxes on donations.', 'pdd' ),
-					'type' => 'checkbox',
-				),
-				'tax_rate' => array(
-					'id' => 'tax_rate',
-					'name' => __( 'Default Tax Rate', 'pdd' ),
-					'desc' => __( 'Enter a percentage, such as 6.5. Customers not in a specific rate below will be charged this rate.', 'pdd' ),
-					'type' => 'text',
-					'size' => 'small'
-				),
-				'base_country' => array(
-					'id' => 'base_country',
-					'name' => __( 'Base Country', 'pdd' ),
-					'desc' => __( 'Where does your store operate from?', 'pdd' ),
-					'type' => 'select',
-					'options' => pdd_get_country_list()
-				),
-				'base_state' => array(
-					'id' => 'base_state',
-					'name' => __( 'Base State / Province', 'pdd' ),
-					'desc' => __( 'What state / province does your store operate from?', 'pdd' ),
-					'type' => 'shop_states'
-				),
-				'prices_include_tax' => array(
-					'id' => 'prices_include_tax',
-					'name' => __( 'Prices entered with tax', 'pdd' ),
-					'desc' => __( 'This option affects how you enter prices.', 'pdd' ),
-					'type' => 'radio',
-					'std' => 'no',
-					'options' => array(
-						'yes' => __( 'Yes, I will enter prices inclusive of tax', 'pdd' ),
-						'no'  => __( 'No, I will enter prices exclusive of tax', 'pdd' )
-					)
-				),
-				'display_tax_rate' => array(
-					'id' => 'display_tax_rate',
-					'name' => __( 'Display Tax Rate on Prices', 'pdd' ),
-					'desc' => __( 'Some countries require a notice when product prices include tax.', 'pdd' ),
-					'type' => 'checkbox',
-				),
-				'checkout_include_tax' => array(
-					'id' => 'checkout_include_tax',
-					'name' => __( 'Display during checkout', 'pdd' ),
-					'desc' => __( 'Should prices on the checkout page be shown with or without tax?', 'pdd' ),
-					'type' => 'select',
-					'std' => 'no',
-					'options' => array(
-						'yes' => __( 'Including tax', 'pdd' ),
-						'no'  => __( 'Excluding tax', 'pdd' )
-					)
-				),
-				'taxes_after_discounts' => array(
-					'id' => 'taxes_after_discounts',
-					'name' => __( 'Calculate Tax After Discounts?', 'pdd' ),
-					'desc' => __( 'Check this if you would like taxes calculated after discounts. By default taxes are calculated before discounts are applied.', 'pdd' ),
-					'type' => 'checkbox'
-				),
-				'tax_rates' => array(
-					'id' => 'tax_rates',
-					'name' => '<strong>' . __( 'Additional Tax Rates', 'pdd' ) . '</strong>',
-					'desc' => __( 'Specify additional tax rates for other regions.', 'pdd' ),
-					'type' => 'tax_rates'
-				)
-			)
-		),
 		/** Extension Settings */
 		'extensions' => apply_filters('pdd_settings_extensions',
 			array()
@@ -471,6 +400,13 @@ function pdd_get_registered_settings() {
 		/** Misc Settings */
 		'misc' => apply_filters('pdd_settings_misc',
 			array(
+				'enable_billing_address' => array(
+					'id' => 'enable_billing_address',
+					'name' => __( 'Enable Billing Address', 'pdd' ),
+					'desc' => __( 'Check this to enable billing address in shopping cart.', 'pdd' ),
+					'type' => 'checkbox',
+					'std'  => '1',
+				),
 				'disable_cart' => array(
 					'id' => 'disable_cart',
 					'name' => __( 'Disable Cart', 'pdd' ),
@@ -482,7 +418,7 @@ function pdd_get_registered_settings() {
 					'name' => __( 'Enable Ajax', 'pdd' ),
 					'desc' => __( 'Check this to enable AJAX for the shopping cart.', 'pdd' ),
 					'type' => 'checkbox',
-					'std'  => '1'
+					'std'  => '1',
 				),
 				'redirect_on_add' => array(
 					'id' => 'redirect_on_add',
@@ -751,7 +687,6 @@ function pdd_get_settings_tabs() {
 	$tabs['gateways'] = __( 'Payment Gateways', 'pdd' );
 	$tabs['emails']   = __( 'Emails', 'pdd' );
 	$tabs['styles']   = __( 'Styles', 'pdd' );
-	$tabs['taxes']    = __( 'Taxes', 'pdd' );
 
 	if( ! empty( $settings['extensions'] ) ) {
 		$tabs['extensions'] = __( 'Extensions', 'pdd' );

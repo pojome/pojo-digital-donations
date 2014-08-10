@@ -368,7 +368,7 @@ add_action( 'pdd_after_cc_fields', 'pdd_default_cc_address_fields' );
  * @return void
  */
 function pdd_checkout_tax_fields() {
-	if( pdd_cart_needs_tax_address_fields() && pdd_get_cart_total() )
+	if ( pdd_cart_needs_billing_address_fields() && pdd_get_cart_total() )
 		pdd_default_cc_address_fields();
 }
 add_action( 'pdd_purchase_form_after_cc_form', 'pdd_checkout_tax_fields', 999 );

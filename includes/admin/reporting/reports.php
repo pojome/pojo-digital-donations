@@ -58,7 +58,6 @@ function pdd_reports_default_views() {
 		'campaigns' => pdd_get_label_plural(),
 		'customers'	=> __( 'Customers', 'pdd' ),
 		'gateways'  => __( 'Payment Methods', 'pdd' ),
-		'taxes'		=> __( 'Taxes', 'pdd' )
 	);
 
 	$views = apply_filters( 'pdd_report_views', $views );
@@ -242,43 +241,6 @@ function pdd_reports_earnings() {
 	pdd_reports_graph();
 }
 add_action( 'pdd_reports_view_earnings', 'pdd_reports_earnings' );
-
-/**
- * Renders the Tax Reports
- *
- * @since 1.3.3
- * @return void
- */
-function pdd_reports_taxes() {
-	$year = isset( $_GET['year'] ) ? absint( $_GET['year'] ) : date( 'Y' );
-	?>
-	<div class="tablenav top">
-		<div class="alignleft actions"><?php pdd_report_views(); ?></div>
-	</div>
-
-	<div class="metabox-holder" style="padding-top: 0;">
-		<div class="postbox">
-			<h3><span><?php _e('Tax Report', 'pdd'); ?></span></h3>
-			<div class="inside">
-				<p><?php _e( 'This report shows the total amount collected in sales tax for the given year.', 'pdd' ); ?></p>
-				<form method="get" action="<?php echo admin_url( 'edit.php' ); ?>">
-					<span><?php echo $year; ?></span>: <strong><?php pdd_sales_tax_for_year( $year ); ?></strong>&nbsp;&mdash;&nbsp;
-					<select name="year">
-						<?php for ( $i = 2009; $i <= date( 'Y' ); $i++ ) : ?>
-						<option value="<?php echo $i; ?>"<?php selected( $year, $i ); ?>><?php echo $i; ?></option>
-						<?php endfor; ?>
-					</select>
-					<input type="hidden" name="view" value="taxes" />
-					<input type="hidden" name="post_type" value="download" />
-					<input type="hidden" name="page" value="pdd-reports" />
-					<?php submit_button( __( 'Submit', 'pdd' ), 'secondary', 'submit', false ); ?>
-				</form>
-			</div><!-- .inside -->
-		</div><!-- .postbox -->
-	</div><!-- .metabox-holder -->
-	<?php
-}
-add_action( 'pdd_reports_view_taxes', 'pdd_reports_taxes' );
 
 /**
  * Renders the 'Export' tab on the Reports Page
