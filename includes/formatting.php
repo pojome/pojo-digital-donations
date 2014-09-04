@@ -142,6 +142,9 @@ function pdd_currency_filter( $price ) {
 			case "JPY" :
 				$formatted = '&yen;' . $price;
 				break;
+			case "ILS" :
+				$formatted = '&#8362;' . $price;
+				break;
 			default :
 			    $formatted = $currency . ' ' . $price;
 				break;
@@ -168,6 +171,9 @@ function pdd_currency_filter( $price ) {
 				break;
 			case "JPY" :
 				$formatted = $price . '&yen;';
+				break;
+			case "ILS" :
+				$formatted = $price . '&#8362;';
 				break;
 			default :
 			    $formatted = $price . ' ' . $currency;
