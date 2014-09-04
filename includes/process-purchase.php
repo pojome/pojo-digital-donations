@@ -332,7 +332,7 @@ function pdd_purchase_form_required_fields() {
 	);
 
 	// Let payment gateways and other extensions determine if address fields should be required
-	$require_address = apply_filters( 'pdd_require_billing_address', pdd_use_taxes() && pdd_get_cart_total() );
+	$require_address = apply_filters( 'pdd_require_billing_address', pdd_use_billing_address() && pdd_get_cart_total() );
 
 	if ( $require_address ) {
 		$required_fields['card_zip'] = array(

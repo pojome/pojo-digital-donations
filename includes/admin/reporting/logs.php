@@ -80,40 +80,6 @@ function pdd_logs_view_gateway_errors() {
 add_action( 'pdd_logs_view_gateway_errors', 'pdd_logs_view_gateway_errors' );
 
 /**
- * API Request Logs
- *
- * @since 1.5
- * @uses PDD_API_Request_Log_Table::prepare_items()
- * @uses PDD_API_Request_Log_Table::search_box()
- * @uses PDD_API_Request_Log_Table::display()
- * @return void
- */
-
-function pdd_logs_view_api_requests() {
-	include( dirname( __FILE__ ) . '/class-api-requests-logs-list-table.php' );
-
-	$logs_table = new PDD_API_Request_Log_Table();
-	$logs_table->prepare_items();
-	?>
-	<div class="wrap">
-		<?php do_action( 'pdd_logs_api_requests_top' ); ?>
-		<form id="pdd-logs-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-reports&tab=logs' ); ?>">
-			<?php
-			$logs_table->search_box( __( 'Search', 'pdd' ), 'pdd-api-requests' );
-			$logs_table->display();
-			?>
-			<input type="hidden" name="post_type" value="download" />
-			<input type="hidden" name="page" value="pdd-reports" />
-			<input type="hidden" name="tab" value="logs" />
-		</form>
-		<?php do_action( 'pdd_logs_api_requests_bottom' ); ?>
-	</div>
-<?php
-}
-add_action( 'pdd_logs_view_api_requests', 'pdd_logs_view_api_requests' );
-
-
-/**
  * Default Log Views
  *
  * @since 1.4

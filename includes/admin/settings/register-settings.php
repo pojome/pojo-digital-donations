@@ -202,16 +202,10 @@ function pdd_get_registered_settings() {
 					'std' => '.'
 				),
 				'tracking_settings' => array(
-					'id' => 'tracking_settings',
-					'name' => '<strong>' . __( 'Tracking Settings', 'pdd' ) . '</strong>',
+					'id' => 'uninstall_data',
+					'name' => '<strong>' . __( 'Uninstall Data', 'pdd' ) . '</strong>',
 					'desc' => '',
 					'type' => 'header'
-				),
-				'allow_tracking' => array(
-					'id' => 'allow_tracking',
-					'name' => __( 'Allow Usage Tracking?', 'pdd' ),
-					'desc' => __( 'Allow Pojo Digital Donations to anonymously track how this plugin is used and help us make the plugin better. Opt-in and receive a 20% discount code for any purchase from the <a href="https://easydigitaldownloads.com/extensions" target="_blank">Pojo Digital Donations store</a>. Your discount code will be emailed to you.', 'pdd' ),
-					'type' => 'checkbox'
 				),
 				'uninstall_on_delete' => array(
 					'id' => 'uninstall_on_delete',
@@ -390,77 +384,6 @@ function pdd_get_registered_settings() {
 				)
 			)
 		),
-		/** Taxes Settings */
-		'taxes' => apply_filters('pdd_settings_taxes',
-			array(
-				'enable_taxes' => array(
-					'id' => 'enable_taxes',
-					'name' => __( 'Enable Taxes', 'pdd' ),
-					'desc' => __( 'Check this to enable taxes on donations.', 'pdd' ),
-					'type' => 'checkbox',
-				),
-				'tax_rate' => array(
-					'id' => 'tax_rate',
-					'name' => __( 'Default Tax Rate', 'pdd' ),
-					'desc' => __( 'Enter a percentage, such as 6.5. Customers not in a specific rate below will be charged this rate.', 'pdd' ),
-					'type' => 'text',
-					'size' => 'small'
-				),
-				'base_country' => array(
-					'id' => 'base_country',
-					'name' => __( 'Base Country', 'pdd' ),
-					'desc' => __( 'Where does your store operate from?', 'pdd' ),
-					'type' => 'select',
-					'options' => pdd_get_country_list()
-				),
-				'base_state' => array(
-					'id' => 'base_state',
-					'name' => __( 'Base State / Province', 'pdd' ),
-					'desc' => __( 'What state / province does your store operate from?', 'pdd' ),
-					'type' => 'shop_states'
-				),
-				'prices_include_tax' => array(
-					'id' => 'prices_include_tax',
-					'name' => __( 'Prices entered with tax', 'pdd' ),
-					'desc' => __( 'This option affects how you enter prices.', 'pdd' ),
-					'type' => 'radio',
-					'std' => 'no',
-					'options' => array(
-						'yes' => __( 'Yes, I will enter prices inclusive of tax', 'pdd' ),
-						'no'  => __( 'No, I will enter prices exclusive of tax', 'pdd' )
-					)
-				),
-				'display_tax_rate' => array(
-					'id' => 'display_tax_rate',
-					'name' => __( 'Display Tax Rate on Prices', 'pdd' ),
-					'desc' => __( 'Some countries require a notice when product prices include tax.', 'pdd' ),
-					'type' => 'checkbox',
-				),
-				'checkout_include_tax' => array(
-					'id' => 'checkout_include_tax',
-					'name' => __( 'Display during checkout', 'pdd' ),
-					'desc' => __( 'Should prices on the checkout page be shown with or without tax?', 'pdd' ),
-					'type' => 'select',
-					'std' => 'no',
-					'options' => array(
-						'yes' => __( 'Including tax', 'pdd' ),
-						'no'  => __( 'Excluding tax', 'pdd' )
-					)
-				),
-				'taxes_after_discounts' => array(
-					'id' => 'taxes_after_discounts',
-					'name' => __( 'Calculate Tax After Discounts?', 'pdd' ),
-					'desc' => __( 'Check this if you would like taxes calculated after discounts. By default taxes are calculated before discounts are applied.', 'pdd' ),
-					'type' => 'checkbox'
-				),
-				'tax_rates' => array(
-					'id' => 'tax_rates',
-					'name' => '<strong>' . __( 'Additional Tax Rates', 'pdd' ) . '</strong>',
-					'desc' => __( 'Specify additional tax rates for other regions.', 'pdd' ),
-					'type' => 'tax_rates'
-				)
-			)
-		),
 		/** Extension Settings */
 		'extensions' => apply_filters('pdd_settings_extensions',
 			array()
@@ -471,30 +394,43 @@ function pdd_get_registered_settings() {
 		/** Misc Settings */
 		'misc' => apply_filters('pdd_settings_misc',
 			array(
+				'enable_billing_address' => array(
+					'id' => 'enable_billing_address',
+					'name' => __( 'Enable Billing Address', 'pdd' ),
+					'desc' => __( 'Check this to enable billing address in shopping cart.', 'pdd' ),
+					'type' => 'checkbox',
+					'std'  => '1',
+				),
+				'disable_cart' => array(
+					'id' => 'disable_cart',
+					'name' => __( 'Disable Cart', 'pdd' ),
+					'desc' => __( 'Check this to disable shopping cart.', 'pdd' ),
+					'type' => 'checkbox',
+				),
 				'enable_ajax_cart' => array(
 					'id' => 'enable_ajax_cart',
 					'name' => __( 'Enable Ajax', 'pdd' ),
 					'desc' => __( 'Check this to enable AJAX for the shopping cart.', 'pdd' ),
 					'type' => 'checkbox',
-					'std'  => '1'
+					'std'  => '1',
 				),
 				'redirect_on_add' => array(
 					'id' => 'redirect_on_add',
 					'name' => __( 'Redirect to Checkout', 'pdd' ),
 					'desc' => __( 'Immediately redirect to checkout after adding an item to the cart?', 'pdd' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'enforce_ssl' => array(
 					'id' => 'enforce_ssl',
 					'name' => __( 'Enforce SSL on Checkout', 'pdd' ),
 					'desc' => __( 'Check this to force users to be redirected to the secure checkout page. You must have an SSL certificate installed to use this option.', 'pdd' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'logged_in_only' => array(
 					'id' => 'logged_in_only',
 					'name' => __( 'Disable Guest Checkout', 'pdd' ),
 					'desc' => __( 'Require that users be logged-in to donation files.', 'pdd' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'show_register_form' => array(
 					'id' => 'show_register_form',
@@ -507,37 +443,37 @@ function pdd_get_registered_settings() {
 						'login' => __( 'Login Form Only', 'pdd' ),
 						'none' => __( 'None', 'pdd' )
 					),
-					'std' => 'none'
+					'std' => 'none',
 				),
 				'item_quantities' => array(
 					'id' => 'item_quantities',
 					'name' => __('Item Quantities', 'pdd'),
 					'desc' => __('Allow item quantities to be changed at checkout.', 'pdd'),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'allow_multiple_discounts' => array(
 					'id' => 'allow_multiple_discounts',
 					'name' => __('Multiple Discounts', 'pdd'),
 					'desc' => __('Allow customers to use multiple discounts on the same donation?', 'pdd'),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'enable_cart_saving' => array(
 					'id' => 'enable_cart_saving',
 					'name' => __( 'Enable Cart Saving', 'pdd' ),
 					'desc' => __( 'Check this to enable cart saving on the checkout', 'pdd' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'accounting_settings' => array(
 					'id' => 'accounting_settings',
 					'name' => '<strong>' . __( 'Accounting Settings', 'pdd' ) . '</strong>',
 					'desc' => '',
-					'type' => 'header'
+					'type' => 'header',
 				),
 				'enable_skus' => array(
 					'id' => 'enable_skus',
 					'name' => __( 'Enable SKU Entry', 'pdd' ),
 					'desc' => __( 'Check this box to allow entry of product SKUs. SKUs will be shown on donation receipt and exported payments histories.', 'pdd' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				'enable_sequential' => array(
 					'id' => 'enable_sequential',
@@ -551,7 +487,7 @@ function pdd_get_registered_settings() {
 					'desc' => __( 'The number that sequential order numbers should start at.', 'pdd' ),
 					'type' => 'number',
 					'size' => 'small',
-					'std'  => '1'
+					'std'  => '1',
 				),
 				'sequential_prefix' => array(
 					'id' => 'sequential_prefix',
@@ -603,7 +539,7 @@ function pdd_get_registered_settings() {
 					'desc' => __( 'Text shown on the Add to Cart Buttons', 'pdd' ),
 					'type' => 'text',
 					'std'  => __( 'Donate', 'pdd' )
-				)
+				),
 			)
 		)
 	);
@@ -687,13 +623,6 @@ function pdd_settings_sanitize( $input = array() ) {
  */
 function pdd_settings_sanitize_misc( $input ) {
 
-	global $pdd_options;
-
-	if( pdd_get_file_download_method() != $input['download_method'] || ! pdd_htaccess_exists() ) {
-		// Force the .htaccess files to be updated if the Download method was changed.
-		pdd_create_protection_files( true, $input['download_method'] );
-	}
-
 	if( ! empty( $input['enable_sequential'] ) && ! pdd_get_option( 'enable_sequential' ) ) {
 
 		// Shows an admin notice about upgrading previous order numbers
@@ -752,7 +681,6 @@ function pdd_get_settings_tabs() {
 	$tabs['gateways'] = __( 'Payment Gateways', 'pdd' );
 	$tabs['emails']   = __( 'Emails', 'pdd' );
 	$tabs['styles']   = __( 'Styles', 'pdd' );
-	$tabs['taxes']    = __( 'Taxes', 'pdd' );
 
 	if( ! empty( $settings['extensions'] ) ) {
 		$tabs['extensions'] = __( 'Extensions', 'pdd' );

@@ -44,63 +44,27 @@
 			<?php endforeach; ?>
 		<?php endif; ?>
 		<?php do_action( 'pdd_cart_items_middle' ); ?>
-		<!-- Show any cart fees, both positive and negative fees -->
-		<?php if( pdd_cart_has_fees() ) : ?>
-			<?php foreach( pdd_get_cart_fees() as $fee_id => $fee ) : ?>
-				<tr class="pdd_cart_fee" id="pdd_cart_fee_<?php echo $fee_id; ?>">
-					<td class="pdd_cart_fee_label"><?php echo esc_html( $fee['label'] ); ?></td>
-					<td class="pdd_cart_fee_amount"><?php echo esc_html( pdd_currency_filter( pdd_format_amount( $fee['amount'] ) ) ); ?></td>
-					<td>
-						<?php if( ! empty( $fee['type'] ) && 'item' == $fee['type'] ) : ?>
-							<a href="<?php echo esc_url( pdd_remove_cart_fee_url( $fee_id ) ); ?>"><?php _e( 'Remove', 'pdd' ); ?></a>
-						<?php endif; ?>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-		<?php endif; ?>
-
+		<?php // TODO: What do here? ?>
 		<?php do_action( 'pdd_cart_items_after' ); ?>
 	</tbody>
 	<tfoot>
 
-		<?php if( has_action( 'pdd_cart_footer_buttons' ) ) : ?>
+		<?php if ( has_action( 'pdd_cart_footer_buttons' ) ) : ?>
 			<tr class="pdd_cart_footer_row">
 				<th colspan="<?php echo pdd_checkout_cart_columns(); ?>">
 					<?php do_action( 'pdd_cart_footer_buttons' ); ?>
 				</th>
 			</tr>
 		<?php endif; ?>
-
-		<?php if( pdd_use_taxes() ) : ?>
-			<tr class="pdd_cart_footer_row pdd_cart_subtotal_row"<?php if ( ! pdd_is_cart_taxed() ) echo ' style="display:none;"'; ?>>
-				<?php do_action( 'pdd_checkout_table_subtotal_first' ); ?>
-				<th colspan="<?php echo pdd_checkout_cart_columns(); ?>" class="pdd_cart_subtotal">
-					<?php _e( 'Subtotal', 'pdd' ); ?>:&nbsp;<span class="pdd_cart_subtotal"><?php echo pdd_cart_subtotal(); ?></span>
-				</th>
-				<?php do_action( 'pdd_checkout_table_subtotal_last' ); ?>
-			</tr>
-			<tr class="pdd_cart_footer_row pdd_cart_tax_row"<?php if( ! pdd_is_cart_taxed() ) echo ' style="display:none;"'; ?>>
-				<?php do_action( 'pdd_checkout_table_tax_first' ); ?>
-				<th colspan="<?php echo pdd_checkout_cart_columns(); ?>" class="pdd_cart_tax">
-					<?php _e( 'Tax', 'pdd' ); ?>:&nbsp;<span class="pdd_cart_tax_amount" data-tax="<?php echo pdd_get_cart_tax( false ); ?>"><?php echo esc_html( pdd_cart_tax() ); ?></span>
-				</th>
-				<?php do_action( 'pdd_checkout_table_tax_last' ); ?>
-			</tr>
-
-		<?php endif; ?>
-
-		<tr class="pdd_cart_footer_row pdd_cart_discount_row" <?php if( ! pdd_cart_has_discounts() )  echo ' style="display:none;"'; ?>>
-			<?php do_action( 'pdd_checkout_table_discount_first' ); ?>
-			<th colspan="<?php echo pdd_checkout_cart_columns(); ?>" class="pdd_cart_discount">
-				<?php pdd_cart_discounts_html(); ?>
-			</th>
-			<?php do_action( 'pdd_checkout_table_discount_last' ); ?>
-		</tr>
-
+		
+		<?php do_action( 'pdd_checkout_table_before_footer' ); ?>
+		
 		<tr class="pdd_cart_footer_row">
 			<?php do_action( 'pdd_checkout_table_footer_first' ); ?>
 			<th colspan="<?php echo pdd_checkout_cart_columns(); ?>" class="pdd_cart_total"><?php _e( 'Total', 'pdd' ); ?>: <span class="pdd_cart_amount" data-subtotal="<?php echo pdd_get_cart_total(); ?>" data-total="<?php echo pdd_get_cart_total(); ?>"><?php pdd_cart_total(); ?></span></th>
 			<?php do_action( 'pdd_checkout_table_footer_last' ); ?>
 		</tr>
+
+		<?php do_action( 'pdd_checkout_table_after_footer' ); ?>
 	</tfoot>
 </table>

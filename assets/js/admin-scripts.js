@@ -1006,7 +1006,7 @@ jQuery(document).ready(function ($) {
 					url: ajaxurl,
 					data: {
 						action: 'pdd_camp_search',
-						s: val,
+						s: val
 					},
 					dataType: "json",
 					beforeSend: function(){
@@ -1048,21 +1048,7 @@ jQuery(document).ready(function ($) {
 	 */
 	var PDD_Tools = {
 
-		init : function() {
-			this.revoke_api_key();
-			this.regenerate_api_key();
-		},
-
-		revoke_api_key : function() {
-			$( 'body' ).on( 'click', '.pdd-revoke-api-key', function( e ) {
-				return confirm( pdd_vars.revoke_api_key );
-			} );
-		},
-		regenerate_api_key : function() {
-			$( 'body' ).on( 'click', '.pdd-regenerate-api-key', function( e ) {
-				return confirm( pdd_vars.regenerate_api_key );
-			} );
-		},
+		init : function() {}
 	};
 	PDD_Tools.init();
 

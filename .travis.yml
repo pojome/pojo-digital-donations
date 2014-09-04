@@ -12,13 +12,6 @@ env:
     - WP_VERSION=tags/3.9/ WP_MULTISITE=1
     - WP_VERSION=tags/3.8/ WP_MULTISITE=1
 
-matrix:
-    allow_failures:
-        - WP_VERSION=tags/3.8/ WP_MULTISITE=0
-        - WP_VERSION=tags/3.8/ WP_MULTISITE=1
-    fast_finish: true
-    
-
 before_script:
     - mkdir -p tmp
     - WP_CORE_DIR=tmp/wordpress/

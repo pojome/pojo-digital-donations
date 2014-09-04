@@ -42,21 +42,21 @@ function pdd_load_scripts() {
 		}
 		wp_enqueue_script( 'pdd-checkout-global', $js_dir . 'pdd-checkout-global' . $suffix . '.js', array( 'jquery' ), PDD_VERSION );
 		wp_localize_script( 'pdd-checkout-global', 'pdd_global_vars', array(
-			'ajaxurl'            => pdd_get_ajax_url(),
-			'checkout_nonce'     => wp_create_nonce( 'pdd_checkout_nonce' ),
-			'currency_sign'      => pdd_currency_filter(''),
-			'currency_pos'       => isset( $pdd_options['currency_position'] ) ? $pdd_options['currency_position'] : 'before',
-			'no_gateway'         => __( 'Please select a payment method', 'pdd' ),
-			'no_discount'        => __( 'Please enter a discount code', 'pdd' ), // Blank discount code message
-			'enter_discount'     => __( 'Enter discount', 'pdd' ),
-			'discount_applied'   => __( 'Discount Applied', 'pdd' ), // Discount verified message
-			'no_email'           => __( 'Please enter an email address before applying a discount code', 'pdd' ),
-			'no_username'        => __( 'Please enter a username before applying a discount code', 'pdd' ),
-			'purchase_loading'   => __( 'Please Wait...', 'pdd' ),
+			'ajaxurl' => pdd_get_ajax_url(),
+			'checkout_nonce' => wp_create_nonce( 'pdd_checkout_nonce' ),
+			'currency_sign' => pdd_currency_filter( '' ),
+			'currency_pos' => isset( $pdd_options['currency_position'] ) ? $pdd_options['currency_position'] : 'before',
+			'no_gateway' => __( 'Please select a payment method', 'pdd' ),
+			'no_discount' => __( 'Please enter a discount code', 'pdd' ), // Blank discount code message
+			'enter_discount' => __( 'Enter discount', 'pdd' ),
+			'discount_applied' => __( 'Discount Applied', 'pdd' ), // Discount verified message
+			'no_email' => __( 'Please enter an email address before applying a discount code', 'pdd' ),
+			'no_username' => __( 'Please enter a username before applying a discount code', 'pdd' ),
+			'purchase_loading' => __( 'Please Wait...', 'pdd' ),
 			'complete_purchasse' => __( 'Purchase', 'pdd' ),
-			'taxes_enabled'      => pdd_use_taxes() ? '1' : '0',
-			'pdd_version'        => PDD_VERSION
-		));
+			'taxes_enabled' => pdd_use_taxes() ? '1' : '0',
+			'pdd_version' => PDD_VERSION,
+		) );
 	}
 
 	// Load AJAX scripts, if enabled
@@ -170,8 +170,6 @@ function pdd_load_admin_scripts( $hook ) {
 		'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'pdd' ),
 		'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'pdd' ),
 		'delete_tax_rate'         => __( 'Are you sure you wish to delete this tax rate?', 'pdd' ),
-		'revoke_api_key'          => __( 'Are you sure you wish to revoke this API key?', 'pdd' ),
-		'regenerate_api_key'      => __( 'Are you sure you wish to regenerate this API key?', 'pdd' ),
 		'resend_receipt'          => __( 'Are you sure you wish to resend the purchase receipt?', 'pdd' ),
 		'copy_download_link_text' => __( 'Copy these links to your clip board and give them to your customer', 'pdd' ),
 		'delete_payment_download' => sprintf( __( 'Are you sure you wish to delete this %s?', 'pdd' ), pdd_get_label_singular() ),

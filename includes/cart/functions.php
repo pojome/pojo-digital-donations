@@ -168,7 +168,7 @@ function pdd_add_to_cart( $download_id, $options = array() ) {
 
 	$new_item[] = $to_add;
 
-	if ( is_array( $cart ) ) {
+	if ( is_array( $cart ) && ! pdd_is_disable_cart() ) {
 		$cart = array_merge( $cart, $new_item );
 	} else {
 		$cart = $new_item;
@@ -512,7 +512,11 @@ function pdd_get_cart_item_price_id( $item = array() ) {
 function pdd_get_cart_item_price_name( $item = array() ) {
 	$price_id = (int) pdd_get_cart_item_price_id( $item );
 	$prices   = pdd_get_variable_prices( $item['id'] );
-	$name     = ! empty( $prices ) ? $prices[ $price_id ]['name'] : '';
+	if ( pdd_has_custom_amount( $item['id'] ) && isset( $item['options']['custom_amount'] ) ) {
+		$name = __( 'Custom Amount', 'pdd' );
+	} else {
+		$name = ! empty( $prices ) ? $prices[ $price_id ]['name'] : '';
+	}
 	return apply_filters( 'pdd_get_cart_item_price_name', $name, $item['id'], $price_id, $item );
 }
 
@@ -1233,26 +1237,12 @@ function pdd_custom_amount_cart_item_price( $price, $item_id, $options = array()
 		} elseif ( ( empty( $min_amount ) || 0 >= $min_amount ) && is_numeric( $options['custom_amount'] ) ) {
 			$price = $options['custom_amount'];
 		}
-		
-		if ( $tax ) {
-			if (
-				( pdd_prices_include_tax() && ! pdd_is_cart_taxed() && pdd_use_taxes() ) ||
-				( pdd_is_cart_taxed() && pdd_prices_show_tax_on_checkout() || ( ! pdd_prices_show_tax_on_checkout() && pdd_prices_include_tax() ) )
-			) {
-				$price = pdd_calculate_tax( $price );
-			}
-		}
 	}
 
 	return $price;
 }
 add_filter( 'pdd_cart_item_price', 'pdd_custom_amount_cart_item_price', 10, 4 );
 
-function pdd_custom_amount_get_cart_item_price_name( $name, $download_id, $price_id, $item ) {
-	if ( pdd_has_custom_amount( $download_id ) && isset( $item['options']['custom_amount'] ) ) {
-		$name = __( 'Custom Amount', 'pdd' );
-	}
-	
-	return $name;
+function pdd_is_disable_cart() {
+	return (bool) apply_filters( 'pdd_is_disable_cart', pdd_get_option( 'disable_cart' ) );
 }
-add_filter( 'pdd_get_cart_item_price_name', 'pdd_custom_amount_get_cart_item_price_name', 10, 4 );

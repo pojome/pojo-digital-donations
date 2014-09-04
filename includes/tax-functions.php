@@ -281,18 +281,19 @@ function pdd_display_tax_rate() {
 }
 
 /**
- * Should we show address fields for taxation purposes?
+ * Should we show address fields
  *
  * @since 1.y
  * @return bool
  */
-function pdd_cart_needs_tax_address_fields() {
-
-	if( ! pdd_is_cart_taxed() )
+function pdd_cart_needs_billing_address_fields() {
+	if ( ! pdd_use_billing_address() )
 		return false;
-
 	return ! did_action( 'pdd_after_cc_fields', 'pdd_default_cc_address_fields' );
+}
 
+function pdd_use_billing_address() {
+	return (bool) pdd_get_option( 'enable_billing_address' );
 }
 
 /**

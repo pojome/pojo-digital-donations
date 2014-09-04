@@ -138,7 +138,7 @@ function pdd_checkout_cart_columns() {
 	$head_first = did_action( 'pdd_checkout_table_header_first' );
 	$head_last  = did_action( 'pdd_checkout_table_header_last' );
 	$default    = 3;
-
+	
 	return apply_filters( 'pdd_checkout_cart_columns', $head_first + $head_last + $default );
 }
 
