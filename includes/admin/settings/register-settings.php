@@ -202,10 +202,16 @@ function pdd_get_registered_settings() {
 					'std' => '.'
 				),
 				'tracking_settings' => array(
-					'id' => 'uninstall_data',
-					'name' => '<strong>' . __( 'Uninstall Data', 'pdd' ) . '</strong>',
+					'id' => 'tracking_settings',
+					'name' => '<strong>' . __( 'Tracking Settings', 'pdd' ) . '</strong>',
 					'desc' => '',
 					'type' => 'header'
+				),
+				'allow_tracking' => array(
+					'id' => 'allow_tracking',
+					'name' => __( 'Allow Usage Tracking?', 'pdd' ),
+					'desc' => __( 'Allow Pojo Digital Donations to anonymously track how this plugin is used and help us make the plugin better. Opt-in and receive a 20% discount code for any purchase from the <a href="https://easydigitaldownloads.com/extensions" target="_blank">Pojo Digital Donations store</a>. Your discount code will be emailed to you.', 'pdd' ),
+					'type' => 'checkbox'
 				),
 				'uninstall_on_delete' => array(
 					'id' => 'uninstall_on_delete',
