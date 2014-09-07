@@ -13,38 +13,40 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Download Columns
+ * Camp Columns
  *
  * Defines the custom columns and their order
  *
  * @since 1.0
- * @param array $download_columns Array of download columns
- * @return array $download_columns Updated array of download columns for Downloads
+ * 
+*@param array $camp_columns Array of download columns
+ * 
+*@return array $camp_columns Updated array of download columns for Camps
  *  Post Type List Table
  */
-function pdd_camp_columns( $download_columns ) {
-	$download_columns = array(
-		'cb'                => '<input type="checkbox"/>',
-		'title'             => __( 'Name', 'pdd' ),
+function pdd_camp_columns( $camp_columns ) {
+	$camp_columns = array(
+		'cb' => '<input type="checkbox"/>',
+		'title' => __( 'Name', 'pdd' ),
 		'camp_category' => __( 'Categories', 'pdd' ),
-		'camp_tag'      => __( 'Tags', 'pdd' ),
-		'price'             => __( 'Price', 'pdd' ),
-		'sales'             => __( 'Sales', 'pdd' ),
-		'earnings'          => __( 'Earnings', 'pdd' ),
-		'shortcode'         => __( 'Purchase Short Code', 'pdd' ),
-		'date'              => __( 'Date', 'pdd' )
+		'camp_tag' => __( 'Tags', 'pdd' ),
+		'price' => __( 'Price', 'pdd' ),
+		'sales' => __( 'Sales', 'pdd' ),
+		'earnings' => __( 'Earnings', 'pdd' ),
+		'shortcode' => __( 'Purchase Short Code', 'pdd' ),
+		'date' => __( 'Date', 'pdd' ),
 	);
 
-	return apply_filters( 'pdd_camp_columns', $download_columns );
+	return apply_filters( 'pdd_camp_columns', $camp_columns );
 }
-add_filter( 'manage_edit-download_columns', 'pdd_camp_columns' );
+add_filter( 'manage_edit-pdd_camp_columns', 'pdd_camp_columns' );
 
 /**
- * Render Download Columns
+ * Render Camp Columns
  *
  * @since 1.0
  * @param string $column_name Column name
- * @param int $post_id Download (Post) ID
+ * @param int $post_id Camp (Post) ID
  * @return void
  */
 function pdd_render_download_columns( $column_name, $post_id ) {
@@ -114,7 +116,7 @@ function pdd_sortable_download_columns( $columns ) {
 add_filter( 'manage_edit-download_sortable_columns', 'pdd_sortable_download_columns' );
 
 /**
- * Sorts Columns in the Downloads List Table
+ * Sorts Columns in the Camps List Table
  *
  * @since 1.0
  * @param array $vars Array of all the sort variables

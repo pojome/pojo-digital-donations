@@ -124,7 +124,7 @@ function pdd_report_views() {
 
 		<?php do_action( 'pdd_report_view_actions' ); ?>
 
-		<input type="hidden" name="post_type" value="download"/>
+		<input type="hidden" name="post_type" value="pdd_camp"/>
 		<input type="hidden" name="page" value="pdd-reports"/>
 		<?php submit_button( __( 'Show', 'pdd' ), 'secondary', 'submit', false ); ?>
 	</form>
@@ -197,7 +197,7 @@ function pdd_reports_customers_table() {
 			$downloads_table->search_box( __( 'Search', 'pdd' ), 'pdd-customers' );
 			$downloads_table->display();
 			?>
-			<input type="hidden" name="post_type" value="download" />
+			<input type="hidden" name="post_type" value="pdd_camp" />
 			<input type="hidden" name="page" value="pdd-reports" />
 			<input type="hidden" name="view" value="customers" />
 		</form>

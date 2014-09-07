@@ -131,7 +131,7 @@ function pdd_get_download_price( $download_id = 0 ) {
  * @since 1.0
  * @param int $download_id ID of the download price to show
  * @param bool $echo Whether to echo or return the results
- * @return void
+ * @return void|string
  */
 function pdd_price( $download_id, $echo = true ) {
 	if ( pdd_has_variable_prices( $download_id ) ) {

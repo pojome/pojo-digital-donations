@@ -52,7 +52,7 @@ function pdd_logs_view_file_downloads() {
 			$logs_table->search_box( __( 'Search', 'pdd' ), 'pdd-payments' );
 			$logs_table->display();
 			?>
-			<input type="hidden" name="post_type" value="download" />
+			<input type="hidden" name="post_type" value="pdd_camp" />
 			<input type="hidden" name="page" value="pdd-reports" />
 			<input type="hidden" name="tab" value="logs" />
 		</form>
@@ -118,7 +118,7 @@ function pdd_log_views() {
 
 		<?php do_action( 'pdd_log_view_actions' ); ?>
 
-		<input type="hidden" name="post_type" value="download"/>
+		<input type="hidden" name="post_type" value="pdd_camp"/>
 		<input type="hidden" name="page" value="pdd-reports"/>
 		<input type="hidden" name="tab" value="logs"/>
 

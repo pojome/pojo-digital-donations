@@ -389,7 +389,7 @@ function pdd_reports_graph_controls() {
 		<div class="tablenav top">
 			<div class="alignleft actions">
 
-		       	<input type="hidden" name="post_type" value="download"/>
+		       	<input type="hidden" name="post_type" value="pdd_camp"/>
 		       	<input type="hidden" name="page" value="pdd-reports"/>
 		       	<input type="hidden" name="view" value="<?php echo esc_attr( $view ); ?>"/>
 

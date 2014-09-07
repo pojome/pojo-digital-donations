@@ -37,7 +37,7 @@ function pdd_payment_history_page() {
 		<h2><?php echo $pdd_payment->labels->menu_name ?></h2>
 		<?php do_action( 'pdd_payments_page_top' ); ?>
 		<form id="pdd-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=pdd_camp&page=pdd-payment-history' ); ?>">
-			<input type="hidden" name="post_type" value="download" />
+			<input type="hidden" name="post_type" value="pdd_camp" />
 			<input type="hidden" name="page" value="pdd-payment-history" />
 
 			<?php $payments_table->views() ?>
