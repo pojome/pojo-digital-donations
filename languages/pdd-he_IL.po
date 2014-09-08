@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PDD 1.1.2\n"
 "Report-Msgid-Bugs-To: team@pojo.me\n"
 "POT-Creation-Date: 2014-08-29 12:50+0200\n"
-"PO-Revision-Date: 2014-09-04 14:05+0200\n"
+"PO-Revision-Date: 2014-09-08 09:17+0200\n"
 "Last-Translator: Ariel K <a@arielk.net>\n"
 "Language-Team: Pojo.me Team <team@pojo.me>\n"
 "Language: he_IL\n"
@@ -138,7 +138,6 @@ msgid "Pojo Digital Donations Info and Tools"
 msgstr ""
 
 #: ../includes/admin/admin-pages.php:37
-#, fuzzy
 msgid "Tools"
 msgstr "כלים"
 
@@ -165,7 +164,6 @@ msgstr "חודש נוכחי"
 #: ../includes/admin/reporting/graphing.php:332
 #: ../includes/admin/reporting/pdf-reports.php:203
 #: ../includes/admin/reporting/reports.php:57
-#, fuzzy
 msgid "Earnings"
 msgstr "רווחים"
 
@@ -274,7 +272,6 @@ msgstr ""
 
 #: ../includes/admin/discounts/add-discount.php:41
 #: ../includes/admin/discounts/edit-discount.php:54
-#, fuzzy
 msgid "Type"
 msgstr "סוג"
 
@@ -364,9 +361,8 @@ msgstr ""
 
 #: ../includes/admin/discounts/add-discount.php:112
 #: ../includes/admin/discounts/edit-discount.php:126
-#, fuzzy
 msgid "Start date"
-msgstr "תאריך"
+msgstr "תאריך התחלה"
 
 #: ../includes/admin/discounts/add-discount.php:116
 #: ../includes/admin/discounts/edit-discount.php:130
@@ -378,9 +374,8 @@ msgstr ""
 
 #: ../includes/admin/discounts/add-discount.php:121
 #: ../includes/admin/discounts/edit-discount.php:135
-#, fuzzy
 msgid "Expiration date"
-msgstr "תאריך"
+msgstr "תוקף"
 
 #: ../includes/admin/discounts/add-discount.php:125
 #: ../includes/admin/discounts/edit-discount.php:139
@@ -439,7 +434,6 @@ msgstr "כל"
 #: ../includes/admin/discounts/class-discount-codes-table.php:128
 #: ../includes/admin/discounts/class-discount-codes-table.php:250
 #: ../includes/admin/discounts/edit-discount.php:166
-#, fuzzy
 msgid "Active"
 msgstr "פעיל"
 
@@ -455,9 +449,8 @@ msgid "Uses"
 msgstr ""
 
 #: ../includes/admin/discounts/class-discount-codes-table.php:150
-#, fuzzy
 msgid "Start Date"
-msgstr "תאריך"
+msgstr "תאריך התחלה"
 
 #: ../includes/admin/discounts/class-discount-codes-table.php:151
 msgid "Expiration"
@@ -492,7 +485,6 @@ msgstr "הפעלה"
 #: ../includes/admin/payments/class-payments-table.php:302
 #: ../includes/admin/payments/class-payments-table.php:375
 #: ../includes/payments/functions.php:1298
-#, fuzzy
 msgid "Delete"
 msgstr "מחיקה"
 
@@ -558,7 +550,6 @@ msgstr ""
 #: ../includes/admin/settings/contextual-help.php:42
 #: ../includes/admin/settings/register-settings.php:686
 #: ../includes/admin/tools.php:68
-#, fuzzy
 msgid "General"
 msgstr "כללי"
 
@@ -681,7 +672,6 @@ msgstr "משהו היה שגוי"
 #: ../includes/download-functions.php:1004 ../includes/emails/template.php:353
 #: ../includes/error-tracking.php:36 ../includes/gateways/functions.php:202
 #: ../includes/query-filters.php:48
-#, fuzzy
 msgid "Error"
 msgstr "שגיאה"
 
@@ -826,7 +816,6 @@ msgstr ""
 #: ../includes/admin/downloads/dashboard-columns.php:29
 #: ../includes/admin/reporting/pdf-reports.php:64
 #: ../includes/post-types.php:181 ../includes/widgets.php:161
-#, fuzzy
 msgid "Categories"
 msgstr "קטגוריות"
 
@@ -858,7 +847,6 @@ msgstr ""
 #: ../includes/admin/reporting/class-sales-logs-list-table.php:100
 #: ../templates/history-purchases.php:10
 #: ../templates/shortcode-receipt.php:126
-#, fuzzy
 msgid "Date"
 msgstr "תאריך"
 
@@ -977,7 +965,6 @@ msgid "File Name"
 msgstr "שם"
 
 #: ../includes/admin/downloads/metabox.php:629
-#, fuzzy
 msgid "File URL"
 msgstr "קישור יעד"
 
@@ -1086,9 +1073,8 @@ msgid "You do not have permission to edit this payment record"
 msgstr ""
 
 #: ../includes/admin/payments/class-payments-table.php:131
-#, fuzzy
 msgid "Start Date:"
-msgstr "תאריך"
+msgstr "תאריך התחלה:"
 
 #: ../includes/admin/payments/class-payments-table.php:133
 #, fuzzy
@@ -1102,9 +1088,8 @@ msgid "Apply"
 msgstr "להחיל"
 
 #: ../includes/admin/payments/class-payments-table.php:141
-#, fuzzy
 msgid "Clear Filter"
-msgstr "סינון"
+msgstr "ניקוי סינון"
 
 #: ../includes/admin/payments/class-payments-table.php:143
 #: ../includes/admin/reporting/logs.php:52
@@ -1234,7 +1219,6 @@ msgid "Resend Email Receipts"
 msgstr "שליחה חוזרת של הקבלה"
 
 #: ../includes/admin/payments/contextual-help.php:42
-#, fuzzy
 msgid "Overview"
 msgstr "סקירה"
 
@@ -1395,14 +1379,12 @@ msgid "IP:"
 msgstr ""
 
 #: ../includes/admin/payments/view-order-details.php:112
-#, fuzzy
 msgid "Status:"
-msgstr "מצב"
+msgstr "מצב:"
 
 #: ../includes/admin/payments/view-order-details.php:123
-#, fuzzy
 msgid "Date:"
-msgstr "תאריך"
+msgstr "תאריך:"
 
 #: ../includes/admin/payments/view-order-details.php:130
 #, fuzzy
@@ -1606,17 +1588,15 @@ msgstr "הצגת דוח"
 #: ../includes/admin/reporting/class-export-payments.php:65
 #: ../includes/checkout/template.php:149
 #: ../templates/shortcode-profile-editor.php:29
-#, fuzzy
 msgid "First Name"
-msgstr "שם"
+msgstr "שם פרטי"
 
 #: ../includes/admin/reporting/class-export-customers.php:67
 #: ../includes/admin/reporting/class-export-payments.php:66
 #: ../includes/checkout/template.php:159
 #: ../templates/shortcode-profile-editor.php:32
-#, fuzzy
 msgid "Last Name"
-msgstr "שבוע אחרון"
+msgstr "שם משפחה"
 
 #: ../includes/admin/reporting/class-export-customers.php:69
 #, fuzzy
@@ -1655,7 +1635,6 @@ msgid "File"
 msgstr "קובץ אינו תקני"
 
 #: ../includes/admin/reporting/class-export-payments.php:67
-#, fuzzy
 msgid "Address"
 msgstr "כתובת"
 
@@ -1876,7 +1855,6 @@ msgstr "אתמול"
 
 #: ../includes/admin/reporting/graphing.php:370
 #: ../includes/class-pdd-stats.php:84
-#, fuzzy
 msgid "This Week"
 msgstr "שבוע נוכחי"
 
@@ -1894,34 +1872,28 @@ msgstr "חודש נוכחי"
 
 #: ../includes/admin/reporting/graphing.php:374
 #: ../includes/class-pdd-stats.php:88
-#, fuzzy
 msgid "This Quarter"
 msgstr "רבעון נוכחי"
 
 #: ../includes/admin/reporting/graphing.php:375
-#, fuzzy
 msgid "Last Quarter"
 msgstr "רבעון אחרון"
 
 #: ../includes/admin/reporting/graphing.php:376
 #: ../includes/class-pdd-stats.php:90
-#, fuzzy
 msgid "This Year"
 msgstr "שנה נוכחית"
 
 #: ../includes/admin/reporting/graphing.php:377
 #: ../includes/class-pdd-stats.php:91
-#, fuzzy
 msgid "Last Year"
 msgstr "שנה אחרונה"
 
 #: ../includes/admin/reporting/graphing.php:378
-#, fuzzy
 msgid "Custom"
 msgstr "מותאם אישית"
 
 #: ../includes/admin/reporting/graphing.php:409
-#, fuzzy
 msgid "From"
 msgstr "מאת"
 
@@ -1930,7 +1902,6 @@ msgid "To"
 msgstr ""
 
 #: ../includes/admin/reporting/graphing.php:434
-#, fuzzy
 msgid "Filter"
 msgstr "סינון"
 
@@ -2393,7 +2364,6 @@ msgid "Configure the currency options"
 msgstr "להגדיר אפשרויות מטבע"
 
 #: ../includes/admin/settings/register-settings.php:173
-#, fuzzy
 msgid "Currency"
 msgstr "מטבע"
 
@@ -2404,7 +2374,6 @@ msgid ""
 msgstr ""
 
 #: ../includes/admin/settings/register-settings.php:180
-#, fuzzy
 msgid "Currency Position"
 msgstr "מיקום מטבע"
 
@@ -2684,7 +2653,7 @@ msgstr ""
 
 #: ../includes/admin/settings/register-settings.php:405
 msgid "Enable Billing Address"
-msgstr ""
+msgstr "לאפשר פרטי תשלום"
 
 #: ../includes/admin/settings/register-settings.php:406
 msgid "Check this to enable billing address in shopping cart."
@@ -2764,7 +2733,6 @@ msgid "Login Form Only"
 msgstr "התחברות"
 
 #: ../includes/admin/settings/register-settings.php:450
-#, fuzzy
 msgid "None"
 msgstr "ללא"
 
@@ -2915,7 +2883,6 @@ msgid "Licenses"
 msgstr ""
 
 #: ../includes/admin/settings/register-settings.php:698
-#, fuzzy
 msgid "Misc"
 msgstr "שונות"
 
@@ -3002,9 +2969,8 @@ msgid "Direct Purchase Link"
 msgstr "תנועה ישירה"
 
 #: ../includes/admin/thickbox.php:107
-#, fuzzy
 msgid "Choose a style"
-msgstr "סגנון:"
+msgstr "סגנון"
 
 #: ../includes/admin/thickbox.php:121
 #, fuzzy
@@ -3021,9 +2987,8 @@ msgid "Cancel"
 msgstr ""
 
 #: ../includes/admin/tools.php:69
-#, fuzzy
 msgid "System Info"
-msgstr "פרטי קשר"
+msgstr "פרטי מערכת"
 
 #: ../includes/admin/tools.php:70
 #, fuzzy
@@ -3043,7 +3008,6 @@ msgid "Enter emails to disallow, one per line"
 msgstr ""
 
 #: ../includes/admin/tools.php:97
-#, fuzzy
 msgid "Save"
 msgstr "שמירה"
 
@@ -3197,7 +3161,6 @@ msgid "What's New"
 msgstr "מה חדש"
 
 #: ../includes/admin/welcome.php:155
-#, fuzzy
 msgid "Credits"
 msgstr "קרדיטים"
 
@@ -3657,9 +3620,8 @@ msgid "You have successfully added %s to your shopping cart."
 msgstr ""
 
 #: ../includes/cart/functions.php:879
-#, fuzzy
 msgid "Checkout."
-msgstr "רכישה"
+msgstr "תשלום."
 
 #: ../includes/cart/functions.php:1029 ../includes/cart/functions.php:1095
 #: ../templates/shortcode-profile-editor.php:20
@@ -3697,7 +3659,6 @@ msgid "Restore Previous Cart"
 msgstr "סל קניות"
 
 #: ../includes/cart/template.php:164
-#, fuzzy
 msgid "Save Cart"
 msgstr "שמירה"
 
@@ -3712,43 +3673,38 @@ msgid "Update Cart"
 msgstr "עדכון קטגוריה"
 
 #: ../includes/checkout/template.php:134
-#, fuzzy
 msgid "Personal Info"
-msgstr "פרטי קשר"
+msgstr "פרטים אישיים"
 
 #: ../includes/checkout/template.php:138
 #: ../templates/shortcode-profile-editor.php:52
 #: ../templates/shortcode-register.php:21
-#, fuzzy
 msgid "Email Address"
 msgstr "כתובת אימייל"
 
 #: ../includes/checkout/template.php:143
 msgid "We will send the purchase receipt to this address."
-msgstr ""
+msgstr "אנחנו נשלח לך קבלה לכתובת אימייל זו."
 
 #: ../includes/checkout/template.php:144
-#, fuzzy
 msgid "Email address"
 msgstr "כתובת אימייל"
 
 #: ../includes/checkout/template.php:154
 msgid "We will use this to personalize your account experience."
-msgstr ""
+msgstr "כדי שנוכל להתיי"
 
 #: ../includes/checkout/template.php:155
-#, fuzzy
 msgid "First name"
-msgstr "שם"
+msgstr "שם פרטי"
 
 #: ../includes/checkout/template.php:164
 msgid "We will use this as well to personalize your account experience."
 msgstr ""
 
 #: ../includes/checkout/template.php:165
-#, fuzzy
 msgid "Last name"
-msgstr "שבוע אחרון"
+msgstr "שם משפחה"
 
 #: ../includes/checkout/template.php:186
 msgid "Credit Card Info"
@@ -3806,35 +3762,32 @@ msgid "The date your credit card expires, typically on the front of the card."
 msgstr ""
 
 #: ../includes/checkout/template.php:262
-#, fuzzy
 msgid "Billing Details"
-msgstr "הצגת פרטים"
+msgstr "פרטי תשלום"
 
 #: ../includes/checkout/template.php:271
 msgid "The primary billing address for your credit card."
-msgstr ""
+msgstr "כתובת עבור כרטיס האשראי שלך."
 
 #: ../includes/checkout/template.php:272
-#, fuzzy
 msgid "Address line 1"
-msgstr "כתובת"
+msgstr "כתובת 1"
 
 #: ../includes/checkout/template.php:276
 msgid "Billing Address Line 2 (optional)"
-msgstr ""
+msgstr "כתובת 2 (אופציונאלי)"
 
 #: ../includes/checkout/template.php:281
 msgid "The suite, apt no, PO box, etc, associated with your billing address."
-msgstr ""
+msgstr "תיבת דואר, או פרטים נוספים הקשורים לכתובת שלך."
 
 #: ../includes/checkout/template.php:282
-#, fuzzy
 msgid "Address line 2"
-msgstr "כתובת"
+msgstr "כתובת 2"
 
 #: ../includes/checkout/template.php:286
 msgid "Billing City"
-msgstr ""
+msgstr "עיר"
 
 #: ../includes/checkout/template.php:291
 msgid "The city for your billing address."
@@ -3842,11 +3795,11 @@ msgstr ""
 
 #: ../includes/checkout/template.php:296
 msgid "Billing Zip / Postal Code"
-msgstr ""
+msgstr "מיקוד"
 
 #: ../includes/checkout/template.php:301
 msgid "The zip or postal code for your billing address."
-msgstr ""
+msgstr "מספר המיקוד של הכתובת שלך."
 
 #: ../includes/checkout/template.php:302
 msgid "Zip / Postal code"
@@ -3854,15 +3807,15 @@ msgstr ""
 
 #: ../includes/checkout/template.php:306
 msgid "Billing Country"
-msgstr ""
+msgstr "ארץ"
 
 #: ../includes/checkout/template.php:311
 msgid "The country for your billing address."
-msgstr ""
+msgstr "בחירת ארץ המגורים."
 
 #: ../includes/checkout/template.php:330
 msgid "Billing State / Province"
-msgstr ""
+msgstr "אזור"
 
 #: ../includes/checkout/template.php:335
 msgid "The state or province for your billing address."
@@ -3890,7 +3843,6 @@ msgstr "(אופציונאלי)"
 #: ../includes/checkout/template.php:480 ../templates/shortcode-login.php:12
 #: ../templates/shortcode-login.php:13 ../templates/shortcode-register.php:15
 #: ../templates/shortcode-register.php:16
-#, fuzzy
 msgid "Username"
 msgstr "שם משתמש"
 
@@ -3901,7 +3853,6 @@ msgstr ""
 #: ../includes/checkout/template.php:418 ../includes/checkout/template.php:424
 #: ../includes/checkout/template.php:484 ../templates/shortcode-login.php:16
 #: ../templates/shortcode-register.php:25
-#, fuzzy
 msgid "Password"
 msgstr "סיסמה "
 
@@ -3969,7 +3920,6 @@ msgid "Agree to Terms?"
 msgstr ""
 
 #: ../includes/checkout/template.php:635
-#, fuzzy
 msgid "Purchase Total:"
 msgstr "סך הכל"
 
@@ -4019,7 +3969,6 @@ msgid "All"
 msgstr "הכל"
 
 #: ../includes/class-pdd-html-elements.php:238
-#, fuzzy
 msgctxt "no dropdown items"
 msgid "None"
 msgstr "ללא"
@@ -4162,7 +4111,6 @@ msgstr ""
 #: ../includes/deprecated-functions.php:316
 #: ../includes/deprecated-functions.php:349
 #: ../includes/emails/email-tags.php:325
-#, fuzzy
 msgid "Your site name"
 msgstr "שם אתר"
 
@@ -4242,9 +4190,8 @@ msgid "No payments matching your request were found."
 msgstr ""
 
 #: ../includes/emails/email-tags.php:270
-#, fuzzy
 msgid "The donor's first name"
-msgstr "שם"
+msgstr "שם הפרטי של התורם"
 
 #: ../includes/emails/email-tags.php:275
 msgid "The donor's full name, first and last"
@@ -4395,7 +4342,7 @@ msgstr ""
 
 #: ../includes/gateways/actions.php:54
 msgid "You must enable a payment gateway to use Pojo Digital Donations"
-msgstr ""
+msgstr "הינך חייב לאפשר אפשרות תשלום כדי להשתמש בתוסף"
 
 #: ../includes/gateways/functions.php:25
 msgid "PayPal Standard"
@@ -4502,9 +4449,8 @@ msgstr ""
 #: ../includes/install.php:56 ../includes/template-functions.php:165
 #: ../templates/widget-cart-checkout.php:2
 #: ../templates/widget-cart-empty.php:3
-#, fuzzy
 msgid "Checkout"
-msgstr "רכישה"
+msgstr "תשלום"
 
 #: ../includes/install.php:68
 msgid "Purchase Confirmation"
@@ -4773,9 +4719,9 @@ msgid "View %1$s"
 msgstr "תצוגה %s"
 
 #: ../includes/post-types.php:36
-#, fuzzy, php-format
+#, php-format
 msgid "Search %2$s"
-msgstr "תוצאות חיפוש עבור: %s"
+msgstr "חיפוש %2$s"
 
 #: ../includes/post-types.php:37
 #, php-format
@@ -4876,7 +4822,6 @@ msgid "Parent Category:"
 msgstr "קטגורית אב"
 
 #: ../includes/post-types.php:177
-#, fuzzy
 msgid "Edit Category"
 msgstr "עריכת קטגוריה"
 
@@ -5081,9 +5026,8 @@ msgid "Please enter a valid email address"
 msgstr ""
 
 #: ../includes/process-purchase.php:330
-#, fuzzy
 msgid "Please enter your first name"
-msgstr "יש להזין סיסמה"
+msgstr "יש להזין שם פרטי"
 
 #: ../includes/process-purchase.php:340
 msgid "Please enter your zip / postal code"
@@ -5300,7 +5244,7 @@ msgstr ""
 
 #: ../includes/template-functions.php:131
 msgid "Enter a amount you'd like to pay:"
-msgstr ""
+msgstr "הסכום שברצונך לתרום:"
 
 #: ../includes/template-functions.php:135
 msgid "Min"
@@ -5311,9 +5255,8 @@ msgid "<i class=\"pdd-icon-ok\"></i> Added to cart"
 msgstr ""
 
 #: ../includes/template-functions.php:178
-#, fuzzy
 msgid "Go to Checkout"
-msgstr "רכישה"
+msgstr "לתשלום"
 
 #: ../includes/template-functions.php:186
 #, php-format
@@ -5366,7 +5309,6 @@ msgid "Inherit"
 msgstr ""
 
 #: ../includes/template-functions.php:385
-#, fuzzy
 msgid "Button"
 msgstr "כפתור"
 
@@ -5473,17 +5415,14 @@ msgid "Cheatin&#8217; huh?"
 msgstr ""
 
 #: ../templates/checkout_cart.php:6
-#, fuzzy
 msgid "Item Name"
-msgstr "פריט"
+msgstr "שם פריט"
 
 #: ../templates/checkout_cart.php:7
-#, fuzzy
 msgid "Item Price"
-msgstr "פריט"
+msgstr "סכום פריט"
 
 #: ../templates/checkout_cart.php:8
-#, fuzzy
 msgid "Actions"
 msgstr "פעולות"
 
@@ -5616,9 +5555,8 @@ msgid "Please note after changing your password, you must log back in."
 msgstr ""
 
 #: ../templates/shortcode-profile-editor.php:93
-#, fuzzy
 msgid "Save Changes"
-msgstr "שמירה"
+msgstr "שמירת שינויים"
 
 #: ../templates/shortcode-profile-editor.php:99
 msgid "You need to login to edit your profile."
@@ -5656,9 +5594,8 @@ msgstr "אישור סיסמה"
 
 #: ../templates/widget-cart-checkout.php:1
 #: ../templates/widget-cart-empty.php:2
-#, fuzzy
 msgid "Subtotal:"
-msgstr "סיכום ביניים"
+msgstr "סיכום ביניים:"
 
 #: ../templates/widget-cart-item.php:4
 msgid "remove"
