@@ -54,6 +54,7 @@ function pdd_load_scripts() {
 			'no_username' => __( 'Please enter a username before applying a discount code', 'pdd' ),
 			'purchase_loading' => __( 'Please Wait...', 'pdd' ),
 			'complete_purchasse' => __( 'Purchase', 'pdd' ),
+			'per_month' => __ ( 'Per Month', 'pdd' ),
 			'taxes_enabled' => pdd_use_taxes() ? '1' : '0',
 			'pdd_version' => PDD_VERSION,
 		) );
