@@ -151,7 +151,6 @@ function pdd_user_info_fields() {
 					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="pdd-description"><?php _e( 'We will use this to personalize your account experience.', 'pdd' ); ?></span>
 			<input class="pdd-input required" type="text" name="pdd_first" placeholder="<?php _e( 'First name', 'pdd' ); ?>" id="pdd-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"/>
 		</p>
 		<p id="pdd-last-name-wrap">
@@ -161,7 +160,6 @@ function pdd_user_info_fields() {
 					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="pdd-description"><?php _e( 'We will use this as well to personalize your account experience.', 'pdd' ); ?></span>
 			<input class="pdd-input<?php if( pdd_field_is_required( 'pdd_last' ) ) { echo ' required'; } ?>" type="text" name="pdd_last" id="pdd-last" placeholder="<?php _e( 'Last name', 'pdd' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"/>
 		</p>
 		<?php do_action( 'pdd_purchase_form_user_info' ); ?>
@@ -263,17 +261,16 @@ function pdd_default_cc_address_fields() {
 		<?php do_action( 'pdd_cc_billing_top' ); ?>
 		<p id="pdd-card-address-wrap">
 			<label for="card_address" class="pdd-label">
-				<?php _e( 'Billing Address', 'pdd' ); ?>
+				<?php _e( 'Address', 'pdd' ); ?>
 				<?php if( pdd_field_is_required( 'card_address' ) ) { ?>
 					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="pdd-description"><?php _e( 'The primary billing address for your credit card.', 'pdd' ); ?></span>
 			<input type="text" id="card_address" name="card_address" class="card-address pdd-input<?php if( pdd_field_is_required( 'card_address' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'Address line 1', 'pdd' ); ?>" value="<?php echo $line1; ?>"/>
 		</p>
 		<p id="pdd-card-address-2-wrap">
 			<label for="card_address_2" class="pdd-label">
-				<?php _e( 'Billing Address Line 2 (optional)', 'pdd' ); ?>
+				<?php _e( 'Address 2 (optional)', 'pdd' ); ?>
 				<?php if( pdd_field_is_required( 'card_address_2' ) ) { ?>
 					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
@@ -283,32 +280,29 @@ function pdd_default_cc_address_fields() {
 		</p>
 		<p id="pdd-card-city-wrap">
 			<label for="card_city" class="pdd-label">
-				<?php _e( 'Billing City', 'pdd' ); ?>
+				<?php _e( 'City', 'pdd' ); ?>
 				<?php if( pdd_field_is_required( 'card_city' ) ) { ?>
 					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="pdd-description"><?php _e( 'The city for your billing address.', 'pdd' ); ?></span>
 			<input type="text" id="card_city" name="card_city" class="card-city pdd-input<?php if( pdd_field_is_required( 'card_city' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'City', 'pdd' ); ?>" value="<?php echo $city; ?>"/>
 		</p>
 		<p id="pdd-card-zip-wrap">
 			<label for="card_zip" class="pdd-label">
-				<?php _e( 'Billing Zip / Postal Code', 'pdd' ); ?>
+				<?php _e( 'Zip / Postal Code', 'pdd' ); ?>
 				<?php if( pdd_field_is_required( 'card_zip' ) ) { ?>
 					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="pdd-description"><?php _e( 'The zip or postal code for your billing address.', 'pdd' ); ?></span>
 			<input type="text" size="4" name="card_zip" class="card-zip pdd-input<?php if( pdd_field_is_required( 'card_zip' ) ) { echo ' required'; } ?>" placeholder="<?php _e( 'Zip / Postal code', 'pdd' ); ?>" value="<?php echo $zip; ?>"/>
 		</p>
 		<p id="pdd-card-country-wrap">
 			<label for="billing_country" class="pdd-label">
-				<?php _e( 'Billing Country', 'pdd' ); ?>
+				<?php _e( 'Country', 'pdd' ); ?>
 				<?php if( pdd_field_is_required( 'billing_country' ) ) { ?>
 					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="pdd-description"><?php _e( 'The country for your billing address.', 'pdd' ); ?></span>
 			<select name="billing_country" id="billing_country" class="billing_country pdd-select<?php if( pdd_field_is_required( 'billing_country' ) ) { echo ' required'; } ?>">
 				<?php
 
@@ -327,12 +321,11 @@ function pdd_default_cc_address_fields() {
 		</p>
 		<p id="pdd-card-state-wrap">
 			<label for="card_state" class="pdd-label">
-				<?php _e( 'Billing State / Province', 'pdd' ); ?>
+				<?php _e( 'State / Province', 'pdd' ); ?>
 				<?php if( pdd_field_is_required( 'card_state' ) ) { ?>
 					<span class="pdd-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="pdd-description"><?php _e( 'The state or province for your billing address.', 'pdd' ); ?></span>
             <?php
             $selected_state = pdd_get_shop_state();
             $states         = pdd_get_shop_states( $selected_country );
@@ -632,7 +625,7 @@ add_action( 'pdd_purchase_form_before_submit', 'pdd_terms_agreement' );
 function pdd_checkout_final_total() {
 ?>
 <p id="pdd_final_total_wrap">
-	<strong><?php _e( 'Purchase Total:', 'pdd' ); ?></strong>
+	<strong><?php _e( 'Total:', 'pdd' ); ?></strong>
 	<span class="pdd_cart_amount" data-subtotal="<?php echo pdd_get_cart_subtotal(); ?>" data-total="<?php echo pdd_get_cart_subtotal(); ?>"><?php pdd_cart_total(); ?></span>
 </p>
 <?php
