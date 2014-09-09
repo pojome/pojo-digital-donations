@@ -31,18 +31,18 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'Easy_Digital_Downloads' ) ) :
+if ( ! class_exists( 'Pojo_Digital_Donations' ) ) :
 
 /**
- * Main Easy_Digital_Downloads Class
+ * Main Pojo_Digital_Donations Class
  *
  * @since 1.4
  */
-final class Easy_Digital_Downloads {
+final class Pojo_Digital_Donations {
 	/** Singleton *************************************************************/
 
 	/**
-	 * @var Easy_Digital_Downloads The one true Easy_Digital_Downloads
+	 * @var Pojo_Digital_Donations The one true Pojo_Digital_Donations
 	 * @since 1.4
 	 */
 	private static $instance;
@@ -91,23 +91,23 @@ final class Easy_Digital_Downloads {
 	public $email_tags;
 
 	/**
-	 * Main Easy_Digital_Downloads Instance
+	 * Main Pojo_Digital_Donations Instance
 	 *
-	 * Insures that only one instance of Easy_Digital_Downloads exists in memory at any one
+	 * Insures that only one instance of Pojo_Digital_Donations exists in memory at any one
 	 * time. Also prevents needing to define globals all over the place.
 	 *
 	 * @since 1.4
 	 * @static
 	 * @staticvar array $instance
-	 * @uses Easy_Digital_Downloads::setup_constants() Setup the constants needed
-	 * @uses Easy_Digital_Downloads::includes() Include the required files
-	 * @uses Easy_Digital_Downloads::load_textdomain() load the language files
+	 * @uses Pojo_Digital_Donations::setup_constants() Setup the constants needed
+	 * @uses Pojo_Digital_Donations::includes() Include the required files
+	 * @uses Pojo_Digital_Donations::load_textdomain() load the language files
 	 * @see PDD()
-	 * @return Easy_Digital_Downloads
+	 * @return Pojo_Digital_Donations
 	 */
 	public static function instance() {
-		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Easy_Digital_Downloads ) ) {
-			self::$instance = new Easy_Digital_Downloads;
+		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Pojo_Digital_Donations ) ) {
+			self::$instance = new Pojo_Digital_Donations;
 			self::$instance->setup_constants();
 			self::$instance->includes();
 			self::$instance->load_textdomain();
@@ -313,7 +313,7 @@ endif; // End if class_exists check
 
 
 /**
- * The main function responsible for returning the one true Easy_Digital_Downloads
+ * The main function responsible for returning the one true Pojo_Digital_Donations
  * Instance to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
@@ -322,10 +322,10 @@ endif; // End if class_exists check
  * Example: <?php $pdd = PDD(); ?>
  *
  * @since 1.4
- * @return Easy_Digital_Downloads The one true Easy_Digital_Downloads Instance
+ * @return Pojo_Digital_Donations The one true Pojo_Digital_Donations Instance
  */
 function PDD() {
-	return Easy_Digital_Downloads::instance();
+	return Pojo_Digital_Donations::instance();
 }
 
 // Get PDD Running
